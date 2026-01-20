@@ -1,0 +1,1956 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EasyGDS | Curated Travel Experiences</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Raleway -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Flatpickr Datepicker -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                fontFamily: {
+                    sans: ['Raleway', 'sans-serif'],
+                    display: ['Raleway', 'sans-serif'],
+                },
+                extend: {
+                    colors: {
+                        brand: {
+                            primary: '#203C94',     // EasyGDS Blue
+                            secondary: '#1A3994',   // EasyGDS Dark Blue
+                            accent: '#4CAF50',      // EasyGDS Green/Success
+                            text: '#1A1A1A',        // Main Text
+                            muted: '#555555',       // Muted Text
+                            surface: '#F5F8FF',     // Light Background
+                            white: '#FFFFFF',
+                            gold: '#D4AF37',        // Kept for premium feel accents
+                        }
+                    },
+                    boxShadow: {
+                        'elegant': '0 4px 20px -5px rgba(32, 60, 148, 0.15)',
+                        'elegant-lg': '0 10px 30px -5px rgba(32, 60, 148, 0.2)',
+                        'elegant-xl': '0 20px 40px -5px rgba(32, 60, 148, 0.25)',
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(30px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Smooth scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #F5F8FF;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #203C94;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #1A3994;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Hero carousel animations */
+        .hero-slide {
+            opacity: 0;
+            transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .hero-slide.active {
+            opacity: 1;
+        }
+
+        /* Parallax effect */
+        .parallax-bg {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        /* Custom Form Elements - Standardized */
+        .input-container {
+            transition: all 0.2s ease;
+            min-width: 0;
+        }
+
+        .input-container:focus-within {
+            box-shadow: 0 0 0 3px rgba(32, 60, 148, 0.12);
+            border-color: #203C94 !important;
+        }
+
+        /* Standardized input styling */
+        .search-input {
+            width: 100%;
+            background: transparent;
+            outline: none;
+            color: #1A1A1A;
+            font-weight: 600;
+            font-size: 0.875rem;
+            line-height: 1.25;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .search-input::placeholder {
+            color: #9CA3AF;
+            font-weight: 400;
+        }
+
+        .search-label {
+            display: block;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #555555;
+            font-weight: 700;
+            margin-bottom: 2px;
+            line-height: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* Unified input box base */
+        .search-input-box {
+            background-color: white;
+            height: 3.5rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            border-radius: 0.75rem;
+            border: 1px solid #E5E7EB;
+            transition: all 0.2s ease;
+            position: relative;
+            display: flex;
+            align-items: center;
+            min-width: 0;
+        }
+
+        .search-input-box:hover {
+            background-color: #F9FAFB;
+        }
+
+        .search-input-box:focus-within {
+            border-color: #203C94;
+            box-shadow: 0 0 0 3px rgba(32, 60, 148, 0.1);
+        }
+
+        .search-input-box .input-icon {
+            width: 1.25rem;
+            height: 1.25rem;
+            color: #9CA3AF;
+            flex-shrink: 0;
+            transition: color 0.2s ease;
+        }
+
+        .search-input-box:focus-within .input-icon {
+            color: #203C94;
+        }
+
+        /* Search form grid standardization */
+        .search-form-grid {
+            display: grid;
+            gap: 0.75rem;
+            align-items: stretch;
+        }
+
+        /* Responsive search button */
+        .search-btn-primary {
+            background-color: #203C94;
+            color: white;
+            height: 3.5rem;
+            padding-left: 2rem;
+            padding-right: 2rem;
+            border-radius: 0.75rem;
+            font-weight: 700;
+            font-size: 1rem;
+            box-shadow: 0 4px 20px -5px rgba(32, 60, 148, 0.15);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            position: relative;
+            overflow: hidden;
+            white-space: nowrap;
+            border: none;
+            cursor: pointer;
+        }
+
+        .search-btn-primary:hover {
+            background-color: #1A3994;
+            box-shadow: 0 10px 30px -5px rgba(32, 60, 148, 0.2);
+        }
+
+        .search-btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        .search-btn-primary i,
+        .search-btn-primary svg {
+            width: 1.25rem;
+            height: 1.25rem;
+            transition: transform 0.3s ease;
+        }
+
+        .search-btn-primary:hover i,
+        .search-btn-primary:hover svg {
+            transform: translateX(2px);
+        }
+
+        /* Sticky Search Fixes */
+        #search-panel.is-sticky .search-input-box,
+        #search-panel.is-sticky .input-container {
+            background-color: #F8FAFC;
+            border-color: #E2E8F0;
+        }
+
+        #search-panel.is-sticky .search-input-box:hover,
+        #search-panel.is-sticky .input-container:hover {
+            background-color: #F1F5F9;
+        }
+
+        #search-panel.is-sticky .search-label,
+        #search-panel.is-sticky label {
+            color: #64748B;
+        }
+
+        #search-panel.is-sticky .search-input,
+        #search-panel.is-sticky input {
+            color: #1E293B;
+        }
+
+        #search-panel.is-sticky .search-input::placeholder,
+        #search-panel.is-sticky input::placeholder {
+            color: #94A3B8;
+        }
+
+        /* Improved Sticky Tabs Readability */
+        #search-panel.is-sticky {
+            background-color: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-color: rgba(0, 0, 0, 0.08);
+            box-shadow: 0 4px 24px -4px rgba(0, 0, 0, 0.12);
+        }
+
+        #search-panel.is-sticky #search-tabs-container {
+            background-color: #F1F5F9;
+            box-shadow: none;
+            padding: 0.375rem;
+            margin-bottom: 1rem;
+        }
+
+        #search-panel.is-sticky.is-collapsed #search-tabs-container {
+            margin-bottom: 0;
+        }
+
+        #search-panel.is-sticky .search-tab:not(.active) {
+            color: #64748B;
+        }
+
+        #search-panel.is-sticky .search-tab:not(.active):hover {
+            color: #203C94;
+            background-color: rgba(32, 60, 148, 0.06);
+        }
+
+        /* Button Enhancements */
+        .btn-primary {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-8px);
+        }
+
+        /* Accent Line */
+        .accent-line {
+            position: relative;
+        }
+
+        .accent-line::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -12px;
+            width: 60px;
+            height: 4px;
+            background: #203C94;
+            border-radius: 2px;
+        }
+
+        /* Mobile-first responsive improvements */
+        @media (max-width: 639px) {
+            .search-form-grid {
+                gap: 0.625rem;
+            }
+
+            .search-input-box {
+                height: 3.25rem;
+                padding-left: 0.875rem;
+                padding-right: 0.875rem;
+            }
+
+            .search-btn-primary {
+                width: 100%;
+                height: 3.25rem;
+                font-size: 0.9375rem;
+            }
+
+            .search-label {
+                font-size: 9px;
+            }
+
+            .search-input {
+                font-size: 0.8125rem;
+            }
+
+            #search-tabs-container {
+                justify-content: center;
+                gap: 0.25rem;
+            }
+        }
+
+        @media (min-width: 640px) and (max-width: 767px) {
+            .search-form-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .search-btn-primary {
+                grid-column: span 2;
+            }
+        }
+
+        @media (min-width: 768px) and (max-width: 1023px) {
+            .search-btn-primary {
+                min-width: 160px;
+            }
+        }
+
+        /* Radio button styling for glass panels */
+        .search-form input[type="radio"] {
+            accent-color: #203C94;
+        }
+
+        #search-panel.is-sticky .search-form input[type="radio"]+span {
+            color: #374151;
+        }
+
+        #search-panel.is-sticky .search-form label:hover input[type="radio"]+span {
+            color: #203C94;
+        }
+
+        /* Custom checkbox styling */
+        .custom-checkbox {
+            appearance: none;
+            width: 1.25rem;
+            height: 1.25rem;
+            border: 2px solid #D1D5DB;
+            border-radius: 0.375rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            background-color: transparent;
+        }
+
+        .custom-checkbox:hover {
+            border-color: #203C94;
+        }
+
+        .custom-checkbox:checked {
+            background-color: #203C94;
+            border-color: #203C94;
+        }
+
+        .custom-checkbox:focus {
+            box-shadow: 0 0 0 3px rgba(32, 60, 148, 0.2);
+            outline: none;
+        }
+
+        .custom-checkbox:checked+.check-icon {
+            opacity: 1;
+        }
+
+        /* Popover improvements */
+        .traveler-popover {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            width: 20rem;
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 20px 40px -5px rgba(32, 60, 148, 0.25);
+            padding: 1.25rem;
+            z-index: 60;
+            border: 1px solid #F3F4F6;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(8px);
+            transition: all 0.2s ease;
+        }
+
+        .traveler-popover.is-open,
+        .traveler-popover:not(.hidden) {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        /* Counter button styling */
+        .counter-btn {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            border: 1px solid #E5E7EB;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #555555;
+            transition: all 0.2s ease;
+            font-weight: 600;
+            font-size: 1.125rem;
+            line-height: 1;
+            background: white;
+            cursor: pointer;
+        }
+
+        .counter-btn:hover {
+            border-color: #203C94;
+            color: #203C94;
+            background-color: #F5F8FF;
+        }
+
+        .counter-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .counter-btn:disabled:hover {
+            border-color: #E5E7EB;
+            color: #555555;
+            background-color: white;
+        }
+
+        .counter-btn:active:not(:disabled) {
+            transform: scale(0.95);
+        }
+
+        /* Custom select dropdown styling */
+        .custom-select .custom-options {
+            animation: dropdownFade 0.15s ease-out;
+        }
+
+        @keyframes dropdownFade {
+            from {
+                opacity: 0;
+                transform: translateY(-4px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .custom-select .option-item {
+            transition: background-color 0.15s ease;
+        }
+
+        .custom-select .option-item:hover {
+            background-color: #F5F8FF;
+        }
+
+        .custom-select .option-item:active {
+            background-color: #E8EDFC;
+        }
+
+        /* Time picker specific styling */
+        #tr-time-opts .option-item {
+            padding: 0.625rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        /* Sticky state adjustments for checkbox */
+        #search-panel.is-sticky .custom-checkbox {
+            border-color: #D1D5DB;
+        }
+
+        #search-panel.is-sticky label span {
+            color: #374151;
+        }
+
+        #search-panel.is-sticky label:hover span {
+            color: #203C94;
+        }
+
+        /* Focus visible for accessibility */
+        .search-input:focus-visible,
+        .search-btn-primary:focus-visible,
+        .search-tab:focus-visible {
+            outline: 2px solid #203C94;
+            outline-offset: 2px;
+        }
+
+        /* Package checkbox label - always dark for readability */
+        .pkg-checkbox-label {
+            color: #374151 !important;
+        }
+
+        label:hover .pkg-checkbox-label {
+            color: #203C94 !important;
+        }
+
+        /* Sticky state - collapsed to tab bar only */
+        #search-panel.is-sticky.is-collapsed #search-inputs-container {
+            display: none !important;
+        }
+
+        #search-panel.is-sticky #search-inputs-container {
+            padding-left: 0;
+            padding-right: 0;
+            padding-bottom: 0;
+        }
+
+        #search-panel.is-sticky #search-tabs-container {
+            margin-bottom: 0;
+        }
+
+        #search-panel.is-sticky:not(.is-collapsed) #search-tabs-container {
+            margin-bottom: 1rem;
+        }
+
+        /* Ensure sticky wrapper works */
+        #search-container-wrapper {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        /* Collapsed sticky tab bar styling */
+        #search-panel.is-sticky.is-collapsed {
+            padding-top: 0.75rem;
+            padding-bottom: 0.75rem;
+        }
+
+        #search-panel.is-sticky.is-collapsed #search-tabs-container {
+            margin: 0 auto;
+            width: fit-content;
+        }
+
+        /* Smooth scrolling for autocomplete containers */
+        .traveler-popover,
+        .custom-options {
+            scrollbar-width: thin;
+            scrollbar-color: #CBD5E1 transparent;
+        }
+
+        .traveler-popover::-webkit-scrollbar,
+        .custom-options::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .traveler-popover::-webkit-scrollbar-thumb,
+        .custom-options::-webkit-scrollbar-thumb {
+            background-color: #CBD5E1;
+            border-radius: 3px;
+        }
+
+        /* Remove border/outline from search inputs */
+        .search-input {
+            border: none !important;
+            outline: none !important;
+            box-shadow: none !important;
+        }
+
+        .search-input:focus {
+            border: none !important;
+            outline: none !important;
+            box-shadow: none !important;
+        }
+
+        /* Autocomplete dropdown styling - wider and properly positioned */
+        .autocomplete-results {
+            position: absolute !important;
+            top: calc(100% + 8px) !important;
+            left: 0 !important;
+            min-width: 340px !important;
+            width: max-content !important;
+            max-width: min(500px, 90vw) !important;
+            background: white !important;
+            border: 1px solid #E5E7EB !important;
+            border-radius: 0.75rem !important;
+            box-shadow: 0 20px 40px -5px rgba(32, 60, 148, 0.25) !important;
+            max-height: 320px !important;
+            overflow-y: auto !important;
+            z-index: 100 !important;
+            scrollbar-width: thin;
+            scrollbar-color: #CBD5E1 transparent;
+        }
+
+        .autocomplete-results::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .autocomplete-results::-webkit-scrollbar-thumb {
+            background-color: #CBD5E1;
+            border-radius: 3px;
+        }
+
+        .autocomplete-results .p-2 {
+            padding: 0.75rem 1rem !important;
+            transition: background-color 0.15s ease;
+        }
+
+        .autocomplete-results .p-2:hover {
+            background-color: #F5F8FF !important;
+        }
+
+        /* Loading state in autocomplete */
+        .autocomplete-results .p-3 {
+            padding: 1rem !important;
+            text-align: center;
+        }
+
+        /* Ensure input box has relative positioning for dropdown */
+        .search-input-box {
+            position: relative !important;
+        }
+
+        /* Mobile responsiveness for autocomplete */
+        @media (max-width: 639px) {
+            .autocomplete-results {
+                min-width: 280px !important;
+                max-width: calc(100vw - 2rem) !important;
+                left: 50% !important;
+                transform: translateX(-50%) !important;
+            }
+        }
+
+        /* Ensure search forms don't clip dropdowns */
+        .search-form {
+            overflow: visible !important;
+        }
+
+        .search-form-grid {
+            overflow: visible !important;
+        }
+
+        #search-inputs-container {
+            overflow: visible !important;
+        }
+
+        #search-panel {
+            overflow: visible !important;
+        }
+
+        /* Higher z-index for traveler popovers to appear above content */
+        .traveler-popover {
+            z-index: 200 !important;
+        }
+
+        /* Ensure custom-options appear above content */
+        .custom-options {
+            z-index: 200 !important;
+        }
+    </style>
+</head>
+
+<body class="bg-brand-surface text-brand-text font-sans antialiased">
+
+    <!-- ================= HEADER ================= -->
+    <header class="absolute top-0 left-0 right-0 z-[60] h-20 flex items-center transition-all duration-300"
+        id="main-header">
+        <div class="container mx-auto px-6 lg:px-12 flex justify-between items-center h-full">
+            <!-- Logo -->
+            <a href="#" class="flex items-center gap-3 group">
+                <img src="https://waddat.com/easygds_logo_transparent.png" alt="EasyGDS Logo"
+                    class="h-10 w-auto brightness-0 invert transition-all duration-300 group-hover:scale-105 drop-shadow-md">
+            </a>
+
+            <!-- Desktop Navigation -->
+            <div class="hidden lg:flex items-center gap-8 text-sm font-semibold text-white/95">
+                <div
+                    class="flex items-center gap-1.5 cursor-pointer hover:text-white transition-all duration-300 hover:gap-2">
+                    <span>USD</span>
+                    <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                </div>
+                <div
+                    class="flex items-center gap-2 cursor-pointer hover:text-white transition-all duration-300 hover:gap-3">
+                    <img src="https://flagcdn.com/w20/us.png" alt="US flag" class="w-5 h-auto rounded shadow-sm">
+                    <span>EN</span>
+                    <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                </div>
+                <a href="#" class="hover:text-white transition-all duration-300 hover:underline underline-offset-4">Log
+                    In</a>
+                <a href="#"
+                    class="bg-brand-primary text-white border border-white/20 px-6 py-2.5 rounded-full hover:bg-brand-secondary transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5">Sign
+                    Up</a>
+            </div>
+
+            <!-- Mobile Hamburger -->
+            <button class="lg:hidden text-white" id="mobile-menu-btn">
+                <i data-lucide="menu" class="w-7 h-7"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="fixed inset-0 bg-white z-[55] transform translate-x-full transition-transform duration-300 lg:hidden pt-20 px-6 flex flex-col gap-6"
+        id="mobile-menu">
+        <a href="#"
+            class="text-xl font-semibold border-b pb-4 border-gray-100 hover:text-brand-primary transition-colors">Destinations</a>
+        <a href="#"
+            class="text-xl font-semibold border-b pb-4 border-gray-100 hover:text-brand-primary transition-colors">Deals</a>
+        <a href="#"
+            class="text-xl font-semibold border-b pb-4 border-gray-100 hover:text-brand-primary transition-colors">Packages</a>
+        <div class="flex flex-col gap-4 mt-4">
+            <a href="#"
+                class="text-center py-3 border border-brand-primary text-brand-primary rounded-full font-bold hover:bg-brand-surface transition-all">Log
+                In</a>
+            <a href="#"
+                class="text-center py-3 bg-brand-primary text-white rounded-full font-bold hover:bg-brand-secondary transition-all shadow-lg">Sign
+                Up</a>
+        </div>
+    </div>
+
+    <!-- ================= HERO SECTION ================= -->
+    <section class="relative h-[65vh] min-h-[550px] max-h-[850px] w-full overflow-hidden">
+        <!-- Slides Container -->
+        <div class="absolute inset-0 z-0">
+
+            <!-- Slide 1: Kuala Lumpur -->
+            <div class="hero-slide active absolute inset-0">
+                <!-- Background - Verified Petronas Towers -->
+                <div class="absolute inset-0 bg-cover bg-center"
+                    style="background-image: url('https://images.unsplash.com/photo-1596422846543-75c6fc197f07?q=80&w=2574&auto=format&fit=crop');">
+                </div>
+                <!-- Gradient -->
+                <div
+                    class="absolute inset-0 bg-gradient-to-b from-brand-primary/60 via-brand-primary/20 to-brand-secondary/70 mixed-blend-multiply">
+                </div>
+                <!-- Content -->
+                <div
+                    class="relative z-10 container mx-auto px-6 lg:px-12 h-full flex flex-col justify-center items-center pb-40 lg:pb-52 pt-24 text-center">
+                    <h1
+                        class="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 drop-shadow-lg leading-tight animate-fade-in-up">
+                        Kuala Lumpur <br>
+                        <span class="text-brand-surface italic text-3xl md:text-5xl">from $599</span>
+                    </h1>
+                    <div
+                        class="animate-fade-in-up delay-[200ms] flex items-center justify-center gap-6 text-white/95 bg-white/10 backdrop-blur-md px-8 py-4 rounded-full border border-white/20 shadow-lg">
+                        <div class="flex items-center gap-3">
+                            <i data-lucide="plane" class="w-6 h-6"></i>
+                            <span class="font-bold text-lg">Flight</span>
+                        </div>
+                        <span class="text-2xl font-light opacity-50">+</span>
+                        <div class="flex items-center gap-3">
+                            <i data-lucide="hotel" class="w-6 h-6"></i>
+                            <span class="font-bold text-lg">Hotel</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 2: Maldives -->
+            <div class="hero-slide absolute inset-0">
+                <!-- Background - Verified Maldives (From Original File) -->
+                <div class="absolute inset-0 bg-cover bg-center"
+                    style="background-image: url('https://images.unsplash.com/photo-1506953823976-52e1fdc0149a?q=80&w=2575&auto=format&fit=crop');">
+                </div>
+                <!-- Gradient -->
+                <div
+                    class="absolute inset-0 bg-gradient-to-b from-brand-primary/60 via-brand-primary/20 to-brand-secondary/70 mixed-blend-multiply">
+                </div>
+                <!-- Content -->
+                <div
+                    class="relative z-10 container mx-auto px-6 lg:px-12 h-full flex flex-col justify-center items-center pb-40 lg:pb-52 pt-24 text-center">
+                    <h1
+                        class="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 drop-shadow-lg leading-tight">
+                        Maldives <br>
+                        <span class="text-brand-surface italic text-3xl md:text-5xl">from $1,299</span>
+                    </h1>
+                    <div
+                        class="flex items-center justify-center gap-6 text-white/95 bg-white/10 backdrop-blur-md px-8 py-4 rounded-full border border-white/20 shadow-lg">
+                        <div class="flex items-center gap-3">
+                            <i data-lucide="plane" class="w-6 h-6"></i>
+                            <span class="font-bold text-lg">Flight</span>
+                        </div>
+                        <span class="text-2xl font-light opacity-50">+</span>
+                        <div class="flex items-center gap-3">
+                            <i data-lucide="hotel" class="w-6 h-6"></i>
+                            <span class="font-bold text-lg">Hotel</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 3: Dubai -->
+            <div class="hero-slide absolute inset-0">
+                <!-- Background - Verified Dubai Night Skyline (Unsplash) -->
+                <div class="absolute inset-0 bg-cover bg-center"
+                    style="background-image: url('images/dubai.jpg');">
+                </div>
+                <!-- Gradient -->
+                <div
+                    class="absolute inset-0 bg-gradient-to-b from-brand-primary/60 via-brand-primary/20 to-brand-secondary/70 mixed-blend-multiply">
+                </div>
+                <!-- Content -->
+                <div
+                    class="relative z-10 container mx-auto px-6 lg:px-12 h-full flex flex-col justify-center items-center pb-40 lg:pb-52 pt-24 text-center">
+                    <h1
+                        class="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 drop-shadow-lg leading-tight">
+                        Dubai <br>
+                        <span class="text-brand-surface italic text-3xl md:text-5xl">from $899</span>
+                    </h1>
+                    <div
+                        class="flex items-center justify-center gap-6 text-white/95 bg-white/10 backdrop-blur-md px-8 py-4 rounded-full border border-white/20 shadow-lg">
+                        <div class="flex items-center gap-3">
+                            <i data-lucide="plane" class="w-6 h-6"></i>
+                            <span class="font-bold text-lg">Flight</span>
+                        </div>
+                        <span class="text-2xl font-light opacity-50">+</span>
+                        <div class="flex items-center gap-3">
+                            <i data-lucide="hotel" class="w-6 h-6"></i>
+                            <span class="font-bold text-lg">Hotel</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carousel Navigation Dots -->
+            <div class="absolute bottom-28 md:bottom-32 left-0 right-0 z-20 flex justify-center gap-3">
+                <button
+                    class="carousel-dot active h-2.5 rounded-full transition-all duration-300 bg-white w-8 shadow-sm"
+                    data-index="0" aria-label="Slide 1"></button>
+                <button
+                    class="carousel-dot h-2.5 rounded-full transition-all duration-300 bg-white/40 hover:bg-white/80 w-2.5 shadow-sm hover:scale-110"
+                    data-index="1" aria-label="Slide 2"></button>
+                <button
+                    class="carousel-dot h-2.5 rounded-full transition-all duration-300 bg-white/40 hover:bg-white/80 w-2.5 shadow-sm hover:scale-110"
+                    data-index="2" aria-label="Slide 3"></button>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ================= STICKY SEARCH BAR ================= -->
+    <div class="sticky top-0 z-[50] -mt-12 lg:-mt-20 px-4 lg:px-6 pb-6 transition-all duration-300"
+        id="search-container-wrapper">
+        <div class="container mx-auto">
+            <!-- Enhanced Search Panel -->
+            <div class="bg-white/10 backdrop-blur-md rounded-2xl shadow-elegant-xl p-2 lg:p-4 max-w-4xl mx-auto transition-all duration-500 border border-white/30 flex flex-col"
+                id="search-panel">
+
+                <!-- Search Tabs -->
+                <div class="flex flex-nowrap overflow-x-auto no-scrollbar gap-1.5 sm:gap-2 mb-4 p-1.5 bg-white/15 backdrop-blur-sm rounded-xl lg:w-max lg:mx-auto transition-all duration-300"
+                    id="search-tabs-container">
+                    <button
+                        class="search-tab active flex items-center gap-2 px-4 sm:px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-200 whitespace-nowrap text-brand-primary bg-white shadow-elegant ring-1 ring-black/5"
+                        data-target="packages">
+                        <i data-lucide="briefcase" class="w-4 h-4"></i>
+                        <span class="hidden sm:inline">Packages</span>
+                    </button>
+                    <button
+                        class="search-tab flex items-center gap-2 px-4 sm:px-6 py-2.5 rounded-full text-sm font-semibold text-white/90 hover:text-white hover:bg-white/10 transition-all duration-200 whitespace-nowrap"
+                        data-target="hotels">
+                        <i data-lucide="bed" class="w-4 h-4"></i>
+                        <span class="hidden sm:inline">Hotels</span>
+                    </button>
+                    <button
+                        class="search-tab flex items-center gap-2 px-4 sm:px-6 py-2.5 rounded-full text-sm font-semibold text-white/90 hover:text-white hover:bg-white/10 transition-all duration-200 whitespace-nowrap"
+                        data-target="tours">
+                        <i data-lucide="map" class="w-4 h-4"></i>
+                        <span class="hidden sm:inline">Tours</span>
+                    </button>
+                    <button
+                        class="search-tab flex items-center gap-2 px-4 sm:px-6 py-2.5 rounded-full text-sm font-semibold text-white/90 hover:text-white hover:bg-white/10 transition-all duration-200 whitespace-nowrap"
+                        data-target="transfers">
+                        <i data-lucide="car" class="w-4 h-4"></i>
+                        <span class="hidden sm:inline">Transfers</span>
+                    </button>
+                    <button
+                        class="search-tab flex items-center gap-2 px-4 sm:px-6 py-2.5 rounded-full text-sm font-semibold text-white/90 hover:text-white hover:bg-white/10 transition-all duration-200 whitespace-nowrap"
+                        data-target="flights">
+                        <i data-lucide="plane" class="w-4 h-4"></i>
+                        <span class="hidden sm:inline">Flights</span>
+                    </button>
+                </div>
+
+                <!-- Search Forms Container -->
+                <div class="px-2 sm:px-3 pb-3 sm:pb-4 transition-all duration-300 origin-top relative"
+                    id="search-inputs-container">
+
+                    <!-- Packages Form -->
+                    <div class="search-form block" id="packages-form">
+                        <!-- Main Inputs Grid -->
+                        <div
+                            class="search-form-grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 xl:grid-cols-[1fr_1fr_1fr_1fr_1fr] mb-3">
+                            <!-- Origin -->
+                            <div class="search-input-box" data-field="origin">
+                                <i data-lucide="plane-takeoff" class="input-icon"></i>
+                                <div class="ml-3 w-full min-w-0 flex flex-col justify-center h-full">
+                                    <label class="search-label">From</label>
+                                    <input type="text" id="pkg-origin" data-type="airport_code"
+                                        placeholder="City or Airport" class="search-input auto-input">
+                                </div>
+                            </div>
+                            <!-- Destination -->
+                            <div class="search-input-box" data-field="destination">
+                                <i data-lucide="map-pin" class="input-icon"></i>
+                                <div class="ml-3 w-full min-w-0 flex flex-col justify-center h-full">
+                                    <label class="search-label">To</label>
+                                    <input type="text" id="pkg-dest" data-type="airport_code"
+                                        placeholder="City or Airport" class="search-input auto-input">
+                                </div>
+                            </div>
+                            <!-- Dates -->
+                            <div class="search-input-box" data-field="dates">
+                                <i data-lucide="calendar-days" class="input-icon"></i>
+                                <div class="ml-3 w-full min-w-0 flex flex-col justify-center h-full">
+                                    <label class="search-label">Dates</label>
+                                    <input type="text" id="pkg-dates" placeholder="Departure - Return"
+                                        class="search-input">
+                                </div>
+                            </div>
+                            <!-- Travellers -->
+                            <div class="search-input-box cursor-pointer" id="pkg-traveler-trigger"
+                                data-field="travelers">
+                                <i data-lucide="users" class="input-icon"></i>
+                                <div class="ml-3 w-full min-w-0 flex flex-col justify-center h-full">
+                                    <label class="search-label">Travellers</label>
+                                    <input type="text" id="pkg-traveler-summary" placeholder="2 Travellers, 1 Room"
+                                        readonly class="search-input cursor-pointer">
+                                </div>
+                                <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400 flex-shrink-0 ml-1"></i>
+                                <!-- Popover -->
+                                <div id="pkg-traveler-popover" class="traveler-popover hidden cursor-default">
+                                    <div id="pkg-rooms-container" class="max-h-[280px] overflow-y-auto mb-4 -mr-2 pr-2">
+                                    </div>
+                                    <button type="button" id="pkg-btn-add-room"
+                                        class="text-brand-primary font-semibold text-sm mb-4 hover:underline flex items-center gap-1.5 transition-colors">
+                                        <i data-lucide="plus" class="w-4 h-4"></i> Add Room
+                                    </button>
+                                    <button type="button" id="pkg-btn-done-travelers"
+                                        class="w-full bg-brand-primary text-white py-2.5 rounded-xl font-semibold text-sm hover:bg-brand-secondary shadow-elegant hover:shadow-elegant-lg transition-all active:scale-[0.98]">
+                                        Done
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- Cabin Class -->
+                            <div class="search-input-box cursor-pointer custom-select" data-field="cabin">
+                                <i data-lucide="armchair" class="input-icon"></i>
+                                <div class="ml-3 w-full min-w-0 flex flex-col justify-center h-full">
+                                    <label class="search-label">Cabin</label>
+                                    <div id="pkg-cabin-val" class="search-input selected-val">Economy</div>
+                                </div>
+                                <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400 flex-shrink-0 ml-1"></i>
+                                <!-- Options -->
+                                <div
+                                    class="custom-options hidden absolute top-[calc(100%+4px)] left-0 w-full bg-white rounded-xl shadow-elegant-lg border border-gray-100 z-50 overflow-hidden">
+                                    <div
+                                        class="option-item px-4 py-3 hover:bg-brand-surface text-sm font-semibold text-brand-text cursor-pointer transition-colors">
+                                        Economy</div>
+                                    <div
+                                        class="option-item px-4 py-3 hover:bg-brand-surface text-sm font-semibold text-brand-text cursor-pointer transition-colors">
+                                        Premium Economy</div>
+                                    <div
+                                        class="option-item px-4 py-3 hover:bg-brand-surface text-sm font-semibold text-brand-text cursor-pointer transition-colors">
+                                        Business</div>
+                                    <div
+                                        class="option-item px-4 py-3 hover:bg-brand-surface text-sm font-semibold text-brand-text cursor-pointer transition-colors">
+                                        First</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bottom Row: Checkbox + Hotel Dates on left, Button on right -->
+                        <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
+                            <!-- Left side: Checkbox and Hotel Dates -->
+                            <div class="flex flex-col gap-3">
+                                <!-- Checkbox -->
+                                <label class="inline-flex items-center gap-3 cursor-pointer group select-none">
+                                    <div class="relative flex items-center">
+                                        <input type="checkbox" id="pkg-partial-hotel"
+                                            class="custom-checkbox peer border-gray-300 hover:border-brand-primary">
+                                        <i data-lucide="check"
+                                            class="check-icon absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 text-white opacity-0 pointer-events-none transition-opacity duration-200"></i>
+                                    </div>
+                                    <span class="text-sm font-medium transition-colors pkg-checkbox-label">
+                                        I only need a hotel for part of my trip
+                                    </span>
+                                </label>
+
+                                <!-- Hotel Dates (shown when checkbox is checked) -->
+                                <div id="pkg-partial-dates-container" class="hidden transition-all duration-300">
+                                    <div class="search-input-box max-w-xs" data-field="hotel-dates">
+                                        <i data-lucide="calendar" class="input-icon"></i>
+                                        <div class="ml-3 w-full min-w-0 flex flex-col justify-center h-full">
+                                            <label class="search-label">Hotel Dates</label>
+                                            <input type="text" id="pkg-hotel-dates" placeholder="Check-in - Check-out"
+                                                class="search-input">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Right side: Search Button -->
+                            <button id="pkg-search-btn" class="search-btn-primary flex-shrink-0">
+                                <span>Search Packages</span>
+                                <i data-lucide="briefcase"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Hotels Form -->
+                    <div class="search-form hidden" id="hotels-form">
+                        <!-- Main Inputs Grid -->
+                        <div class="search-form-grid grid-cols-1 md:grid-cols-[1.5fr_1fr_1fr] mb-3">
+                            <!-- Destination -->
+                            <div class="search-input-box" data-field="destination">
+                                <i data-lucide="map-pin" class="input-icon"></i>
+                                <div class="ml-3 w-full min-w-0 flex flex-col justify-center h-full">
+                                    <label class="search-label">Destination / Hotel</label>
+                                    <input type="text" id="ht-dest" data-type="any" placeholder="Where are you going?"
+                                        class="search-input auto-input">
+                                </div>
+                            </div>
+                            <!-- Dates -->
+                            <div class="search-input-box" data-field="dates">
+                                <i data-lucide="calendar" class="input-icon"></i>
+                                <div class="ml-3 w-full min-w-0 flex flex-col justify-center h-full">
+                                    <label class="search-label">Dates</label>
+                                    <input type="text" id="ht-dates" placeholder="Check-in - Check-out"
+                                        class="search-input">
+                                </div>
+                            </div>
+                            <!-- Guests -->
+                            <div class="search-input-box cursor-pointer" id="traveler-trigger" data-field="guests">
+                                <i data-lucide="users" class="input-icon"></i>
+                                <div class="ml-3 w-full min-w-0 flex flex-col justify-center h-full">
+                                    <label class="search-label">Guests / Rooms</label>
+                                    <input type="text" id="traveler-summary" placeholder="2 Guests, 1 Room" readonly
+                                        class="search-input cursor-pointer">
+                                </div>
+                                <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400 flex-shrink-0 ml-1"></i>
+                                <!-- Popover -->
+                                <div id="traveler-popover" class="traveler-popover hidden cursor-default">
+                                    <div id="rooms-container" class="max-h-[280px] overflow-y-auto mb-4 -mr-2 pr-2">
+                                    </div>
+                                    <button type="button" id="btn-add-room"
+                                        class="text-brand-primary font-semibold text-sm mb-4 hover:underline flex items-center gap-1.5 transition-colors">
+                                        <i data-lucide="plus" class="w-4 h-4"></i> Add Room
+                                    </button>
+                                    <button type="button" id="btn-done-travelers"
+                                        class="w-full bg-brand-primary text-white py-2.5 rounded-xl font-semibold text-sm hover:bg-brand-secondary shadow-elegant hover:shadow-elegant-lg transition-all active:scale-[0.98]">
+                                        Done
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Bottom Row: Search Button -->
+                        <div class="flex justify-end">
+                            <button id="hotel-search-btn" class="search-btn-primary flex-shrink-0">
+                                <span>Search Hotels</span>
+                                <i data-lucide="search"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Flights Form -->
+                    <div class="search-form hidden" id="flights-form">
+                        <!-- Trip Type Radios -->
+                        <div class="flex flex-wrap gap-4 sm:gap-6 mb-3">
+                            <label class="flex items-center gap-2.5 cursor-pointer group select-none">
+                                <input type="radio" name="ft_type" value="round" checked
+                                    class="w-4 h-4 text-brand-primary border-gray-300 focus:ring-brand-primary/30 cursor-pointer">
+                                <span
+                                    class="text-gray-700 text-sm font-medium group-hover:text-brand-primary transition-colors">Round
+                                    Trip</span>
+                            </label>
+                            <label class="flex items-center gap-2.5 cursor-pointer group select-none">
+                                <input type="radio" name="ft_type" value="oneway"
+                                    class="w-4 h-4 text-brand-primary border-gray-300 focus:ring-brand-primary/30 cursor-pointer">
+                                <span
+                                    class="text-gray-700 text-sm font-medium group-hover:text-brand-primary transition-colors">One
+                                    Way</span>
+                            </label>
+                        </div>
+
+                        <!-- Main Inputs Grid -->
+                        <div class="search-form-grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 mb-3">
+                            <!-- From -->
+                            <div class="search-input-box" data-field="origin">
+                                <i data-lucide="plane-takeoff" class="input-icon"></i>
+                                <div class="ml-3 w-full min-w-0 flex flex-col justify-center h-full">
+                                    <label class="search-label">From</label>
+                                    <input type="text" id="fl-origin" data-type="airport_code"
+                                        placeholder="City or Airport" class="search-input auto-input">
+                                </div>
+                            </div>
+                            <!-- To -->
+                            <div class="search-input-box" data-field="destination">
+                                <i data-lucide="plane-landing" class="input-icon"></i>
+                                <div class="ml-3 w-full min-w-0 flex flex-col justify-center h-full">
+                                    <label class="search-label">To</label>
+                                    <input type="text" id="fl-dest" data-type="airport_code"
+                                        placeholder="City or Airport" class="search-input auto-input">
+                                </div>
+                            </div>
+                            <!-- Dates -->
+                            <div class="search-input-box" data-field="dates">
+                                <i data-lucide="calendar-days" class="input-icon"></i>
+                                <div class="ml-3 w-full min-w-0 flex flex-col justify-center h-full">
+                                    <label class="search-label">Dates</label>
+                                    <input type="text" id="fl-dates" placeholder="Depart - Return" class="search-input">
+                                </div>
+                            </div>
+                            <!-- Travellers & Cabin -->
+                            <div class="search-input-box cursor-pointer" id="fl-pax-trigger" data-field="travelers">
+                                <i data-lucide="users" class="input-icon"></i>
+                                <div class="ml-3 w-full min-w-0 flex flex-col justify-center h-full">
+                                    <label class="search-label">Travellers</label>
+                                    <input type="text" id="fl-pax-display" placeholder="1 Adult, Economy" readonly
+                                        class="search-input cursor-pointer">
+                                </div>
+                                <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400 flex-shrink-0 ml-1"></i>
+                                <!-- Popover -->
+                                <div id="fl-pax-menu" class="traveler-popover hidden cursor-default right-0 left-auto">
+                                    <!-- Adults -->
+                                    <div class="flex justify-between items-center py-3 border-b border-gray-100">
+                                        <div>
+                                            <div class="text-sm font-semibold text-brand-text">Adults</div>
+                                            <div class="text-xs text-gray-400">12+ years</div>
+                                        </div>
+                                        <div class="flex items-center gap-3">
+                                            <button class="counter-btn pax-btn" data-type="adt"
+                                                data-action="minus">−</button>
+                                            <span id="count-adt"
+                                                class="font-semibold w-5 text-center text-brand-text">1</span>
+                                            <button class="counter-btn pax-btn" data-type="adt"
+                                                data-action="plus">+</button>
+                                        </div>
+                                    </div>
+                                    <!-- Children -->
+                                    <div class="flex justify-between items-center py-3 border-b border-gray-100">
+                                        <div>
+                                            <div class="text-sm font-semibold text-brand-text">Children</div>
+                                            <div class="text-xs text-gray-400">2-11 years</div>
+                                        </div>
+                                        <div class="flex items-center gap-3">
+                                            <button class="counter-btn pax-btn" data-type="chd"
+                                                data-action="minus">−</button>
+                                            <span id="count-chd"
+                                                class="font-semibold w-5 text-center text-brand-text">0</span>
+                                            <button class="counter-btn pax-btn" data-type="chd"
+                                                data-action="plus">+</button>
+                                        </div>
+                                    </div>
+                                    <!-- Infants -->
+                                    <div class="flex justify-between items-center py-3 border-b border-gray-100">
+                                        <div>
+                                            <div class="text-sm font-semibold text-brand-text">Infants</div>
+                                            <div class="text-xs text-gray-400">Under 2 years</div>
+                                        </div>
+                                        <div class="flex items-center gap-3">
+                                            <button class="counter-btn pax-btn" data-type="inf"
+                                                data-action="minus">−</button>
+                                            <span id="count-inf"
+                                                class="font-semibold w-5 text-center text-brand-text">0</span>
+                                            <button class="counter-btn pax-btn" data-type="inf"
+                                                data-action="plus">+</button>
+                                        </div>
+                                    </div>
+                                    <!-- Cabin Class -->
+                                    <div class="py-3 border-b border-gray-100">
+                                        <label class="search-label mb-2">Cabin Class</label>
+                                        <div class="relative custom-select">
+                                            <div
+                                                class="flex items-center justify-between px-3 py-2 border border-gray-200 rounded-lg cursor-pointer hover:border-brand-primary transition-colors">
+                                                <span id="fl-cabin-val"
+                                                    class="selected-val text-sm font-semibold text-brand-text">Economy</span>
+                                                <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400"></i>
+                                            </div>
+                                            <div
+                                                class="custom-options hidden absolute top-full left-0 right-0 mt-1 bg-white shadow-elegant-lg border border-gray-100 rounded-lg z-50 overflow-hidden">
+                                                <div
+                                                    class="option-item px-3 py-2.5 hover:bg-brand-surface text-sm font-medium cursor-pointer transition-colors">
+                                                    Economy</div>
+                                                <div
+                                                    class="option-item px-3 py-2.5 hover:bg-brand-surface text-sm font-medium cursor-pointer transition-colors">
+                                                    Premium Economy</div>
+                                                <div
+                                                    class="option-item px-3 py-2.5 hover:bg-brand-surface text-sm font-medium cursor-pointer transition-colors">
+                                                    Business</div>
+                                                <div
+                                                    class="option-item px-3 py-2.5 hover:bg-brand-surface text-sm font-medium cursor-pointer transition-colors">
+                                                    First</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Child Ages (if needed) -->
+                                    <div id="chd-ages-container" class="hidden py-3 border-b border-gray-100">
+                                        <label class="search-label mb-2">Child Ages</label>
+                                        <div id="chd-ages-grid" class="grid grid-cols-2 gap-2"></div>
+                                    </div>
+                                    <!-- Done Button -->
+                                    <button id="btn-done-pax"
+                                        class="w-full mt-4 bg-brand-primary text-white py-2.5 rounded-xl font-semibold text-sm hover:bg-brand-secondary shadow-elegant hover:shadow-elegant-lg transition-all active:scale-[0.98]">
+                                        Done
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Bottom Row: Search Button -->
+                        <div class="flex justify-end">
+                            <button id="flight-search-btn" class="search-btn-primary flex-shrink-0">
+                                <span>Search Flights</span>
+                                <i data-lucide="plane"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Tours Form -->
+                    <div class="search-form hidden" id="tours-form">
+                        <!-- Main Inputs Grid -->
+                        <div class="search-form-grid grid-cols-1 md:grid-cols-[1.5fr_1fr_1fr] mb-3">
+                            <!-- Destination/Activity -->
+                            <div class="search-input-box" data-field="activity">
+                                <i data-lucide="compass" class="input-icon"></i>
+                                <div class="ml-3 w-full min-w-0 flex flex-col justify-center h-full">
+                                    <label class="search-label">Destination</label>
+                                    <input type="text" id="tour-dest" data-type="tour_region"
+                                        placeholder="Attractions, tours, activities..." class="search-input auto-input">
+                                </div>
+                            </div>
+                            <!-- Dates -->
+                            <div class="search-input-box" data-field="dates">
+                                <i data-lucide="calendar-days" class="input-icon"></i>
+                                <div class="ml-3 w-full min-w-0 flex flex-col justify-center h-full flex-grow">
+                                    <label class="search-label">Dates</label>
+                                    <input type="text" id="tour-dates" placeholder="Select dates" class="search-input">
+                                </div>
+                            </div>
+                            <!-- Travelers -->
+                            <div class="search-input-box cursor-pointer" id="tour-pax-trigger" data-field="travelers">
+                                <i data-lucide="users" class="input-icon"></i>
+                                <div class="ml-3 w-full min-w-0 flex flex-col justify-center h-full">
+                                    <label class="search-label">Travelers</label>
+                                    <input type="text" id="tour-pax-display" placeholder="1 Adult" readonly
+                                        class="search-input cursor-pointer">
+                                </div>
+                                <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400 flex-shrink-0 ml-1"></i>
+                                <!-- Popover -->
+                                <div id="tour-pax-menu"
+                                    class="traveler-popover hidden cursor-default right-0 left-auto">
+                                    <!-- Adults -->
+                                    <div class="flex justify-between items-center py-3 border-b border-gray-100">
+                                        <div>
+                                            <div class="text-sm font-semibold text-brand-text">Adults</div>
+                                            <div class="text-xs text-gray-400">12+ years</div>
+                                        </div>
+                                        <div class="flex items-center gap-3">
+                                            <button class="counter-btn pax-btn-tour" data-type="adt"
+                                                data-action="minus">−</button>
+                                            <span id="tour-count-adt"
+                                                class="font-semibold w-5 text-center text-brand-text">1</span>
+                                            <button class="counter-btn pax-btn-tour" data-type="adt"
+                                                data-action="plus">+</button>
+                                        </div>
+                                    </div>
+                                    <!-- Children -->
+                                    <div class="flex justify-between items-center py-3 border-b border-gray-100">
+                                        <div>
+                                            <div class="text-sm font-semibold text-brand-text">Children</div>
+                                            <div class="text-xs text-gray-400">2-11 years</div>
+                                        </div>
+                                        <div class="flex items-center gap-3">
+                                            <button class="counter-btn pax-btn-tour" data-type="chd"
+                                                data-action="minus">−</button>
+                                            <span id="tour-count-chd"
+                                                class="font-semibold w-5 text-center text-brand-text">0</span>
+                                            <button class="counter-btn pax-btn-tour" data-type="chd"
+                                                data-action="plus">+</button>
+                                        </div>
+                                    </div>
+                                    <!-- Infants -->
+                                    <div class="flex justify-between items-center py-3 border-b border-gray-100">
+                                        <div>
+                                            <div class="text-sm font-semibold text-brand-text">Infants</div>
+                                            <div class="text-xs text-gray-400">Under 2 years</div>
+                                        </div>
+                                        <div class="flex items-center gap-3">
+                                            <button class="counter-btn pax-btn-tour" data-type="inf"
+                                                data-action="minus">−</button>
+                                            <span id="tour-count-inf"
+                                                class="font-semibold w-5 text-center text-brand-text">0</span>
+                                            <button class="counter-btn pax-btn-tour" data-type="inf"
+                                                data-action="plus">+</button>
+                                        </div>
+                                    </div>
+                                    <!-- Child Ages -->
+                                    <div id="tour-chd-ages-container" class="hidden py-3 border-b border-gray-100">
+                                        <label class="search-label mb-2">Child Ages</label>
+                                        <div id="tour-chd-ages-grid" class="grid grid-cols-2 gap-2"></div>
+                                    </div>
+                                    <!-- Done Button -->
+                                    <button id="tour-btn-done-pax"
+                                        class="w-full mt-4 bg-brand-primary text-white py-2.5 rounded-xl font-semibold text-sm hover:bg-brand-secondary shadow-elegant hover:shadow-elegant-lg transition-all active:scale-[0.98]">
+                                        Done
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Bottom Row: Search Button -->
+                        <div class="flex justify-end">
+                            <button id="tour-search-btn" class="search-btn-primary flex-shrink-0">
+                                <span>Explore</span>
+                                <i data-lucide="arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Transfers Form -->
+                    <div class="search-form hidden" id="transfers-form">
+                        <!-- Main Inputs Grid -->
+                        <div
+                            class="search-form-grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1fr_auto_1fr_0.8fr_0.8fr] mb-3">
+                            <!-- Pickup -->
+                            <div class="search-input-box" data-field="pickup">
+                                <i data-lucide="plane" class="input-icon"></i>
+                                <div class="ml-3 w-full min-w-0 flex flex-col justify-center h-full">
+                                    <label class="search-label">Pickup</label>
+                                    <input type="text" id="tr-pickup" data-type="airport_code"
+                                        placeholder="Airport or location" class="search-input auto-input">
+                                </div>
+                            </div>
+
+                            <!-- Swap Button -->
+                            <div class="hidden sm:flex items-center justify-center h-14">
+                                <button type="button" id="btn-swap-transfer"
+                                    class="w-10 h-10 rounded-full bg-white border border-gray-200 hover:border-brand-primary hover:bg-brand-surface shadow-sm flex items-center justify-center transition-all duration-200 group active:scale-95">
+                                    <i data-lucide="arrow-left-right"
+                                        class="w-4 h-4 text-gray-400 group-hover:text-brand-primary transition-colors"></i>
+                                </button>
+                            </div>
+
+                            <!-- Dropoff -->
+                            <div class="search-input-box" data-field="dropoff">
+                                <i data-lucide="building-2" class="input-icon"></i>
+                                <div class="ml-3 w-full min-w-0 flex flex-col justify-center h-full">
+                                    <label class="search-label">Dropoff</label>
+                                    <input type="text" id="tr-dropoff" data-type="any"
+                                        placeholder="Hotel or destination" class="search-input auto-input">
+                                </div>
+                            </div>
+
+                            <!-- Date -->
+                            <div class="search-input-box" data-field="date">
+                                <i data-lucide="calendar" class="input-icon"></i>
+                                <div class="ml-3 w-full min-w-0 flex flex-col justify-center h-full">
+                                    <label class="search-label">Pickup Date</label>
+                                    <input type="text" id="tr-date" placeholder="Select date" class="search-input">
+                                </div>
+                            </div>
+
+                            <!-- Time -->
+                            <div class="search-input-box cursor-pointer custom-select" data-field="time">
+                                <i data-lucide="clock" class="input-icon"></i>
+                                <div class="ml-3 w-full min-w-0 flex flex-col justify-center h-full">
+                                    <label class="search-label">Time</label>
+                                    <div id="tr-time-val" class="search-input selected-val">12:00</div>
+                                </div>
+                                <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400 flex-shrink-0 ml-1"></i>
+                                <div id="tr-time-opts"
+                                    class="custom-options hidden absolute top-[calc(100%+4px)] left-0 w-full bg-white rounded-xl shadow-elegant-lg border border-gray-100 z-50 overflow-y-auto max-h-48">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Bottom Row: Search Button -->
+                        <div class="flex justify-end">
+                            <button id="btn-search-transfer" class="search-btn-primary flex-shrink-0">
+                                <span>Search Transfers</span>
+                                <i data-lucide="arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ================= TOP DESTINATIONS ================= -->
+    <section class="py-16 lg:py-24 container mx-auto px-6 lg:px-12">
+        <div class="flex flex-col md:flex-row justify-between items-end mb-10 gap-4">
+            <div>
+                <h2 class="font-display text-3xl lg:text-4xl font-bold text-brand-primary mb-3 accent-line">Top
+                    Destinations</h2>
+                <p class="text-brand-muted text-lg font-medium">Curated locations for your next escape.</p>
+            </div>
+            <a href="#"
+                class="hidden md:flex items-center gap-2 text-brand-primary font-bold hover:text-brand-secondary transition-all">
+                See all <i data-lucide="arrow-right" class="w-5 h-5"></i>
+            </a>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <!-- Card 1 -->
+            <a href="#"
+                class="group relative aspect-[3/4] rounded-2xl overflow-hidden shadow-elegant hover:shadow-elegant-lg transition-all duration-500">
+                <img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?q=80&w=800"
+                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                <div
+                    class="absolute bottom-0 left-0 p-6 text-white translate-y-2 group-hover:translate-y-0 transition-transform">
+                    <h3 class="font-bold text-xl mb-1">Bali</h3>
+                    <p class="text-sm opacity-90 font-medium">Indonesia</p>
+                </div>
+            </a>
+            <!-- Card 2 -->
+            <a href="#"
+                class="group relative aspect-[3/4] rounded-2xl overflow-hidden shadow-elegant hover:shadow-elegant-lg transition-all duration-500">
+                <img src="https://images.unsplash.com/photo-1602940659805-770d1b3b9911?q=80&w=800"
+                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                <div
+                    class="absolute bottom-0 left-0 p-6 text-white translate-y-2 group-hover:translate-y-0 transition-transform">
+                    <h3 class="font-bold text-xl mb-1">Santorini</h3>
+                    <p class="text-sm opacity-90 font-medium">Greece</p>
+                </div>
+            </a>
+            <!-- Card 3 -->
+            <a href="#"
+                class="group relative aspect-[3/4] rounded-2xl overflow-hidden shadow-elegant hover:shadow-elegant-lg transition-all duration-500">
+                <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?q=80&w=800"
+                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                <div
+                    class="absolute bottom-0 left-0 p-6 text-white translate-y-2 group-hover:translate-y-0 transition-transform">
+                    <h3 class="font-bold text-xl mb-1">Tokyo</h3>
+                    <p class="text-sm opacity-90 font-medium">Japan</p>
+                </div>
+            </a>
+            <!-- Card 4 -->
+            <a href="#"
+                class="group relative aspect-[3/4] rounded-2xl overflow-hidden shadow-elegant hover:shadow-elegant-lg transition-all duration-500">
+                <img src="https://images.unsplash.com/photo-1531366936337-7c912a4589a7?q=80&w=800"
+                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                <div
+                    class="absolute bottom-0 left-0 p-6 text-white translate-y-2 group-hover:translate-y-0 transition-transform">
+                    <h3 class="font-bold text-xl mb-1">Tromsø</h3>
+                    <p class="text-sm opacity-90 font-medium">Norway</p>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- ================= SPECIAL OFFERS ================= -->
+    <section class="py-16 bg-white border-y border-gray-100">
+        <div class="container mx-auto px-6 lg:px-12">
+            <h2 class="font-display text-3xl font-bold text-brand-primary mb-10 text-center">Exclusive Deals</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Deal 1 -->
+                <div
+                    class="rounded-2xl border border-gray-100 overflow-hidden hover:shadow-elegant-lg transition-all duration-300 group bg-white">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1582719508461-905c673771fd?q=80&w=800"
+                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                        <div
+                            class="absolute top-4 left-4 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">
+                            30% Off</div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-bold text-lg text-brand-text">The Royal Sands</h3>
+                            <div class="flex items-center gap-1 bg-brand-surface px-2 py-1 rounded">
+                                <i data-lucide="star" class="w-3 h-3 text-brand-primary fill-current"></i>
+                                <span class="text-xs font-bold text-brand-primary">4.9</span>
+                            </div>
+                        </div>
+                        <p class="text-sm text-brand-muted mb-4 flex items-center gap-1"><i data-lucide="map-pin"
+                                class="w-3 h-3"></i> Cancun, Mexico</p>
+                        <div class="flex justify-between items-center pt-4 border-t border-gray-100">
+                            <div>
+                                <span class="text-xs text-gray-400 line-through">$450</span>
+                                <div class="text-xl font-bold text-brand-primary">$315 <span
+                                        class="text-xs text-brand-muted font-normal">/ night</span></div>
+                            </div>
+                            <button
+                                class="h-10 px-6 rounded-xl border border-brand-primary text-brand-primary font-bold hover:bg-brand-primary hover:text-white transition-all duration-300 text-sm shadow-sm hover:shadow-md">View
+                                Deal</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Deal 2 -->
+                <div
+                    class="rounded-2xl border border-gray-100 overflow-hidden hover:shadow-elegant-lg transition-all duration-300 group bg-white">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?q=80&w=800"
+                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                        <div
+                            class="absolute top-4 left-4 bg-brand-primary text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">
+                            Trending</div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-bold text-lg text-brand-text">Blue Lagoon Resort</h3>
+                            <div class="flex items-center gap-1 bg-brand-surface px-2 py-1 rounded">
+                                <i data-lucide="star" class="w-3 h-3 text-brand-primary fill-current"></i>
+                                <span class="text-xs font-bold text-brand-primary">4.8</span>
+                            </div>
+                        </div>
+                        <p class="text-sm text-brand-muted mb-4 flex items-center gap-1"><i data-lucide="map-pin"
+                                class="w-3 h-3"></i> Iceland</p>
+                        <div class="flex justify-between items-center pt-4 border-t border-gray-100">
+                            <div>
+                                <span class="text-xs text-gray-400">Values from</span>
+                                <div class="text-xl font-bold text-brand-primary">$299 <span
+                                        class="text-xs text-brand-muted font-normal">/ person</span></div>
+                            </div>
+                            <button
+                                class="h-10 px-6 rounded-xl border border-brand-primary text-brand-primary font-bold hover:bg-brand-primary hover:text-white transition-all duration-300 text-sm shadow-sm hover:shadow-md">View
+                                Deal</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Deal 3 -->
+                <div
+                    class="rounded-2xl border border-gray-100 overflow-hidden hover:shadow-elegant-lg transition-all duration-300 group bg-white">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=800"
+                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                        <div
+                            class="absolute top-4 left-4 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">
+                            25% Off</div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-bold text-lg text-brand-text">Bordeaux Villas</h3>
+                            <div class="flex items-center gap-1 bg-brand-surface px-2 py-1 rounded">
+                                <i data-lucide="star" class="w-3 h-3 text-brand-primary fill-current"></i>
+                                <span class="text-xs font-bold text-brand-primary">4.9</span>
+                            </div>
+                        </div>
+                        <p class="text-sm text-brand-muted mb-4 flex items-center gap-1"><i data-lucide="map-pin"
+                                class="w-3 h-3"></i> France</p>
+                        <div class="flex justify-between items-center pt-4 border-t border-gray-100">
+                            <div>
+                                <span class="text-xs text-gray-400 line-through">$600</span>
+                                <div class="text-xl font-bold text-brand-primary">$450 <span
+                                        class="text-xs text-brand-muted font-normal">/ night</span></div>
+                            </div>
+                            <button
+                                class="h-10 px-6 rounded-xl border border-brand-primary text-brand-primary font-bold hover:bg-brand-primary hover:text-white transition-all duration-300 text-sm shadow-sm hover:shadow-md">View
+                                Deal</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= FEATURES / WHY US ================= -->
+    <section class="py-16 bg-brand-surface">
+        <div class="container mx-auto px-6 lg:px-12 text-center">
+            <h2 class="font-display text-3xl font-bold text-brand-primary mb-12">Why Choose EasyGDS?</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
+                <div class="flex flex-col items-center group">
+                    <div
+                        class="w-16 h-16 bg-white rounded-2xl shadow-sm flex items-center justify-center text-brand-primary mb-4 group-hover:scale-110 transition-transform duration-300">
+                        <i data-lucide="shield-check" class="w-8 h-8"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">Secure Booking</h3>
+                    <p class="text-sm text-brand-muted leading-relaxed">Advanced encryption keeps your personal data
+                        safe.</p>
+                </div>
+                <div class="flex flex-col items-center group">
+                    <div
+                        class="w-16 h-16 bg-white rounded-2xl shadow-sm flex items-center justify-center text-brand-primary mb-4 group-hover:scale-110 transition-transform duration-300">
+                        <i data-lucide="tag" class="w-8 h-8"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">Best Prices</h3>
+                    <p class="text-sm text-brand-muted leading-relaxed">We match any competitor's price for
+                        identical
+                        bookings.</p>
+                </div>
+                <div class="flex flex-col items-center group">
+                    <div
+                        class="w-16 h-16 bg-white rounded-2xl shadow-sm flex items-center justify-center text-brand-primary mb-4 group-hover:scale-110 transition-transform duration-300">
+                        <i data-lucide="headset" class="w-8 h-8"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">24/7 Support</h3>
+                    <p class="text-sm text-brand-muted leading-relaxed">Our support team is always available to help
+                        you.</p>
+                </div>
+                <div class="flex flex-col items-center group">
+                    <div
+                        class="w-16 h-16 bg-white rounded-2xl shadow-sm flex items-center justify-center text-brand-primary mb-4 group-hover:scale-110 transition-transform duration-300">
+                        <i data-lucide="gem" class="w-8 h-8"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">Premium Quality</h3>
+                    <p class="text-sm text-brand-muted leading-relaxed">Handpicked experiences for the discerning
+                        traveler.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= NEWSLETTER ================= -->
+    <section class="py-20 relative overflow-hidden bg-white border-y border-brand-gold/20">
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.03]">
+        </div>
+        <div class="container mx-auto px-6 lg:px-12 relative z-10 text-center">
+            <h2 class="font-display text-3xl md:text-4xl font-bold text-brand-primary mb-4">Stay Inspired</h2>
+            <p class="text-brand-muted mb-8 max-w-xl mx-auto">Join 50k+ travelers. Get exclusive travel offers,
+                hidden
+                gem alerts, and tips delivered to your inbox.</p>
+
+            <form class="max-w-2xl mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <!-- Email Input -->
+                    <div class="relative group">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <i data-lucide="mail"
+                                class="h-5 w-5 text-gray-400 group-focus-within:text-brand-primary transition-colors"></i>
+                        </div>
+                        <input type="email" placeholder="Your email address"
+                            class="w-full pl-11 pr-4 py-4 rounded-xl bg-brand-surface border-2 border-transparent focus:border-brand-primary/20 outline-none text-brand-text font-medium placeholder:text-gray-400 transition-all shadow-sm group-hover:bg-gray-50">
+                    </div>
+
+                    <!-- City Dropdown -->
+                    <div class="relative group">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <i data-lucide="plane-takeoff"
+                                class="h-5 w-5 text-gray-400 group-focus-within:text-brand-primary transition-colors"></i>
+                        </div>
+                        <select
+                            class="w-full pl-11 pr-10 py-4 rounded-xl bg-brand-surface border-2 border-transparent focus:border-brand-primary/20 outline-none text-brand-text font-medium appearance-none cursor-pointer transition-all shadow-sm group-hover:bg-gray-50">
+                            <option value="" disabled selected>Preferred City (Optional)</option>
+                            <option value="LHR">London (LHR)</option>
+                            <option value="JFK">New York (JFK)</option>
+                            <option value="DXB">Dubai (DXB)</option>
+                            <option value="CDG">Paris (CDG)</option>
+                            <option value="SIN">Singapore (SIN)</option>
+                            <option value="HKG">Hong Kong (HKG)</option>
+                            <option value="SYD">Sydney (SYD)</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+                            <i data-lucide="chevron-down" class="h-4 w-4 text-gray-400"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="button"
+                    class="w-full md:w-auto md:min-w-[200px] bg-brand-primary text-white font-bold px-8 py-4 rounded-xl hover:bg-brand-secondary transition-all shadow-elegant hover:shadow-elegant-lg transform hover:-translate-y-0.5">
+                    Subscribe
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <footer class="bg-brand-secondary text-white pt-16 pb-8">
+        <div class="container mx-auto px-6 lg:px-12 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 mb-12">
+            <div class="col-span-2">
+                <img src="https://waddat.com/easygds_logo_transparent.png" alt="EasyGDS"
+                    class="h-8 brightness-0 invert mb-6">
+                <p class="text-blue-200 text-sm leading-relaxed max-w-xs mb-6">
+                    Connecting you to the world's most incredible destinations with a seamless, premium booking
+                    experience.
+                </p>
+                <div class="flex gap-4">
+                    <a href="#"
+                        class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-brand-accent transition-colors">
+                        <i data-lucide="facebook" class="w-4 h-4"></i>
+                    </a>
+                    <a href="#"
+                        class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-brand-accent transition-colors">
+                        <i data-lucide="instagram" class="w-4 h-4"></i>
+                    </a>
+                    <a href="#"
+                        class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-brand-accent transition-colors">
+                        <i data-lucide="twitter" class="w-4 h-4"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div>
+                <h4 class="font-bold text-lg mb-6">Company</h4>
+                <ul class="space-y-3 text-sm text-blue-200">
+                    <li><a href="#" class="hover:text-white transition-colors">About Us</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Careers</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Blog</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Press</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="font-bold text-lg mb-6">Support</h4>
+                <ul class="space-y-3 text-sm text-blue-200">
+                    <li><a href="#" class="hover:text-white transition-colors">Help Center</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Contact Us</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Privacy Policy</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div
+            class="container mx-auto px-6 lg:px-12 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center text-sm text-blue-300">
+            <p>&copy; 2025 EasyGDS. All rights reserved.</p>
+            <div class="flex gap-6 mt-4 md:mt-0">
+                <span>Privacy</span>
+                <span>Terms</span>
+                <span>Sitemap</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ================= JAVASCRIPT ================= -->
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add 'loaded' class for animations
+            setTimeout(() => {
+                document.body.classList.add('loaded');
+            }, 100);
+
+            // --- Hero Carousel ---
+            const slides = document.querySelectorAll('.hero-slide');
+            const dots = document.querySelectorAll('.carousel-dot');
+            let currentSlide = 0;
+            let slideInterval;
+
+            const updateCarousel = (index) => {
+                // Update slides
+                slides.forEach(s => s.classList.remove('active'));
+                slides[index].classList.add('active');
+
+                // Update dots
+                dots.forEach(d => {
+                    d.classList.remove('active', 'bg-white', 'w-8');
+                    d.classList.add('bg-white/40', 'w-2.5');
+                });
+
+                const activeDot = dots[index];
+                activeDot.classList.remove('bg-white/40', 'w-2.5');
+                activeDot.classList.add('active', 'bg-white', 'w-8');
+
+                currentSlide = index;
+            };
+
+            const startSlideShow = () => {
+                if (slideInterval) clearInterval(slideInterval);
+                slideInterval = setInterval(() => {
+                    const next = (currentSlide + 1) % slides.length;
+                    updateCarousel(next);
+                }, 6000);
+            };
+
+            // Initialize
+            startSlideShow();
+
+            // Click Handlers
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    updateCarousel(index);
+                    startSlideShow(); // Reset timer
+                });
+            });
+
+            // --- Mobile Menu Toggle ---
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            let isMenuOpen = false;
+
+            mobileBtn.addEventListener('click', () => {
+                isMenuOpen = !isMenuOpen;
+                if (isMenuOpen) {
+                    mobileMenu.classList.remove('translate-x-full');
+                    mobileBtn.innerHTML = '<i data-lucide="x" class="w-7 h-7"></i>';
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    mobileMenu.classList.add('translate-x-full');
+                    mobileBtn.innerHTML = '<i data-lucide="menu" class="w-7 h-7"></i>';
+                    document.body.style.overflow = '';
+                }
+                lucide.createIcons();
+            });
+
+            // --- Sticky Search Logic ---
+            const header = document.getElementById('main-header');
+            const searchContainerWrapper = document.getElementById('search-container-wrapper');
+            const searchPanel = document.getElementById('search-panel');
+            const searchInputsContainer = document.getElementById('search-inputs-container');
+            const searchTabsContainer = document.getElementById('search-tabs-container');
+            const headerHeight = header.offsetHeight;
+            let isSticky = false;
+            let isExpanded = false;
+
+            const applySticky = () => {
+                searchPanel.classList.add('is-sticky', 'is-collapsed');
+                searchPanel.classList.remove('max-w-4xl', 'rounded-2xl', 'shadow-elegant-xl', 'bg-white/10', 'backdrop-blur-md', 'border-white/30', 'p-2', 'lg:p-4');
+                searchPanel.classList.add('max-w-full', 'rounded-b-2xl', 'border-t', 'border-gray-100', 'py-3', 'px-4', 'lg:px-6');
+                searchContainerWrapper.classList.remove('px-4', 'lg:px-6', 'pb-6');
+
+                updateTabStyles(true);
+            };
+
+            const removeSticky = () => {
+                searchPanel.classList.remove('is-sticky', 'is-collapsed');
+                searchPanel.classList.add('max-w-4xl', 'rounded-2xl', 'shadow-elegant-xl', 'bg-white/10', 'backdrop-blur-md', 'border-white/30', 'p-2', 'lg:p-4');
+                searchPanel.classList.remove('max-w-full', 'rounded-b-2xl', 'border-t', 'border-gray-100', 'py-3', 'px-4', 'lg:px-6');
+                searchContainerWrapper.classList.add('px-4', 'lg:px-6', 'pb-6');
+
+                isExpanded = false;
+                updateTabStyles(false);
+            };
+
+            const updateTabStyles = (sticky) => {
+                const tabs = searchTabsContainer.querySelectorAll('.search-tab');
+                tabs.forEach(tab => {
+                    if (!tab.classList.contains('active')) {
+                        if (sticky) {
+                            tab.classList.remove('text-white/90', 'hover:text-white', 'hover:bg-white/10');
+                            tab.classList.add('text-gray-500', 'hover:text-brand-primary', 'hover:bg-gray-50');
+                        } else {
+                            tab.classList.add('text-white/90', 'hover:text-white', 'hover:bg-white/10');
+                            tab.classList.remove('text-gray-500', 'hover:text-brand-primary', 'hover:bg-gray-50');
+                        }
+                    }
+                });
+            };
+
+            window.addEventListener('scroll', () => {
+                const triggerPoint = searchContainerWrapper.offsetTop - headerHeight;
+
+                if (window.scrollY > triggerPoint) {
+                    if (!isSticky) {
+                        isSticky = true;
+                        applySticky();
+                    }
+                } else {
+                    if (isSticky) {
+                        isSticky = false;
+                        removeSticky();
+                    }
+                }
+            });
+
+            // Expand on tab click when sticky
+            searchTabsContainer.addEventListener('click', (e) => {
+                const clickedTab = e.target.closest('.search-tab');
+                if (clickedTab && isSticky) {
+                    isExpanded = true;
+                    searchPanel.classList.remove('is-collapsed');
+                    searchPanel.classList.remove('py-3');
+                    searchPanel.classList.add('py-4');
+                }
+            });
+
+            // Collapse on outside click when sticky
+            document.addEventListener('click', (e) => {
+                if (isSticky && isExpanded) {
+                    const isClickInside = searchPanel.contains(e.target);
+                    if (!isClickInside) {
+                        isExpanded = false;
+                        searchPanel.classList.add('is-collapsed');
+                        searchPanel.classList.add('py-3');
+                        searchPanel.classList.remove('py-4');
+                    }
+                }
+            });
+
+
+
+            // --- Search Tab Switching ---
+            const tabs = document.querySelectorAll('.search-tab');
+            const forms = document.querySelectorAll('.search-form');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const target = tab.dataset.target;
+
+                    tabs.forEach(t => {
+                        // Reset all tabs
+                        t.classList.remove('active', 'bg-white', 'shadow-elegant', 'text-brand-primary', 'ring-1', 'ring-black/5');
+
+                        if (isSticky) {
+                            t.classList.add('text-gray-500', 'hover:text-brand-primary', 'hover:bg-gray-50');
+                            t.classList.remove('text-white/90', 'hover:text-white', 'hover:bg-white/10');
+                        } else {
+                            t.classList.add('text-white/90', 'hover:text-white', 'hover:bg-white/10');
+                            t.classList.remove('text-gray-500', 'hover:text-brand-primary', 'hover:bg-gray-50');
+                        }
+                    });
+
+                    // Activate clicked tab
+                    tab.classList.add('active', 'bg-white', 'shadow-elegant', 'text-brand-primary', 'ring-1', 'ring-black/5');
+                    tab.classList.remove('text-white/90', 'text-gray-500', 'hover:bg-white/10', 'hover:bg-gray-50', 'hover:text-white', 'hover:text-brand-primary');
+
+                    forms.forEach(form => form.classList.add('hidden'));
+                    const targetForm = document.getElementById(`${target}-form`);
+                    if (targetForm) targetForm.classList.remove('hidden');
+                });
+            });
+
+            // Popovers are handled by homepage_logic_integrated.js
+        });
+    </script>
+    <script src="homepage_logic_integrated.js"></script>
+</body>
+
+</html>
