@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EasyGDS | Curated Travel Experiences</title>
+    <title>Flyadeal Holidays | Curated Travel Experiences</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Raleway -->
@@ -28,9 +28,9 @@
                 extend: {
                     colors: {
                         brand: {
-                            primary: '#203C94',     // EasyGDS Blue
-                            secondary: '#1A3994',   // EasyGDS Dark Blue
-                            accent: '#4CAF50',      // EasyGDS Green/Success
+                            primary: '#522D6D',     // Flyadeal Purple (Official)
+                            secondary: '#3A1D4D',   // Darker Purple
+                            accent: '#CBDB04',      // Flyadeal Lime (Official)
                             text: '#1A1A1A',        // Main Text
                             muted: '#555555',       // Muted Text
                             surface: '#F5F8FF',     // Light Background
@@ -57,6 +57,7 @@
         }
     </script>
 
+
     <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -68,22 +69,22 @@
         <div class="container mx-auto px-6 lg:px-12 flex justify-between items-center h-full">
             <!-- Logo -->
             <a href="#" class="flex items-center gap-3 group">
-                <img src="easygds_logo_transparent.png" alt="EasyGDS Logo"
-                    class="h-10 w-auto brightness-0 invert transition-all duration-300 group-hover:scale-105 drop-shadow-md">
+                <img src="img/flyadeal_holidays_logo_transparent.png" onerror="this.src='img/flyadeal_logo.png'"
+                    alt="Flyadeal Holidays"
+                    class="h-16 w-auto transition-all duration-300 group-hover:scale-105 drop-shadow-md brightness-0 invert">
             </a>
 
             <!-- Desktop Navigation -->
             <div class="hidden lg:flex items-center gap-8 text-sm font-semibold text-white/95">
                 <div
                     class="flex items-center gap-1.5 cursor-pointer hover:text-white transition-all duration-300 hover:gap-2">
-                    <span>USD</span>
+                    <span>SAR</span>
                     <i data-lucide="chevron-down" class="w-4 h-4"></i>
                 </div>
                 <div
-                    class="flex items-center gap-2 cursor-pointer hover:text-white transition-all duration-300 hover:gap-3">
-                    <img src="https://flagcdn.com/w20/us.png" alt="US flag" class="w-5 h-auto rounded shadow-sm">
-                    <span>EN</span>
-                    <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                    class="flex items-center gap-2 cursor-pointer hover:text-white transition-all duration-300 hover:gap-3 bg-white/10 px-3 py-1.5 rounded-full backdrop-blur-sm border border-white/20">
+                    <i data-lucide="globe" class="w-4 h-4"></i>
+                    <span>العربية</span>
                 </div>
                 <a href="#" class="hover:text-white transition-all duration-300 hover:underline underline-offset-4">Log
                     In</a>
@@ -100,28 +101,25 @@
     </header>
 
     <!-- Mobile Menu Overlay -->
-    <div class="fixed inset-0 bg-white z-[55] transform translate-x-full transition-transform duration-300 lg:hidden pt-20 px-6 flex flex-col gap-6"
+    <div class="fixed inset-0 bg-white z-[55] transform translate-x-full transition-transform duration-300 lg:hidden pt-24 px-6 flex flex-col gap-6"
         id="mobile-menu">
-        <!-- Currency Selector -->
-        <div
-            class="flex items-center justify-between text-xl font-semibold border-b pb-4 border-gray-100 hover:text-brand-primary transition-colors cursor-pointer">
-            <span>Currency</span>
-            <div class="flex items-center gap-2">
-                <span>USD</span>
+        <!-- Replicating Desktop Items -->
+        <div class="flex items-center justify-between border-b pb-4 border-gray-100">
+            <span class="text-xl font-semibold text-brand-text">Currency</span>
+            <div class="flex items-center gap-1.5 text-brand-primary font-bold">
+                <span>SAR</span>
                 <i data-lucide="chevron-down" class="w-5 h-5"></i>
             </div>
         </div>
-        <!-- Language Selector -->
-        <div
-            class="flex items-center justify-between text-xl font-semibold border-b pb-4 border-gray-100 hover:text-brand-primary transition-colors cursor-pointer">
-            <span>Language</span>
-            <div class="flex items-center gap-2">
-                <img src="https://flagcdn.com/w20/us.png" alt="US flag" class="w-6 h-auto rounded shadow-sm">
-                <span>EN</span>
-                <i data-lucide="chevron-down" class="w-5 h-5"></i>
+        <div class="flex items-center justify-between border-b pb-4 border-gray-100">
+            <span class="text-xl font-semibold text-brand-text">Language</span>
+            <div class="flex items-center gap-2 text-brand-primary font-bold">
+                <i data-lucide="globe" class="w-5 h-5"></i>
+                <span>العربية</span>
             </div>
         </div>
-        <div class="flex flex-col gap-4 mt-4">
+
+        <div class="flex flex-col gap-4 mt-auto mb-10">
             <a href="#"
                 class="text-center py-3 border border-brand-primary text-brand-primary rounded-full font-bold hover:bg-brand-surface transition-all">Log
                 In</a>
@@ -136,11 +134,10 @@
         <!-- Slides Container -->
         <div class="absolute inset-0 z-0">
 
-            <!-- Slide 1: Kuala Lumpur -->
+            <!-- Slide 1: Jeddah -->
             <div class="hero-slide active absolute inset-0">
-                <!-- Background - Verified Petronas Towers -->
-                <div class="absolute inset-0 bg-cover bg-center"
-                    style="background-image: url('https://images.unsplash.com/photo-1596422846543-75c6fc197f07?q=80&w=2574&auto=format&fit=crop');">
+                <!-- Background - Verified Jeddah Corniche/Beach -->
+                <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('img/jeddah.jpg');">
                 </div>
                 <!-- Gradient -->
                 <div
@@ -151,8 +148,8 @@
                     class="relative z-10 container mx-auto px-6 lg:px-12 h-full flex flex-col justify-center items-center pb-40 lg:pb-52 pt-24 text-center">
                     <h1
                         class="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 drop-shadow-lg leading-tight animate-fade-in-up">
-                        Kuala Lumpur <br>
-                        <span class="text-brand-surface italic text-3xl md:text-5xl">from $599</span>
+                        Jeddah <br>
+                        <span class="text-brand-surface italic text-3xl md:text-5xl">from SAR 499</span>
                     </h1>
                     <div
                         class="animate-fade-in-up delay-[200ms] flex items-center justify-center gap-6 text-white/95 bg-white/10 backdrop-blur-md px-8 py-4 rounded-full border border-white/20 shadow-lg">
@@ -169,11 +166,11 @@
                 </div>
             </div>
 
-            <!-- Slide 2: Maldives -->
+            <!-- Slide 2: Sharm El Sheikh -->
             <div class="hero-slide absolute inset-0">
-                <!-- Background - Verified Maldives (From Original File) -->
+                <!-- Background - Sharm El Sheikh Beach -->
                 <div class="absolute inset-0 bg-cover bg-center"
-                    style="background-image: url('https://images.unsplash.com/photo-1506953823976-52e1fdc0149a?q=80&w=2575&auto=format&fit=crop');">
+                    style="background-image: url('img/sharm_el_sheikh.jpg');">
                 </div>
                 <!-- Gradient -->
                 <div
@@ -184,8 +181,8 @@
                     class="relative z-10 container mx-auto px-6 lg:px-12 h-full flex flex-col justify-center items-center pb-40 lg:pb-52 pt-24 text-center">
                     <h1
                         class="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 drop-shadow-lg leading-tight">
-                        Maldives <br>
-                        <span class="text-brand-surface italic text-3xl md:text-5xl">from $1,299</span>
+                        Sharm El Sheikh <br>
+                        <span class="text-brand-surface italic text-3xl md:text-5xl">from SAR 1,299</span>
                     </h1>
                     <div
                         class="flex items-center justify-center gap-6 text-white/95 bg-white/10 backdrop-blur-md px-8 py-4 rounded-full border border-white/20 shadow-lg">
@@ -202,10 +199,10 @@
                 </div>
             </div>
 
-            <!-- Slide 3: Dubai -->
+            <!-- Slide 3: Abha -->
             <div class="hero-slide absolute inset-0">
-                <!-- Background - Verified Dubai Night Skyline (Unsplash) -->
-                <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('images/dubai.jpg');">
+                <!-- Background - Abha Mountains -->
+                <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('img/abha.jpg');">
                 </div>
                 <!-- Gradient -->
                 <div
@@ -216,8 +213,8 @@
                     class="relative z-10 container mx-auto px-6 lg:px-12 h-full flex flex-col justify-center items-center pb-40 lg:pb-52 pt-24 text-center">
                     <h1
                         class="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 drop-shadow-lg leading-tight">
-                        Dubai <br>
-                        <span class="text-brand-surface italic text-3xl md:text-5xl">from $899</span>
+                        Abha <br>
+                        <span class="text-brand-surface italic text-3xl md:text-5xl">from SAR 399</span>
                     </h1>
                     <div
                         class="flex items-center justify-center gap-6 text-white/95 bg-white/10 backdrop-blur-md px-8 py-4 rounded-full border border-white/20 shadow-lg">
@@ -285,12 +282,7 @@
                         <i data-lucide="car" class="w-4 h-4"></i>
                         <span class="hidden sm:inline">Transfers</span>
                     </button>
-                    <button
-                        class="search-tab flex items-center gap-2 px-4 sm:px-6 py-2.5 rounded-full text-sm font-semibold text-white/90 hover:text-white hover:bg-white/10 transition-all duration-200 whitespace-nowrap"
-                        data-target="flights">
-                        <i data-lucide="plane" class="w-4 h-4"></i>
-                        <span class="hidden sm:inline">Flights</span>
-                    </button>
+
                 </div>
 
                 <!-- Search Forms Container -->
@@ -473,158 +465,7 @@
                         </div>
                     </div>
 
-                    <!-- Flights Form -->
-                    <div class="search-form hidden" id="flights-form">
-                        <!-- Trip Type Radios -->
-                        <div class="flex flex-wrap gap-4 sm:gap-6 mb-3">
-                            <label class="flex items-center gap-2.5 cursor-pointer group select-none">
-                                <input type="radio" name="ft_type" value="round" checked
-                                    class="w-4 h-4 text-brand-primary border-gray-300 focus:ring-brand-primary/30 cursor-pointer">
-                                <span
-                                    class="text-gray-700 text-sm font-medium group-hover:text-brand-primary transition-colors">Round
-                                    Trip</span>
-                            </label>
-                            <label class="flex items-center gap-2.5 cursor-pointer group select-none">
-                                <input type="radio" name="ft_type" value="oneway"
-                                    class="w-4 h-4 text-brand-primary border-gray-300 focus:ring-brand-primary/30 cursor-pointer">
-                                <span
-                                    class="text-gray-700 text-sm font-medium group-hover:text-brand-primary transition-colors">One
-                                    Way</span>
-                            </label>
-                        </div>
 
-                        <!-- Main Inputs Grid -->
-                        <div class="search-form-grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 mb-3">
-                            <!-- From -->
-                            <div class="search-input-box" data-field="origin">
-                                <i data-lucide="plane-takeoff" class="input-icon"></i>
-                                <div class="ml-3 w-full min-w-0 flex flex-col justify-center h-full">
-                                    <label class="search-label">From</label>
-                                    <input type="text" id="fl-origin" data-type="airport_code"
-                                        placeholder="City or Airport" class="search-input auto-input">
-                                </div>
-                            </div>
-                            <!-- To -->
-                            <div class="search-input-box" data-field="destination">
-                                <i data-lucide="plane-landing" class="input-icon"></i>
-                                <div class="ml-3 w-full min-w-0 flex flex-col justify-center h-full">
-                                    <label class="search-label">To</label>
-                                    <input type="text" id="fl-dest" data-type="airport_code"
-                                        placeholder="City or Airport" class="search-input auto-input">
-                                </div>
-                            </div>
-                            <!-- Dates -->
-                            <div class="search-input-box" data-field="dates">
-                                <i data-lucide="calendar-days" class="input-icon"></i>
-                                <div class="ml-3 w-full min-w-0 flex flex-col justify-center h-full">
-                                    <label class="search-label">Dates</label>
-                                    <input type="text" id="fl-dates" placeholder="Depart - Return" class="search-input">
-                                </div>
-                            </div>
-                            <!-- Travellers & Cabin -->
-                            <div class="search-input-box cursor-pointer" id="fl-pax-trigger" data-field="travelers">
-                                <i data-lucide="users" class="input-icon"></i>
-                                <div class="ml-3 w-full min-w-0 flex flex-col justify-center h-full">
-                                    <label class="search-label">Travellers</label>
-                                    <input type="text" id="fl-pax-display" placeholder="1 Adult, Economy" readonly
-                                        class="search-input cursor-pointer">
-                                </div>
-                                <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400 flex-shrink-0 ml-1"></i>
-                                <!-- Popover -->
-                                <div id="fl-pax-menu" class="traveler-popover hidden cursor-default right-0 left-auto">
-                                    <!-- Adults -->
-                                    <div class="flex justify-between items-center py-3 border-b border-gray-100">
-                                        <div>
-                                            <div class="text-sm font-semibold text-brand-text">Adults</div>
-                                            <div class="text-xs text-gray-400">12+ years</div>
-                                        </div>
-                                        <div class="flex items-center gap-3">
-                                            <button class="counter-btn pax-btn" data-type="adt"
-                                                data-action="minus">−</button>
-                                            <span id="count-adt"
-                                                class="font-semibold w-5 text-center text-brand-text">1</span>
-                                            <button class="counter-btn pax-btn" data-type="adt"
-                                                data-action="plus">+</button>
-                                        </div>
-                                    </div>
-                                    <!-- Children -->
-                                    <div class="flex justify-between items-center py-3 border-b border-gray-100">
-                                        <div>
-                                            <div class="text-sm font-semibold text-brand-text">Children</div>
-                                            <div class="text-xs text-gray-400">2-11 years</div>
-                                        </div>
-                                        <div class="flex items-center gap-3">
-                                            <button class="counter-btn pax-btn" data-type="chd"
-                                                data-action="minus">−</button>
-                                            <span id="count-chd"
-                                                class="font-semibold w-5 text-center text-brand-text">0</span>
-                                            <button class="counter-btn pax-btn" data-type="chd"
-                                                data-action="plus">+</button>
-                                        </div>
-                                    </div>
-                                    <!-- Infants -->
-                                    <div class="flex justify-between items-center py-3 border-b border-gray-100">
-                                        <div>
-                                            <div class="text-sm font-semibold text-brand-text">Infants</div>
-                                            <div class="text-xs text-gray-400">Under 2 years</div>
-                                        </div>
-                                        <div class="flex items-center gap-3">
-                                            <button class="counter-btn pax-btn" data-type="inf"
-                                                data-action="minus">−</button>
-                                            <span id="count-inf"
-                                                class="font-semibold w-5 text-center text-brand-text">0</span>
-                                            <button class="counter-btn pax-btn" data-type="inf"
-                                                data-action="plus">+</button>
-                                        </div>
-                                    </div>
-                                    <!-- Cabin Class -->
-                                    <div class="py-3 border-b border-gray-100">
-                                        <label class="search-label mb-2">Cabin Class</label>
-                                        <div class="relative custom-select">
-                                            <div
-                                                class="flex items-center justify-between px-3 py-2 border border-gray-200 rounded-lg cursor-pointer hover:border-brand-primary transition-colors">
-                                                <span id="fl-cabin-val"
-                                                    class="selected-val text-sm font-semibold text-brand-text">Economy</span>
-                                                <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400"></i>
-                                            </div>
-                                            <div
-                                                class="custom-options hidden absolute top-full left-0 right-0 mt-1 bg-white shadow-elegant-lg border border-gray-100 rounded-lg z-50 overflow-hidden">
-                                                <div
-                                                    class="option-item px-3 py-2.5 hover:bg-brand-surface text-sm font-medium cursor-pointer transition-colors">
-                                                    Economy</div>
-                                                <div
-                                                    class="option-item px-3 py-2.5 hover:bg-brand-surface text-sm font-medium cursor-pointer transition-colors">
-                                                    Premium Economy</div>
-                                                <div
-                                                    class="option-item px-3 py-2.5 hover:bg-brand-surface text-sm font-medium cursor-pointer transition-colors">
-                                                    Business</div>
-                                                <div
-                                                    class="option-item px-3 py-2.5 hover:bg-brand-surface text-sm font-medium cursor-pointer transition-colors">
-                                                    First</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Child Ages (if needed) -->
-                                    <div id="chd-ages-container" class="hidden py-3 border-b border-gray-100">
-                                        <label class="search-label mb-2">Child Ages</label>
-                                        <div id="chd-ages-grid" class="grid grid-cols-2 gap-2"></div>
-                                    </div>
-                                    <!-- Done Button -->
-                                    <button id="btn-done-pax"
-                                        class="w-full mt-4 bg-brand-primary text-white py-2.5 rounded-xl font-semibold text-sm hover:bg-brand-secondary shadow-elegant hover:shadow-elegant-lg transition-all active:scale-[0.98]">
-                                        Done
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Bottom Row: Search Button -->
-                        <div class="flex justify-end">
-                            <button id="flight-search-btn" class="search-btn-primary flex-shrink-0">
-                                <span>Search Flights</span>
-                                <i data-lucide="plane"></i>
-                            </button>
-                        </div>
-                    </div>
 
                     <!-- Tours Form -->
                     <div class="search-form hidden" id="tours-form">
@@ -813,49 +654,49 @@
             <!-- Card 1 -->
             <a href="#"
                 class="group relative aspect-[3/4] rounded-2xl overflow-hidden shadow-elegant hover:shadow-elegant-lg transition-all duration-500">
-                <img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?q=80&w=800" loading="lazy"
+                <img src="img/tabuk.jpg"
                     class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
                 <div
                     class="absolute bottom-0 left-0 p-6 text-white translate-y-2 group-hover:translate-y-0 transition-transform">
-                    <h3 class="font-bold text-xl mb-1">Bali</h3>
-                    <p class="text-sm opacity-90 font-medium">Indonesia</p>
+                    <h3 class="font-bold text-xl mb-1">Tabuk</h3>
+                    <p class="text-sm opacity-90 font-medium">Saudi Arabia</p>
                 </div>
             </a>
             <!-- Card 2 -->
             <a href="#"
                 class="group relative aspect-[3/4] rounded-2xl overflow-hidden shadow-elegant hover:shadow-elegant-lg transition-all duration-500">
-                <img src="https://images.unsplash.com/photo-1602940659805-770d1b3b9911?q=80&w=800" loading="lazy"
+                <img src="https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?q=80&w=800"
                     class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
                 <div
                     class="absolute bottom-0 left-0 p-6 text-white translate-y-2 group-hover:translate-y-0 transition-transform">
-                    <h3 class="font-bold text-xl mb-1">New York</h3>
-                    <p class="text-sm opacity-90 font-medium">USA</p>
+                    <h3 class="font-bold text-xl mb-1">Istanbul</h3>
+                    <p class="text-sm opacity-90 font-medium">Turkey</p>
                 </div>
             </a>
             <!-- Card 3 -->
             <a href="#"
                 class="group relative aspect-[3/4] rounded-2xl overflow-hidden shadow-elegant hover:shadow-elegant-lg transition-all duration-500">
-                <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?q=80&w=800" loading="lazy"
+                <img src="img/amman.jpg"
                     class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
                 <div
                     class="absolute bottom-0 left-0 p-6 text-white translate-y-2 group-hover:translate-y-0 transition-transform">
-                    <h3 class="font-bold text-xl mb-1">Tokyo</h3>
-                    <p class="text-sm opacity-90 font-medium">Japan</p>
+                    <h3 class="font-bold text-xl mb-1">Amman</h3>
+                    <p class="text-sm opacity-90 font-medium">Jordan</p>
                 </div>
             </a>
             <!-- Card 4 -->
             <a href="#"
                 class="group relative aspect-[3/4] rounded-2xl overflow-hidden shadow-elegant hover:shadow-elegant-lg transition-all duration-500">
-                <img src="https://images.unsplash.com/photo-1531366936337-7c912a4589a7?q=80&w=800" loading="lazy"
+                <img src="img/jazan.jpg"
                     class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
                 <div
                     class="absolute bottom-0 left-0 p-6 text-white translate-y-2 group-hover:translate-y-0 transition-transform">
-                    <h3 class="font-bold text-xl mb-1">Tromsø</h3>
-                    <p class="text-sm opacity-90 font-medium">Norway</p>
+                    <h3 class="font-bold text-xl mb-1">Jazan</h3>
+                    <p class="text-sm opacity-90 font-medium">Saudi Arabia</p>
                 </div>
             </a>
         </div>
@@ -866,107 +707,103 @@
         <div class="container mx-auto px-6 lg:px-12">
             <h2 class="font-display text-3xl font-bold text-brand-primary mb-10 text-center">Exclusive Deals</h2>
 
+
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Deal 1: Dubai -->
+                <!-- Deal 1 -->
                 <div
                     class="rounded-2xl border border-gray-100 overflow-hidden hover:shadow-elegant-lg transition-all duration-300 group bg-white">
                     <div class="relative h-48 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1546412414-e1885259563a?q=80&w=800" loading="lazy"
+                        <img src="img/bay_la_sun_hotel.jpg"
                             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                         <div
-                            class="absolute top-4 left-4 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">
-                            20% Off</div>
+                            class="absolute top-4 left-4 bg-brand-primary text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">
+                            Family Favorite</div>
                     </div>
                     <div class="p-6">
                         <div class="flex justify-between items-start mb-2">
-                            <h3 class="font-bold text-lg text-brand-text">Atlantis The Palm</h3>
+                            <h3 class="font-bold text-lg text-brand-text">Bay La Sun Hotel</h3>
                             <div class="flex items-center gap-1 bg-brand-surface px-2 py-1 rounded">
                                 <i data-lucide="star" class="w-3 h-3 text-brand-primary fill-current"></i>
                                 <span class="text-xs font-bold text-brand-primary">5.0</span>
                             </div>
                         </div>
                         <p class="text-sm text-brand-muted mb-4 flex items-center gap-1"><i data-lucide="map-pin"
-                                class="w-3 h-3"></i> Dubai, UAE</p>
+                                class="w-3 h-3"></i> KAEC, Saudi Arabia</p>
                         <div class="flex justify-between items-center pt-4 border-t border-gray-100">
                             <div>
-                                <span class="text-xs text-gray-400 line-through">$850</span>
-                                <div class="text-xl font-bold text-brand-primary">$680 <span
+                                <span class="text-xs text-gray-400 line-through">SAR 1,200</span>
+                                <div class="text-xl font-bold text-brand-primary">SAR 850 <span
                                         class="text-xs text-brand-muted font-normal">/ night</span></div>
                             </div>
-                            <button onclick="openDealModal('Dubai', 'DXB')"
-                                class="h-10 px-6 rounded-xl border border-brand-primary text-brand-primary font-bold hover:bg-brand-primary hover:text-white transition-all duration-300 text-sm shadow-sm hover:shadow-md">
-                                View Deal
-                            </button>
+                            <button onclick="openExclusiveDeal('KAEC', 'JED')"
+                                class="h-10 px-6 rounded-xl border border-brand-primary text-brand-primary font-bold hover:bg-brand-primary hover:text-white transition-all duration-300 text-sm shadow-sm hover:shadow-md">View
+                                Deal</button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Deal 2: Phuket -->
+                <!-- Deal 2 -->
                 <div
                     class="rounded-2xl border border-gray-100 overflow-hidden hover:shadow-elegant-lg transition-all duration-300 group bg-white">
                     <div class="relative h-48 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1589394815804-964ed0be2eb5?q=80&w=800"
-                            loading="lazy"
+                        <img src="img/shaden_resort.jpg"
                             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                         <div
-                            class="absolute top-4 left-4 bg-brand-primary text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">
-                            Popular</div>
+                            class="absolute top-4 left-4 bg-brand-accent text-brand-text text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">
+                            Desert Escape</div>
                     </div>
                     <div class="p-6">
                         <div class="flex justify-between items-start mb-2">
-                            <h3 class="font-bold text-lg text-brand-text">Amari Phuket</h3>
-                            <div class="flex items-center gap-1 bg-brand-surface px-2 py-1 rounded">
-                                <i data-lucide="star" class="w-3 h-3 text-brand-primary fill-current"></i>
-                                <span class="text-xs font-bold text-brand-primary">4.8</span>
-                            </div>
-                        </div>
-                        <p class="text-sm text-brand-muted mb-4 flex items-center gap-1"><i data-lucide="map-pin"
-                                class="w-3 h-3"></i> Phuket, Thailand</p>
-                        <div class="flex justify-between items-center pt-4 border-t border-gray-100">
-                            <div>
-                                <span class="text-xs text-gray-400">Values from</span>
-                                <div class="text-xl font-bold text-brand-primary">$150 <span
-                                        class="text-xs text-brand-muted font-normal">/ night</span></div>
-                            </div>
-                            <button onclick="openDealModal('Phuket', 'HKT')"
-                                class="h-10 px-6 rounded-xl border border-brand-primary text-brand-primary font-bold hover:bg-brand-primary hover:text-white transition-all duration-300 text-sm shadow-sm hover:shadow-md">
-                                View Deal
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Deal 3: New York -->
-                <div
-                    class="rounded-2xl border border-gray-100 overflow-hidden hover:shadow-elegant-lg transition-all duration-300 group bg-white">
-                    <div class="relative h-48 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?q=80&w=800"
-                            loading="lazy"
-                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
-                        <div
-                            class="absolute top-4 left-4 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">
-                            15% Off</div>
-                    </div>
-                    <div class="p-6">
-                        <div class="flex justify-between items-start mb-2">
-                            <h3 class="font-bold text-lg text-brand-text">The Plaza</h3>
+                            <h3 class="font-bold text-lg text-brand-text">Shaden Resort</h3>
                             <div class="flex items-center gap-1 bg-brand-surface px-2 py-1 rounded">
                                 <i data-lucide="star" class="w-3 h-3 text-brand-primary fill-current"></i>
                                 <span class="text-xs font-bold text-brand-primary">4.9</span>
                             </div>
                         </div>
                         <p class="text-sm text-brand-muted mb-4 flex items-center gap-1"><i data-lucide="map-pin"
-                                class="w-3 h-3"></i> New York, USA</p>
+                                class="w-3 h-3"></i> Al Ula, Saudi Arabia</p>
                         <div class="flex justify-between items-center pt-4 border-t border-gray-100">
                             <div>
-                                <span class="text-xs text-gray-400 line-through">$900</span>
-                                <div class="text-xl font-bold text-brand-primary">$765 <span
+                                <span class="text-xs text-gray-400 line-through">SAR 1,500</span>
+                                <div class="text-xl font-bold text-brand-primary">SAR 1,100 <span
                                         class="text-xs text-brand-muted font-normal">/ night</span></div>
                             </div>
-                            <button onclick="openDealModal('New York', 'JFK')"
-                                class="h-10 px-6 rounded-xl border border-brand-primary text-brand-primary font-bold hover:bg-brand-primary hover:text-white transition-all duration-300 text-sm shadow-sm hover:shadow-md">
-                                View Deal
-                            </button>
+                            <button onclick="openExclusiveDeal('Al Ula', 'ULH')"
+                                class="h-10 px-6 rounded-xl border border-brand-primary text-brand-primary font-bold hover:bg-brand-primary hover:text-white transition-all duration-300 text-sm shadow-sm hover:shadow-md">View
+                                Deal</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Deal 3 -->
+                <div
+                    class="rounded-2xl border border-gray-100 overflow-hidden hover:shadow-elegant-lg transition-all duration-300 group bg-white">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="img/movenpick_al_nawras.jpg"
+                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                        <div
+                            class="absolute top-4 left-4 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">
+                            30% Off</div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-bold text-lg text-brand-text">Mövenpick Al Nawras</h3>
+                            <div class="flex items-center gap-1 bg-brand-surface px-2 py-1 rounded">
+                                <i data-lucide="star" class="w-3 h-3 text-brand-primary fill-current"></i>
+                                <span class="text-xs font-bold text-brand-primary">4.7</span>
+                            </div>
+                        </div>
+                        <p class="text-sm text-brand-muted mb-4 flex items-center gap-1"><i data-lucide="map-pin"
+                                class="w-3 h-3"></i> Jeddah, Saudi Arabia</p>
+                        <div class="flex justify-between items-center pt-4 border-t border-gray-100">
+                            <div>
+                                <span class="text-xs text-gray-400 line-through">SAR 950</span>
+                                <div class="text-xl font-bold text-brand-primary">SAR 807 <span
+                                        class="text-xs text-brand-muted font-normal">/ night</span></div>
+                            </div>
+                            <button onclick="openExclusiveDeal('Jeddah', 'JED')"
+                                class="h-10 px-6 rounded-xl border border-brand-primary text-brand-primary font-bold hover:bg-brand-primary hover:text-white transition-all duration-300 text-sm shadow-sm hover:shadow-md">View
+                                Deal</button>
                         </div>
                     </div>
                 </div>
@@ -977,27 +814,17 @@
     <!-- ================= FEATURES / WHY US ================= -->
     <section class="py-16 bg-brand-surface">
         <div class="container mx-auto px-6 lg:px-12 text-center">
-            <h2 class="font-display text-3xl font-bold text-brand-primary mb-12">Why Choose EasyGDS?</h2>
+            <h2 class="font-display text-3xl font-bold text-brand-primary mb-12">Flyadeal Holidays Exclusive Benefits
+            </h2>
 
             <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
                 <div class="flex flex-col items-center group">
                     <div
                         class="w-16 h-16 bg-white rounded-2xl shadow-sm flex items-center justify-center text-brand-primary mb-4 group-hover:scale-110 transition-transform duration-300">
-                        <i data-lucide="shield-check" class="w-8 h-8"></i>
+                        <i data-lucide="check-circle" class="w-8 h-8"></i>
                     </div>
-                    <h3 class="font-bold text-lg mb-2">Secure Booking</h3>
-                    <p class="text-sm text-brand-muted leading-relaxed">Advanced encryption keeps your personal data
-                        safe.</p>
-                </div>
-                <div class="flex flex-col items-center group">
-                    <div
-                        class="w-16 h-16 bg-white rounded-2xl shadow-sm flex items-center justify-center text-brand-primary mb-4 group-hover:scale-110 transition-transform duration-300">
-                        <i data-lucide="tag" class="w-8 h-8"></i>
-                    </div>
-                    <h3 class="font-bold text-lg mb-2">Best Prices</h3>
-                    <p class="text-sm text-brand-muted leading-relaxed">We match any competitor's price for
-                        identical
-                        bookings.</p>
+                    <h3 class="font-bold text-lg mb-2">Best Price Guarantee</h3>
+                    <p class="text-sm text-brand-muted leading-relaxed">We won't be beaten on price for packages.</p>
                 </div>
                 <div class="flex flex-col items-center group">
                     <div
@@ -1005,17 +832,23 @@
                         <i data-lucide="headset" class="w-8 h-8"></i>
                     </div>
                     <h3 class="font-bold text-lg mb-2">24/7 Support</h3>
-                    <p class="text-sm text-brand-muted leading-relaxed">Our support team is always available to help
-                        you.</p>
+                    <p class="text-sm text-brand-muted leading-relaxed">Always here to help, whenever you fly.</p>
                 </div>
                 <div class="flex flex-col items-center group">
                     <div
                         class="w-16 h-16 bg-white rounded-2xl shadow-sm flex items-center justify-center text-brand-primary mb-4 group-hover:scale-110 transition-transform duration-300">
-                        <i data-lucide="gem" class="w-8 h-8"></i>
+                        <i data-lucide="shield" class="w-8 h-8"></i>
                     </div>
-                    <h3 class="font-bold text-lg mb-2">Premium Quality</h3>
-                    <p class="text-sm text-brand-muted leading-relaxed">Handpicked experiences for the discerning
-                        traveler.</p>
+                    <h3 class="font-bold text-lg mb-2">Peace of Mind</h3>
+                    <p class="text-sm text-brand-muted leading-relaxed">Book with confidence and full transparency.</p>
+                </div>
+                <div class="flex flex-col items-center group">
+                    <div
+                        class="w-16 h-16 bg-white rounded-2xl shadow-sm flex items-center justify-center text-brand-primary mb-4 group-hover:scale-110 transition-transform duration-300">
+                        <i data-lucide="gift" class="w-8 h-8"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">Exclusive Value-Add</h3>
+                    <p class="text-sm text-brand-muted leading-relaxed">Special perks only for Flyadeal members.</p>
                 </div>
             </div>
         </div>
@@ -1051,14 +884,16 @@
                         </div>
                         <select
                             class="w-full pl-11 pr-10 py-4 rounded-xl bg-brand-surface border-2 border-transparent focus:border-brand-primary/20 outline-none text-brand-text font-medium appearance-none cursor-pointer transition-all shadow-sm group-hover:bg-gray-50">
-                            <option value="" disabled selected>Preferred City (Optional)</option>
-                            <option value="LHR">London (LHR)</option>
-                            <option value="JFK">New York (JFK)</option>
+                            <option value="" disabled selected>Preferred Departure City</option>
+                            <option value="JED">Jeddah (JED)</option>
+                            <option value="RUH">Riyadh (RUH)</option>
+                            <option value="DMM">Dammam (DMM)</option>
+                            <option value="CAI">Cairo (CAI)</option>
                             <option value="DXB">Dubai (DXB)</option>
-                            <option value="CDG">Paris (CDG)</option>
-                            <option value="SIN">Singapore (SIN)</option>
-                            <option value="HKG">Hong Kong (HKG)</option>
-                            <option value="SYD">Sydney (SYD)</option>
+                            <option value="AMM">Amman (AMM)</option>
+                            <option value="IST">Istanbul (IST)</option>
+                            <option value="SSH">Sharm El Sheikh (SSH)</option>
+                            <option value="AHB">Abha (AHB)</option>
                             <option value="other">Other</option>
                         </select>
                         <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
@@ -1075,14 +910,13 @@
         </div>
     </section>
 
-    <footer class="bg-brand-secondary text-white pt-16 pb-8">
+    <footer class="bg-brand-primary text-white pt-16 pb-8">
         <div class="container mx-auto px-6 lg:px-12 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 mb-12">
             <div class="col-span-2">
-                <img src="easygds_logo_transparent.png" alt="EasyGDS" loading="lazy"
-                    class="h-8 brightness-0 invert mb-6">
-                <p class="text-blue-200 text-sm leading-relaxed max-w-xs mb-6">
-                    Connecting you to the world's most incredible destinations with a seamless, premium booking
-                    experience.
+                <img src="img/flyadeal_holidays_logo_transparent.png" onerror="this.src='img/flyadeal_logo.png'"
+                    alt="Flyadeal Holidays" class="h-16 mb-6 drop-shadow-md">
+                <p class="text-white/90 text-sm leading-relaxed max-w-xs mb-6">
+                    Everyday low fares. Enjoy holiday packages, hotels, and experiences with Flyadeal.
                 </p>
                 <div class="flex gap-4">
                     <a href="#"
@@ -1100,12 +934,30 @@
                 </div>
             </div>
 
+            <div>
+                <h4 class="font-bold text-lg mb-6">Company</h4>
+                <ul class="space-y-3 text-sm text-white/80">
+                    <li><a href="#" class="hover:text-white transition-colors">About Us</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Careers</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Blog</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Press</a></li>
+                </ul>
+            </div>
 
+            <div>
+                <h4 class="font-bold text-lg mb-6">Support</h4>
+                <ul class="space-y-3 text-sm text-white/80">
+                    <li><a href="#" class="hover:text-white transition-colors">Help Center</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Contact Us</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Privacy Policy</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Terms of Service</a></li>
+                </ul>
+            </div>
         </div>
 
         <div
-            class="container mx-auto px-6 lg:px-12 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center text-sm text-blue-300">
-            <p>&copy; 2026 easyGDS. All rights reserved.</p>
+            class="container mx-auto px-6 lg:px-12 pt-8 border-t border-white/20 flex flex-col md:flex-row justify-between items-center text-sm text-white/60">
+            <p>&copy; 2026 Flyadeal Holidays. All rights reserved.</p>
             <div class="flex gap-6 mt-4 md:mt-0">
                 <span>Privacy</span>
                 <span>Terms</span>
@@ -1252,9 +1104,22 @@
         </div>
     </div>
 
-    <!-- ================= JAVASCRIPT ================= -->
-    <script src="scripts.js"></script>
+    <!-- Reema AI Assistant Widget -->
+    <div class="fixed bottom-6 right-6 z-[100] flex items-end gap-3 pointer-events-none">
 
+        <!-- Avatar Icon -->
+        <div
+            class="relative w-16 h-16 rounded-full bg-brand-surface border-4 border-white shadow-elegant-xl overflow-hidden pointer-events-auto cursor-pointer hover:scale-110 transition-transform duration-300 group">
+            <img src="https://www.flyadeal.com/assets/icons/Chatbot-update-icon.png" alt="Flyadeal AI"
+                class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-brand-primary/10 group-hover:bg-transparent transition-colors"></div>
+        </div>
+    </div>
+
+    <!-- ================= JAVASCRIPT ================= -->
+    <script src="scripts.js" defer></script>
+    <script src="homepage_logic_integrated.js" defer></script>
+    <!-- Script moved to head -->
 </body>
 
 </html>
