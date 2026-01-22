@@ -203,7 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ================= CONFIGURATION =================
-const API_BASE_URL = 'http://localhost:3001/api';
+const API_BASE_URL = 'https://demo.api.easygds.com/api';
 const SESSION_ID = 'demo_session_dynamic_homepage_' + Math.floor(Math.random() * 10000);
 
 // Product IDs
