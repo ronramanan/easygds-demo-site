@@ -57,649 +57,7 @@
         }
     </script>
 
-    <style>
-        /* Smooth scrollbar styling */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #F5F8FF;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #203C94;
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #1A3994;
-        }
-
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-
-        /* Hero carousel animations */
-        .hero-slide {
-            opacity: 0;
-            transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .hero-slide.active {
-            opacity: 1;
-        }
-
-        /* Parallax effect */
-        .parallax-bg {
-            background-attachment: fixed;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
-        }
-
-        /* Custom Form Elements - Standardized */
-        .input-container {
-            transition: all 0.2s ease;
-            min-width: 0;
-        }
-
-        .input-container:focus-within {
-            box-shadow: 0 0 0 3px rgba(32, 60, 148, 0.12);
-            border-color: #203C94 !important;
-        }
-
-        /* Standardized input styling */
-        .search-input {
-            width: 100%;
-            background: transparent;
-            outline: none;
-            color: #1A1A1A;
-            font-weight: 600;
-            font-size: 0.875rem;
-            line-height: 1.25;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .search-input::placeholder {
-            color: #9CA3AF;
-            font-weight: 400;
-        }
-
-        .search-label {
-            display: block;
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: #555555;
-            font-weight: 700;
-            margin-bottom: 2px;
-            line-height: 1;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        /* Unified input box base */
-        .search-input-box {
-            background-color: white;
-            height: 3.5rem;
-            padding-left: 1rem;
-            padding-right: 1rem;
-            border-radius: 0.75rem;
-            border: 1px solid #E5E7EB;
-            transition: all 0.2s ease;
-            position: relative;
-            display: flex;
-            align-items: center;
-            min-width: 0;
-        }
-
-        .search-input-box:hover {
-            background-color: #F9FAFB;
-        }
-
-        .search-input-box:focus-within {
-            border-color: #203C94;
-            box-shadow: 0 0 0 3px rgba(32, 60, 148, 0.1);
-        }
-
-        .search-input-box .input-icon {
-            width: 1.25rem;
-            height: 1.25rem;
-            color: #9CA3AF;
-            flex-shrink: 0;
-            transition: color 0.2s ease;
-        }
-
-        .search-input-box:focus-within .input-icon {
-            color: #203C94;
-        }
-
-        /* Search form grid standardization */
-        .search-form-grid {
-            display: grid;
-            gap: 0.75rem;
-            align-items: stretch;
-        }
-
-        /* Responsive search button */
-        .search-btn-primary {
-            background-color: #203C94;
-            color: white;
-            height: 3.5rem;
-            padding-left: 2rem;
-            padding-right: 2rem;
-            border-radius: 0.75rem;
-            font-weight: 700;
-            font-size: 1rem;
-            box-shadow: 0 4px 20px -5px rgba(32, 60, 148, 0.15);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            position: relative;
-            overflow: hidden;
-            white-space: nowrap;
-            border: none;
-            cursor: pointer;
-        }
-
-        .search-btn-primary:hover {
-            background-color: #1A3994;
-            box-shadow: 0 10px 30px -5px rgba(32, 60, 148, 0.2);
-        }
-
-        .search-btn-primary:active {
-            transform: scale(0.98);
-        }
-
-        .search-btn-primary i,
-        .search-btn-primary svg {
-            width: 1.25rem;
-            height: 1.25rem;
-            transition: transform 0.3s ease;
-        }
-
-        .search-btn-primary:hover i,
-        .search-btn-primary:hover svg {
-            transform: translateX(2px);
-        }
-
-        /* Sticky Search Fixes */
-        #search-panel.is-sticky .search-input-box,
-        #search-panel.is-sticky .input-container {
-            background-color: #F8FAFC;
-            border-color: #E2E8F0;
-        }
-
-        #search-panel.is-sticky .search-input-box:hover,
-        #search-panel.is-sticky .input-container:hover {
-            background-color: #F1F5F9;
-        }
-
-        #search-panel.is-sticky .search-label,
-        #search-panel.is-sticky label {
-            color: #64748B;
-        }
-
-        #search-panel.is-sticky .search-input,
-        #search-panel.is-sticky input {
-            color: #1E293B;
-        }
-
-        #search-panel.is-sticky .search-input::placeholder,
-        #search-panel.is-sticky input::placeholder {
-            color: #94A3B8;
-        }
-
-        /* Improved Sticky Tabs Readability */
-        #search-panel.is-sticky {
-            background-color: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-color: rgba(0, 0, 0, 0.08);
-            box-shadow: 0 4px 24px -4px rgba(0, 0, 0, 0.12);
-        }
-
-        #search-panel.is-sticky #search-tabs-container {
-            background-color: #F1F5F9;
-            box-shadow: none;
-            padding: 0.375rem;
-            margin-bottom: 1rem;
-        }
-
-        #search-panel.is-sticky.is-collapsed #search-tabs-container {
-            margin-bottom: 0;
-        }
-
-        #search-panel.is-sticky .search-tab:not(.active) {
-            color: #64748B;
-        }
-
-        #search-panel.is-sticky .search-tab:not(.active):hover {
-            color: #203C94;
-            background-color: rgba(32, 60, 148, 0.06);
-        }
-
-        /* Button Enhancements */
-        .btn-primary {
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .btn-primary:active {
-            transform: scale(0.98);
-        }
-
-        .card-hover {
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .card-hover:hover {
-            transform: translateY(-8px);
-        }
-
-        /* Accent Line */
-        .accent-line {
-            position: relative;
-        }
-
-        .accent-line::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            bottom: -12px;
-            width: 60px;
-            height: 4px;
-            background: #203C94;
-            border-radius: 2px;
-        }
-
-        /* Mobile-first responsive improvements */
-        @media (max-width: 639px) {
-            .search-form-grid {
-                gap: 0.625rem;
-            }
-
-            .search-input-box {
-                height: 3.25rem;
-                padding-left: 0.875rem;
-                padding-right: 0.875rem;
-            }
-
-            .search-btn-primary {
-                width: 100%;
-                height: 3.25rem;
-                font-size: 0.9375rem;
-            }
-
-            .search-label {
-                font-size: 9px;
-            }
-
-            .search-input {
-                font-size: 0.8125rem;
-            }
-
-            #search-tabs-container {
-                justify-content: center;
-                gap: 0.25rem;
-            }
-        }
-
-        @media (min-width: 640px) and (max-width: 767px) {
-            .search-form-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .search-btn-primary {
-                grid-column: span 2;
-            }
-        }
-
-        @media (min-width: 768px) and (max-width: 1023px) {
-            .search-btn-primary {
-                min-width: 160px;
-            }
-        }
-
-        /* Radio button styling for glass panels */
-        .search-form input[type="radio"] {
-            accent-color: #203C94;
-        }
-
-        #search-panel.is-sticky .search-form input[type="radio"]+span {
-            color: #374151;
-        }
-
-        #search-panel.is-sticky .search-form label:hover input[type="radio"]+span {
-            color: #203C94;
-        }
-
-        /* Custom checkbox styling */
-        .custom-checkbox {
-            appearance: none;
-            width: 1.25rem;
-            height: 1.25rem;
-            border: 2px solid #D1D5DB;
-            border-radius: 0.375rem;
-            transition: all 0.2s ease;
-            cursor: pointer;
-            background-color: transparent;
-        }
-
-        .custom-checkbox:hover {
-            border-color: #203C94;
-        }
-
-        .custom-checkbox:checked {
-            background-color: #203C94;
-            border-color: #203C94;
-        }
-
-        .custom-checkbox:focus {
-            box-shadow: 0 0 0 3px rgba(32, 60, 148, 0.2);
-            outline: none;
-        }
-
-        .custom-checkbox:checked+.check-icon {
-            opacity: 1;
-        }
-
-        /* Popover improvements */
-        .traveler-popover {
-            position: absolute;
-            top: calc(100% + 8px);
-            left: 0;
-            width: 20rem;
-            background-color: white;
-            border-radius: 0.75rem;
-            box-shadow: 0 20px 40px -5px rgba(32, 60, 148, 0.25);
-            padding: 1.25rem;
-            z-index: 60;
-            border: 1px solid #F3F4F6;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(8px);
-            transition: all 0.2s ease;
-        }
-
-        .traveler-popover.is-open,
-        .traveler-popover:not(.hidden) {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-
-        /* Counter button styling */
-        .counter-btn {
-            width: 2rem;
-            height: 2rem;
-            border-radius: 50%;
-            border: 1px solid #E5E7EB;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #555555;
-            transition: all 0.2s ease;
-            font-weight: 600;
-            font-size: 1.125rem;
-            line-height: 1;
-            background: white;
-            cursor: pointer;
-        }
-
-        .counter-btn:hover {
-            border-color: #203C94;
-            color: #203C94;
-            background-color: #F5F8FF;
-        }
-
-        .counter-btn:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
-
-        .counter-btn:disabled:hover {
-            border-color: #E5E7EB;
-            color: #555555;
-            background-color: white;
-        }
-
-        .counter-btn:active:not(:disabled) {
-            transform: scale(0.95);
-        }
-
-        /* Custom select dropdown styling */
-        .custom-select .custom-options {
-            animation: dropdownFade 0.15s ease-out;
-        }
-
-        @keyframes dropdownFade {
-            from {
-                opacity: 0;
-                transform: translateY(-4px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .custom-select .option-item {
-            transition: background-color 0.15s ease;
-        }
-
-        .custom-select .option-item:hover {
-            background-color: #F5F8FF;
-        }
-
-        .custom-select .option-item:active {
-            background-color: #E8EDFC;
-        }
-
-        /* Time picker specific styling */
-        #tr-time-opts .option-item {
-            padding: 0.625rem 1rem;
-            font-size: 0.875rem;
-            font-weight: 500;
-        }
-
-        /* Sticky state adjustments for checkbox */
-        #search-panel.is-sticky .custom-checkbox {
-            border-color: #D1D5DB;
-        }
-
-        #search-panel.is-sticky label span {
-            color: #374151;
-        }
-
-        #search-panel.is-sticky label:hover span {
-            color: #203C94;
-        }
-
-        /* Focus visible for accessibility */
-        .search-input:focus-visible,
-        .search-btn-primary:focus-visible,
-        .search-tab:focus-visible {
-            outline: 2px solid #203C94;
-            outline-offset: 2px;
-        }
-
-        /* Package checkbox label - always dark for readability */
-        .pkg-checkbox-label {
-            color: #374151 !important;
-        }
-
-        label:hover .pkg-checkbox-label {
-            color: #203C94 !important;
-        }
-
-        /* Sticky state - collapsed to tab bar only */
-        #search-panel.is-sticky.is-collapsed #search-inputs-container {
-            display: none !important;
-        }
-
-        #search-panel.is-sticky #search-inputs-container {
-            padding-left: 0;
-            padding-right: 0;
-            padding-bottom: 0;
-        }
-
-        #search-panel.is-sticky #search-tabs-container {
-            margin-bottom: 0;
-        }
-
-        #search-panel.is-sticky:not(.is-collapsed) #search-tabs-container {
-            margin-bottom: 1rem;
-        }
-
-        /* Ensure sticky wrapper works */
-        #search-container-wrapper {
-            position: sticky;
-            top: 0;
-            z-index: 50;
-        }
-
-        /* Collapsed sticky tab bar styling */
-        #search-panel.is-sticky.is-collapsed {
-            padding-top: 0.75rem;
-            padding-bottom: 0.75rem;
-        }
-
-        #search-panel.is-sticky.is-collapsed #search-tabs-container {
-            margin: 0 auto;
-            width: fit-content;
-        }
-
-        /* Smooth scrolling for autocomplete containers */
-        .traveler-popover,
-        .custom-options {
-            scrollbar-width: thin;
-            scrollbar-color: #CBD5E1 transparent;
-        }
-
-        .traveler-popover::-webkit-scrollbar,
-        .custom-options::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .traveler-popover::-webkit-scrollbar-thumb,
-        .custom-options::-webkit-scrollbar-thumb {
-            background-color: #CBD5E1;
-            border-radius: 3px;
-        }
-
-        /* Remove border/outline from search inputs */
-        .search-input {
-            border: none !important;
-            outline: none !important;
-            box-shadow: none !important;
-        }
-
-        .search-input:focus {
-            border: none !important;
-            outline: none !important;
-            box-shadow: none !important;
-        }
-
-        /* Autocomplete dropdown styling - wider and properly positioned */
-        .autocomplete-results {
-            position: absolute !important;
-            top: calc(100% + 8px) !important;
-            left: 0 !important;
-            min-width: 340px !important;
-            width: max-content !important;
-            max-width: min(500px, 90vw) !important;
-            background: white !important;
-            border: 1px solid #E5E7EB !important;
-            border-radius: 0.75rem !important;
-            box-shadow: 0 20px 40px -5px rgba(32, 60, 148, 0.25) !important;
-            max-height: 320px !important;
-            overflow-y: auto !important;
-            z-index: 100 !important;
-            scrollbar-width: thin;
-            scrollbar-color: #CBD5E1 transparent;
-        }
-
-        .autocomplete-results::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .autocomplete-results::-webkit-scrollbar-thumb {
-            background-color: #CBD5E1;
-            border-radius: 3px;
-        }
-
-        .autocomplete-results .p-2 {
-            padding: 0.75rem 1rem !important;
-            transition: background-color 0.15s ease;
-        }
-
-        .autocomplete-results .p-2:hover {
-            background-color: #F5F8FF !important;
-        }
-
-        /* Loading state in autocomplete */
-        .autocomplete-results .p-3 {
-            padding: 1rem !important;
-            text-align: center;
-        }
-
-        /* Ensure input box has relative positioning for dropdown */
-        .search-input-box {
-            position: relative !important;
-        }
-
-        /* Mobile responsiveness for autocomplete */
-        @media (max-width: 639px) {
-            .autocomplete-results {
-                min-width: 280px !important;
-                max-width: calc(100vw - 2rem) !important;
-                left: 50% !important;
-                transform: translateX(-50%) !important;
-            }
-        }
-
-        /* Ensure search forms don't clip dropdowns */
-        .search-form {
-            overflow: visible !important;
-        }
-
-        .search-form-grid {
-            overflow: visible !important;
-        }
-
-        #search-inputs-container {
-            overflow: visible !important;
-        }
-
-        #search-panel {
-            overflow: visible !important;
-        }
-
-        /* Higher z-index for traveler popovers to appear above content */
-        .traveler-popover {
-            z-index: 200 !important;
-        }
-
-        /* Ensure custom-options appear above content */
-        .custom-options {
-            z-index: 200 !important;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body class="bg-brand-surface text-brand-text font-sans antialiased">
@@ -744,12 +102,25 @@
     <!-- Mobile Menu Overlay -->
     <div class="fixed inset-0 bg-white z-[55] transform translate-x-full transition-transform duration-300 lg:hidden pt-20 px-6 flex flex-col gap-6"
         id="mobile-menu">
-        <a href="#"
-            class="text-xl font-semibold border-b pb-4 border-gray-100 hover:text-brand-primary transition-colors">Destinations</a>
-        <a href="#"
-            class="text-xl font-semibold border-b pb-4 border-gray-100 hover:text-brand-primary transition-colors">Deals</a>
-        <a href="#"
-            class="text-xl font-semibold border-b pb-4 border-gray-100 hover:text-brand-primary transition-colors">Packages</a>
+        <!-- Currency Selector -->
+        <div
+            class="flex items-center justify-between text-xl font-semibold border-b pb-4 border-gray-100 hover:text-brand-primary transition-colors cursor-pointer">
+            <span>Currency</span>
+            <div class="flex items-center gap-2">
+                <span>USD</span>
+                <i data-lucide="chevron-down" class="w-5 h-5"></i>
+            </div>
+        </div>
+        <!-- Language Selector -->
+        <div
+            class="flex items-center justify-between text-xl font-semibold border-b pb-4 border-gray-100 hover:text-brand-primary transition-colors cursor-pointer">
+            <span>Language</span>
+            <div class="flex items-center gap-2">
+                <img src="https://flagcdn.com/w20/us.png" alt="US flag" class="w-6 h-auto rounded shadow-sm">
+                <span>EN</span>
+                <i data-lucide="chevron-down" class="w-5 h-5"></i>
+            </div>
+        </div>
         <div class="flex flex-col gap-4 mt-4">
             <a href="#"
                 class="text-center py-3 border border-brand-primary text-brand-primary rounded-full font-bold hover:bg-brand-surface transition-all">Log
@@ -834,8 +205,7 @@
             <!-- Slide 3: Dubai -->
             <div class="hero-slide absolute inset-0">
                 <!-- Background - Verified Dubai Night Skyline (Unsplash) -->
-                <div class="absolute inset-0 bg-cover bg-center"
-                    style="background-image: url('images/dubai.jpg');">
+                <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('images/dubai.jpg');">
                 </div>
                 <!-- Gradient -->
                 <div
@@ -1443,7 +813,7 @@
             <!-- Card 1 -->
             <a href="#"
                 class="group relative aspect-[3/4] rounded-2xl overflow-hidden shadow-elegant hover:shadow-elegant-lg transition-all duration-500">
-                <img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?q=80&w=800"
+                <img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?q=80&w=800" loading="lazy"
                     class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
                 <div
@@ -1455,19 +825,19 @@
             <!-- Card 2 -->
             <a href="#"
                 class="group relative aspect-[3/4] rounded-2xl overflow-hidden shadow-elegant hover:shadow-elegant-lg transition-all duration-500">
-                <img src="https://images.unsplash.com/photo-1602940659805-770d1b3b9911?q=80&w=800"
+                <img src="https://images.unsplash.com/photo-1602940659805-770d1b3b9911?q=80&w=800" loading="lazy"
                     class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
                 <div
                     class="absolute bottom-0 left-0 p-6 text-white translate-y-2 group-hover:translate-y-0 transition-transform">
-                    <h3 class="font-bold text-xl mb-1">Santorini</h3>
-                    <p class="text-sm opacity-90 font-medium">Greece</p>
+                    <h3 class="font-bold text-xl mb-1">New York</h3>
+                    <p class="text-sm opacity-90 font-medium">USA</p>
                 </div>
             </a>
             <!-- Card 3 -->
             <a href="#"
                 class="group relative aspect-[3/4] rounded-2xl overflow-hidden shadow-elegant hover:shadow-elegant-lg transition-all duration-500">
-                <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?q=80&w=800"
+                <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?q=80&w=800" loading="lazy"
                     class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
                 <div
@@ -1479,7 +849,7 @@
             <!-- Card 4 -->
             <a href="#"
                 class="group relative aspect-[3/4] rounded-2xl overflow-hidden shadow-elegant hover:shadow-elegant-lg transition-all duration-500">
-                <img src="https://images.unsplash.com/photo-1531366936337-7c912a4589a7?q=80&w=800"
+                <img src="https://images.unsplash.com/photo-1531366936337-7c912a4589a7?q=80&w=800" loading="lazy"
                     class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
                 <div
@@ -1497,101 +867,106 @@
             <h2 class="font-display text-3xl font-bold text-brand-primary mb-10 text-center">Exclusive Deals</h2>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Deal 1 -->
+                <!-- Deal 1: Dubai -->
                 <div
                     class="rounded-2xl border border-gray-100 overflow-hidden hover:shadow-elegant-lg transition-all duration-300 group bg-white">
                     <div class="relative h-48 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1582719508461-905c673771fd?q=80&w=800"
+                        <img src="https://images.unsplash.com/photo-1546412414-e1885259563a?q=80&w=800" loading="lazy"
                             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                         <div
                             class="absolute top-4 left-4 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">
-                            30% Off</div>
+                            20% Off</div>
                     </div>
                     <div class="p-6">
                         <div class="flex justify-between items-start mb-2">
-                            <h3 class="font-bold text-lg text-brand-text">The Royal Sands</h3>
+                            <h3 class="font-bold text-lg text-brand-text">Atlantis The Palm</h3>
                             <div class="flex items-center gap-1 bg-brand-surface px-2 py-1 rounded">
                                 <i data-lucide="star" class="w-3 h-3 text-brand-primary fill-current"></i>
-                                <span class="text-xs font-bold text-brand-primary">4.9</span>
+                                <span class="text-xs font-bold text-brand-primary">5.0</span>
                             </div>
                         </div>
                         <p class="text-sm text-brand-muted mb-4 flex items-center gap-1"><i data-lucide="map-pin"
-                                class="w-3 h-3"></i> Cancun, Mexico</p>
+                                class="w-3 h-3"></i> Dubai, UAE</p>
                         <div class="flex justify-between items-center pt-4 border-t border-gray-100">
                             <div>
-                                <span class="text-xs text-gray-400 line-through">$450</span>
-                                <div class="text-xl font-bold text-brand-primary">$315 <span
+                                <span class="text-xs text-gray-400 line-through">$850</span>
+                                <div class="text-xl font-bold text-brand-primary">$680 <span
                                         class="text-xs text-brand-muted font-normal">/ night</span></div>
                             </div>
-                            <button
-                                class="h-10 px-6 rounded-xl border border-brand-primary text-brand-primary font-bold hover:bg-brand-primary hover:text-white transition-all duration-300 text-sm shadow-sm hover:shadow-md">View
-                                Deal</button>
+                            <button onclick="openDealModal('Dubai', 'DXB')"
+                                class="h-10 px-6 rounded-xl border border-brand-primary text-brand-primary font-bold hover:bg-brand-primary hover:text-white transition-all duration-300 text-sm shadow-sm hover:shadow-md">
+                                View Deal
+                            </button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Deal 2 -->
+                <!-- Deal 2: Phuket -->
                 <div
                     class="rounded-2xl border border-gray-100 overflow-hidden hover:shadow-elegant-lg transition-all duration-300 group bg-white">
                     <div class="relative h-48 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?q=80&w=800"
+                        <img src="https://images.unsplash.com/photo-1589394815804-964ed0be2eb5?q=80&w=800"
+                            loading="lazy"
                             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                         <div
                             class="absolute top-4 left-4 bg-brand-primary text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">
-                            Trending</div>
+                            Popular</div>
                     </div>
                     <div class="p-6">
                         <div class="flex justify-between items-start mb-2">
-                            <h3 class="font-bold text-lg text-brand-text">Blue Lagoon Resort</h3>
+                            <h3 class="font-bold text-lg text-brand-text">Amari Phuket</h3>
                             <div class="flex items-center gap-1 bg-brand-surface px-2 py-1 rounded">
                                 <i data-lucide="star" class="w-3 h-3 text-brand-primary fill-current"></i>
                                 <span class="text-xs font-bold text-brand-primary">4.8</span>
                             </div>
                         </div>
                         <p class="text-sm text-brand-muted mb-4 flex items-center gap-1"><i data-lucide="map-pin"
-                                class="w-3 h-3"></i> Iceland</p>
+                                class="w-3 h-3"></i> Phuket, Thailand</p>
                         <div class="flex justify-between items-center pt-4 border-t border-gray-100">
                             <div>
                                 <span class="text-xs text-gray-400">Values from</span>
-                                <div class="text-xl font-bold text-brand-primary">$299 <span
-                                        class="text-xs text-brand-muted font-normal">/ person</span></div>
+                                <div class="text-xl font-bold text-brand-primary">$150 <span
+                                        class="text-xs text-brand-muted font-normal">/ night</span></div>
                             </div>
-                            <button
-                                class="h-10 px-6 rounded-xl border border-brand-primary text-brand-primary font-bold hover:bg-brand-primary hover:text-white transition-all duration-300 text-sm shadow-sm hover:shadow-md">View
-                                Deal</button>
+                            <button onclick="openDealModal('Phuket', 'HKT')"
+                                class="h-10 px-6 rounded-xl border border-brand-primary text-brand-primary font-bold hover:bg-brand-primary hover:text-white transition-all duration-300 text-sm shadow-sm hover:shadow-md">
+                                View Deal
+                            </button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Deal 3 -->
+                <!-- Deal 3: New York -->
                 <div
                     class="rounded-2xl border border-gray-100 overflow-hidden hover:shadow-elegant-lg transition-all duration-300 group bg-white">
                     <div class="relative h-48 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=800"
+                        <img src="https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?q=80&w=800"
+                            loading="lazy"
                             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                         <div
                             class="absolute top-4 left-4 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">
-                            25% Off</div>
+                            15% Off</div>
                     </div>
                     <div class="p-6">
                         <div class="flex justify-between items-start mb-2">
-                            <h3 class="font-bold text-lg text-brand-text">Bordeaux Villas</h3>
+                            <h3 class="font-bold text-lg text-brand-text">The Plaza</h3>
                             <div class="flex items-center gap-1 bg-brand-surface px-2 py-1 rounded">
                                 <i data-lucide="star" class="w-3 h-3 text-brand-primary fill-current"></i>
                                 <span class="text-xs font-bold text-brand-primary">4.9</span>
                             </div>
                         </div>
                         <p class="text-sm text-brand-muted mb-4 flex items-center gap-1"><i data-lucide="map-pin"
-                                class="w-3 h-3"></i> France</p>
+                                class="w-3 h-3"></i> New York, USA</p>
                         <div class="flex justify-between items-center pt-4 border-t border-gray-100">
                             <div>
-                                <span class="text-xs text-gray-400 line-through">$600</span>
-                                <div class="text-xl font-bold text-brand-primary">$450 <span
+                                <span class="text-xs text-gray-400 line-through">$900</span>
+                                <div class="text-xl font-bold text-brand-primary">$765 <span
                                         class="text-xs text-brand-muted font-normal">/ night</span></div>
                             </div>
-                            <button
-                                class="h-10 px-6 rounded-xl border border-brand-primary text-brand-primary font-bold hover:bg-brand-primary hover:text-white transition-all duration-300 text-sm shadow-sm hover:shadow-md">View
-                                Deal</button>
+                            <button onclick="openDealModal('New York', 'JFK')"
+                                class="h-10 px-6 rounded-xl border border-brand-primary text-brand-primary font-bold hover:bg-brand-primary hover:text-white transition-all duration-300 text-sm shadow-sm hover:shadow-md">
+                                View Deal
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -1703,7 +1078,7 @@
     <footer class="bg-brand-secondary text-white pt-16 pb-8">
         <div class="container mx-auto px-6 lg:px-12 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 mb-12">
             <div class="col-span-2">
-                <img src="https://waddat.com/easygds_logo_transparent.png" alt="EasyGDS"
+                <img src="https://waddat.com/easygds_logo_transparent.png" alt="EasyGDS" loading="lazy"
                     class="h-8 brightness-0 invert mb-6">
                 <p class="text-blue-200 text-sm leading-relaxed max-w-xs mb-6">
                     Connecting you to the world's most incredible destinations with a seamless, premium booking
@@ -1725,30 +1100,12 @@
                 </div>
             </div>
 
-            <div>
-                <h4 class="font-bold text-lg mb-6">Company</h4>
-                <ul class="space-y-3 text-sm text-blue-200">
-                    <li><a href="#" class="hover:text-white transition-colors">About Us</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">Careers</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">Blog</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">Press</a></li>
-                </ul>
-            </div>
 
-            <div>
-                <h4 class="font-bold text-lg mb-6">Support</h4>
-                <ul class="space-y-3 text-sm text-blue-200">
-                    <li><a href="#" class="hover:text-white transition-colors">Help Center</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">Contact Us</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">Privacy Policy</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">Terms of Service</a></li>
-                </ul>
-            </div>
         </div>
 
         <div
             class="container mx-auto px-6 lg:px-12 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center text-sm text-blue-300">
-            <p>&copy; 2026 EasyGDS. All rights reserved.</p>
+            <p>&copy; 2026 easyGDS. All rights reserved.</p>
             <div class="flex gap-6 mt-4 md:mt-0">
                 <span>Privacy</span>
                 <span>Terms</span>
@@ -1757,200 +1114,147 @@
         </div>
     </footer>
 
+    <!-- ================= DEAL SEARCH MODAL ================= -->
+    <div id="deal-modal" class="fixed inset-0 z-[100] hidden overflow-y-auto">
+        <!-- Backdrop -->
+        <div class="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity opacity-0" id="deal-modal-backdrop">
+        </div>
+
+        <!-- Modal Wrapper (Flex for centering but allows scroll) -->
+        <div class="flex min-h-full items-center justify-center p-4">
+            <!-- Modal Content (Card) -->
+            <div class="relative w-full max-w-sm md:max-w-md bg-white rounded-2xl shadow-2xl transform scale-95 opacity-0 transition-all duration-300 my-8"
+                id="deal-modal-content">
+
+                <!-- Close Button (Absolute) -->
+                <button id="deal-close-btn"
+                    class="absolute top-4 right-4 z-50 w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-500 hover:text-red-500 transition-colors">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+
+                <!-- Body -->
+                <div class="p-5">
+                    <!-- Data-driven Title -->
+                    <div class="mb-6 pr-8">
+                        <h3 class="text-xl font-bold text-brand-primary mb-1">Book your Trip to <span
+                                id="deal-modal-dest-name">Dubai</span></h3>
+                        <p class="text-xs text-gray-500 uppercase tracking-wider font-semibold">Customize your package
+                        </p>
+                    </div>
+
+                    <!-- Search Form (forced vertical) -->
+                    <div class="search-form block relative">
+                        <div class="grid grid-cols-1 gap-y-4 mb-4">
+
+                            <!-- Origin -->
+                            <div class="search-input-box bg-gray-50/50" data-field="origin">
+                                <i data-lucide="plane-takeoff" class="input-icon"></i>
+                                <div class="ml-3 w-full min-w-0 flex flex-col justify-center h-full">
+                                    <label class="search-label">From</label>
+                                    <input type="text" id="modal-origin" data-type="airport_code"
+                                        placeholder="City or Airport" class="search-input auto-input bg-transparent">
+                                </div>
+                            </div>
+
+                            <!-- Destination (Read Only / Pre-filled) -->
+                            <div class="search-input-box bg-brand-surface/50 border-brand-primary/10"
+                                data-field="destination">
+                                <i data-lucide="map-pin" class="input-icon text-brand-primary"></i>
+                                <div class="ml-3 w-full min-w-0 flex flex-col justify-center h-full">
+                                    <label class="search-label text-brand-primary">To</label>
+                                    <input type="text" id="modal-dest" readonly
+                                        class="search-input text-brand-primary font-bold bg-transparent">
+                                </div>
+                            </div>
+
+                            <!-- Dates -->
+                            <div class="search-input-box" data-field="dates">
+                                <i data-lucide="calendar-days" class="input-icon"></i>
+                                <div class="ml-3 w-full min-w-0 flex flex-col justify-center h-full">
+                                    <label class="search-label">Dates</label>
+                                    <input type="text" id="modal-dates" placeholder="Departure - Return"
+                                        class="search-input">
+                                </div>
+                            </div>
+
+                            <!-- Cabin -->
+                            <div class="search-input-box cursor-pointer custom-select relative" data-field="cabin">
+                                <div class="flex items-center h-full w-full">
+                                    <i data-lucide="armchair" class="input-icon"></i>
+                                    <div class="ml-3 w-full min-w-0 flex flex-col justify-center h-full">
+                                        <label class="search-label">Cabin</label>
+                                        <div id="modal-cabin-val" class="search-input selected-val">Economy</div>
+                                    </div>
+                                    <i data-lucide="chevron-down"
+                                        class="w-4 h-4 text-gray-400 flex-shrink-0 ml-1 mr-4"></i>
+                                </div>
+                                <!-- Options (Static flow for vertical layout) -->
+                                <div class="custom-options hidden w-full bg-white border-t border-gray-100 z-10">
+                                    <div
+                                        class="option-item px-4 py-3 hover:bg-brand-surface text-sm font-semibold text-brand-text cursor-pointer transition-colors">
+                                        Economy</div>
+                                    <div
+                                        class="option-item px-4 py-3 hover:bg-brand-surface text-sm font-semibold text-brand-text cursor-pointer transition-colors">
+                                        Premium Economy</div>
+                                    <div
+                                        class="option-item px-4 py-3 hover:bg-brand-surface text-sm font-semibold text-brand-text cursor-pointer transition-colors">
+                                        Business</div>
+                                    <div
+                                        class="option-item px-4 py-3 hover:bg-brand-surface text-sm font-semibold text-brand-text cursor-pointer transition-colors">
+                                        First</div>
+                                </div>
+                            </div>
+
+                            <!-- Travellers -->
+                            <div class="search-input-box cursor-pointer relative flex-col items-start h-auto"
+                                id="modal-traveler-trigger">
+                                <div class="flex items-center w-full h-[60px]"> <!-- header part -->
+                                    <i data-lucide="users" class="input-icon"></i>
+                                    <div class="ml-3 w-full min-w-0 flex flex-col justify-center h-full">
+                                        <label class="search-label">Travellers</label>
+                                        <input type="text" id="modal-traveler-summary"
+                                            placeholder="2 Travellers, 1 Room" readonly
+                                            class="search-input cursor-pointer bg-transparent">
+                                    </div>
+                                    <i data-lucide="chevron-down"
+                                        class="w-4 h-4 text-gray-400 flex-shrink-0 ml-1 mr-4"></i>
+                                </div>
+
+                                <!-- Popover (Static flow) -->
+                                <div id="modal-traveler-popover"
+                                    class="traveler-popover hidden cursor-default w-full bg-white border-t border-gray-100 p-4">
+                                    <div id="modal-rooms-container"
+                                        class="max-h-[250px] overflow-y-auto mb-4 scrollbar-thin">
+                                    </div>
+                                    <button type="button" id="modal-btn-add-room"
+                                        class="text-brand-primary font-semibold text-sm mb-4 hover:underline flex items-center gap-1.5 transition-colors">
+                                        <i data-lucide="plus" class="w-4 h-4"></i> Add Room
+                                    </button>
+                                    <button type="button" id="modal-btn-done-travelers"
+                                        class="w-full bg-brand-primary text-white py-2.5 rounded-xl font-semibold text-sm hover:bg-brand-secondary shadow-elegant transition-all active:scale-[0.98]">
+                                        Done
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="pt-2">
+                            <button id="modal-search-btn"
+                                class="search-btn-primary w-full h-12 text-sm uppercase tracking-wide">
+                                <span>See Prices</span>
+                                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- ================= JAVASCRIPT ================= -->
-    <script>
-        // Initialize Lucide Icons
-        lucide.createIcons();
+    <script src="scripts.js"></script>
 
-        document.addEventListener('DOMContentLoaded', () => {
-            // Add 'loaded' class for animations
-            setTimeout(() => {
-                document.body.classList.add('loaded');
-            }, 100);
-
-            // --- Hero Carousel ---
-            const slides = document.querySelectorAll('.hero-slide');
-            const dots = document.querySelectorAll('.carousel-dot');
-            let currentSlide = 0;
-            let slideInterval;
-
-            const updateCarousel = (index) => {
-                // Update slides
-                slides.forEach(s => s.classList.remove('active'));
-                slides[index].classList.add('active');
-
-                // Update dots
-                dots.forEach(d => {
-                    d.classList.remove('active', 'bg-white', 'w-8');
-                    d.classList.add('bg-white/40', 'w-2.5');
-                });
-
-                const activeDot = dots[index];
-                activeDot.classList.remove('bg-white/40', 'w-2.5');
-                activeDot.classList.add('active', 'bg-white', 'w-8');
-
-                currentSlide = index;
-            };
-
-            const startSlideShow = () => {
-                if (slideInterval) clearInterval(slideInterval);
-                slideInterval = setInterval(() => {
-                    const next = (currentSlide + 1) % slides.length;
-                    updateCarousel(next);
-                }, 6000);
-            };
-
-            // Initialize
-            startSlideShow();
-
-            // Click Handlers
-            dots.forEach((dot, index) => {
-                dot.addEventListener('click', () => {
-                    updateCarousel(index);
-                    startSlideShow(); // Reset timer
-                });
-            });
-
-            // --- Mobile Menu Toggle ---
-            const mobileBtn = document.getElementById('mobile-menu-btn');
-            const mobileMenu = document.getElementById('mobile-menu');
-            let isMenuOpen = false;
-
-            mobileBtn.addEventListener('click', () => {
-                isMenuOpen = !isMenuOpen;
-                if (isMenuOpen) {
-                    mobileMenu.classList.remove('translate-x-full');
-                    mobileBtn.innerHTML = '<i data-lucide="x" class="w-7 h-7"></i>';
-                    document.body.style.overflow = 'hidden';
-                } else {
-                    mobileMenu.classList.add('translate-x-full');
-                    mobileBtn.innerHTML = '<i data-lucide="menu" class="w-7 h-7"></i>';
-                    document.body.style.overflow = '';
-                }
-                lucide.createIcons();
-            });
-
-            // --- Sticky Search Logic ---
-            const header = document.getElementById('main-header');
-            const searchContainerWrapper = document.getElementById('search-container-wrapper');
-            const searchPanel = document.getElementById('search-panel');
-            const searchInputsContainer = document.getElementById('search-inputs-container');
-            const searchTabsContainer = document.getElementById('search-tabs-container');
-            const headerHeight = header.offsetHeight;
-            let isSticky = false;
-            let isExpanded = false;
-
-            const applySticky = () => {
-                searchPanel.classList.add('is-sticky', 'is-collapsed');
-                searchPanel.classList.remove('max-w-4xl', 'rounded-2xl', 'shadow-elegant-xl', 'bg-white/10', 'backdrop-blur-md', 'border-white/30', 'p-2', 'lg:p-4');
-                searchPanel.classList.add('max-w-full', 'rounded-b-2xl', 'border-t', 'border-gray-100', 'py-3', 'px-4', 'lg:px-6');
-                searchContainerWrapper.classList.remove('px-4', 'lg:px-6', 'pb-6');
-
-                updateTabStyles(true);
-            };
-
-            const removeSticky = () => {
-                searchPanel.classList.remove('is-sticky', 'is-collapsed');
-                searchPanel.classList.add('max-w-4xl', 'rounded-2xl', 'shadow-elegant-xl', 'bg-white/10', 'backdrop-blur-md', 'border-white/30', 'p-2', 'lg:p-4');
-                searchPanel.classList.remove('max-w-full', 'rounded-b-2xl', 'border-t', 'border-gray-100', 'py-3', 'px-4', 'lg:px-6');
-                searchContainerWrapper.classList.add('px-4', 'lg:px-6', 'pb-6');
-
-                isExpanded = false;
-                updateTabStyles(false);
-            };
-
-            const updateTabStyles = (sticky) => {
-                const tabs = searchTabsContainer.querySelectorAll('.search-tab');
-                tabs.forEach(tab => {
-                    if (!tab.classList.contains('active')) {
-                        if (sticky) {
-                            tab.classList.remove('text-white/90', 'hover:text-white', 'hover:bg-white/10');
-                            tab.classList.add('text-gray-500', 'hover:text-brand-primary', 'hover:bg-gray-50');
-                        } else {
-                            tab.classList.add('text-white/90', 'hover:text-white', 'hover:bg-white/10');
-                            tab.classList.remove('text-gray-500', 'hover:text-brand-primary', 'hover:bg-gray-50');
-                        }
-                    }
-                });
-            };
-
-            window.addEventListener('scroll', () => {
-                const triggerPoint = searchContainerWrapper.offsetTop - headerHeight;
-
-                if (window.scrollY > triggerPoint) {
-                    if (!isSticky) {
-                        isSticky = true;
-                        applySticky();
-                    }
-                } else {
-                    if (isSticky) {
-                        isSticky = false;
-                        removeSticky();
-                    }
-                }
-            });
-
-            // Expand on tab click when sticky
-            searchTabsContainer.addEventListener('click', (e) => {
-                const clickedTab = e.target.closest('.search-tab');
-                if (clickedTab && isSticky) {
-                    isExpanded = true;
-                    searchPanel.classList.remove('is-collapsed');
-                    searchPanel.classList.remove('py-3');
-                    searchPanel.classList.add('py-4');
-                }
-            });
-
-            // Collapse on outside click when sticky
-            document.addEventListener('click', (e) => {
-                if (isSticky && isExpanded) {
-                    const isClickInside = searchPanel.contains(e.target);
-                    if (!isClickInside) {
-                        isExpanded = false;
-                        searchPanel.classList.add('is-collapsed');
-                        searchPanel.classList.add('py-3');
-                        searchPanel.classList.remove('py-4');
-                    }
-                }
-            });
-
-
-
-            // --- Search Tab Switching ---
-            const tabs = document.querySelectorAll('.search-tab');
-            const forms = document.querySelectorAll('.search-form');
-
-            tabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    const target = tab.dataset.target;
-
-                    tabs.forEach(t => {
-                        // Reset all tabs
-                        t.classList.remove('active', 'bg-white', 'shadow-elegant', 'text-brand-primary', 'ring-1', 'ring-black/5');
-
-                        if (isSticky) {
-                            t.classList.add('text-gray-500', 'hover:text-brand-primary', 'hover:bg-gray-50');
-                            t.classList.remove('text-white/90', 'hover:text-white', 'hover:bg-white/10');
-                        } else {
-                            t.classList.add('text-white/90', 'hover:text-white', 'hover:bg-white/10');
-                            t.classList.remove('text-gray-500', 'hover:text-brand-primary', 'hover:bg-gray-50');
-                        }
-                    });
-
-                    // Activate clicked tab
-                    tab.classList.add('active', 'bg-white', 'shadow-elegant', 'text-brand-primary', 'ring-1', 'ring-black/5');
-                    tab.classList.remove('text-white/90', 'text-gray-500', 'hover:bg-white/10', 'hover:bg-gray-50', 'hover:text-white', 'hover:text-brand-primary');
-
-                    forms.forEach(form => form.classList.add('hidden'));
-                    const targetForm = document.getElementById(`${target}-form`);
-                    if (targetForm) targetForm.classList.remove('hidden');
-                });
-            });
-
-            // Popovers are handled by homepage_logic_integrated.js
-        });
-    </script>
-    <script src="homepage_logic_integrated.js"></script>
 </body>
 
 </html>
