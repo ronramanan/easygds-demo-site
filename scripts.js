@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (closeBtn) closeBtn.onclick = closeModal;
     if (modalBackdrop) modalBackdrop.onclick = closeModal;
-    
+
     // Initialize Lucide Icons
     lucide.createIcons();
 
@@ -148,7 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchPanel = document.getElementById('search-panel');
     const searchInputsContainer = document.getElementById('search-inputs-container');
     const searchTabsContainer = document.getElementById('search-tabs-container');
-    
+
     if (header && searchContainerWrapper && searchPanel) {
         const headerHeight = header.offsetHeight;
         let isSticky = false;
@@ -156,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const applySticky = () => {
             searchPanel.classList.add('is-sticky', 'is-collapsed');
-            searchPanel.classList.remove('max-w-4xl', 'rounded-2xl', 'shadow-elegant-xl', 'bg-white/10', 'backdrop-blur-md', 'border-white/30', 'p-2', 'lg:p-4');
+            searchPanel.classList.remove('max-w-4xl', 'rounded-2xl', 'shadow-premium', 'bg-white/10', 'backdrop-blur-md', 'border-white/30', 'p-2', 'lg:p-4');
             searchPanel.classList.add('max-w-full', 'rounded-b-2xl', 'border-t', 'border-gray-100', 'py-3', 'px-4', 'lg:px-6');
             searchContainerWrapper.classList.remove('px-4', 'lg:px-6', 'pb-6');
 
@@ -165,7 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const removeSticky = () => {
             searchPanel.classList.remove('is-sticky', 'is-collapsed');
-            searchPanel.classList.add('max-w-4xl', 'rounded-2xl', 'shadow-elegant-xl', 'bg-white/10', 'backdrop-blur-md', 'border-white/30', 'p-2', 'lg:p-4');
+            searchPanel.classList.add('max-w-4xl', 'rounded-2xl', 'shadow-premium', 'bg-white/10', 'backdrop-blur-md', 'border-white/30', 'p-2', 'lg:p-4');
             searchPanel.classList.remove('max-w-full', 'rounded-b-2xl', 'border-t', 'border-gray-100', 'py-3', 'px-4', 'lg:px-6');
             searchContainerWrapper.classList.add('px-4', 'lg:px-6', 'pb-6');
 
@@ -243,7 +243,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             tabs.forEach(t => {
                 // Reset all tabs
-                t.classList.remove('active', 'bg-white', 'shadow-elegant', 'text-brand-primary', 'ring-1', 'ring-black/5');
+                t.classList.remove('active', 'bg-white', 'shadow-premium', 'text-brand-primary', 'ring-1', 'ring-black/5');
 
                 if (isSticky) {
                     t.classList.add('text-gray-500', 'hover:text-brand-primary', 'hover:bg-gray-50');
@@ -255,7 +255,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             // Activate clicked tab
-            tab.classList.add('active', 'bg-white', 'shadow-elegant', 'text-brand-primary', 'ring-1', 'ring-black/5');
+            tab.classList.add('active', 'bg-white', 'shadow-premium', 'text-brand-primary', 'ring-1', 'ring-black/5');
             tab.classList.remove('text-white/90', 'text-gray-500', 'hover:bg-white/10', 'hover:bg-gray-50', 'hover:text-white', 'hover:text-brand-primary');
 
             forms.forEach(form => form.classList.add('hidden'));

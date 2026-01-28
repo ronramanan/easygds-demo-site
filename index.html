@@ -4,1122 +4,479 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flyadeal Holidays | Curated Travel Experiences</title>
-    <!-- Tailwind CSS CDN -->
+    <title>easyGDS/APPS Proposal for Air Astana</title>
+    
+    <!-- SEO & Social Media Meta Tags -->
+    <meta name="description" content="Strategic Partnership Proposal: Transforming Air Astana into a world-class Virtual DMC & Holiday Portal with a unified travel ecosystem.">
+    <meta property="og:title" content="easyGDS/APPS Proposal for Air Astana">
+    <meta property="og:description" content="Strategic Partnership Proposal: Transforming Air Astana into a world-class Virtual DMC & Holiday Portal.">
+    <meta property="og:image" content="https://airastana.pages.dev/proposal_preview.png">
+    <meta property="og:url" content="https://airastana.pages.dev/">
+    <meta property="og:type" content="website">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="easyGDS/APPS Proposal for Air Astana">
+    <meta name="twitter:description" content="Strategic Partnership Proposal: Transforming Air Astana into a world-class Virtual DMC & Holiday Portal.">
+    <meta name="twitter:image" content="https://airastana.pages.dev/proposal_preview.png">
+
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Raleway -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700;800&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Gilroy:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- Flatpickr Datepicker -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
     <script>
         tailwind.config = {
             theme: {
-                fontFamily: {
-                    sans: ['Raleway', 'sans-serif'],
-                    display: ['Raleway', 'sans-serif'],
-                },
                 extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Gilroy', 'Inter', 'sans-serif'],
+                    },
                     colors: {
                         brand: {
-                            primary: '#522D6D',     // Flyadeal Purple (Official)
-                            secondary: '#3A1D4D',   // Darker Purple
-                            accent: '#CBDB04',      // Flyadeal Lime (Official)
-                            text: '#1A1A1A',        // Main Text
-                            muted: '#555555',       // Muted Text
-                            surface: '#F5F8FF',     // Light Background
+                            blue: '#1C2B4F',     // Air Astana Deep Blue
+                            gold: '#A48656',     // Air Astana Gold
+                            light: '#F8F9FA',    // Light Surface
                             white: '#FFFFFF',
-                            gold: '#D4AF37',        // Kept for premium feel accents
                         }
-                    },
-                    boxShadow: {
-                        'elegant': '0 4px 20px -5px rgba(32, 60, 148, 0.15)',
-                        'elegant-lg': '0 10px 30px -5px rgba(32, 60, 148, 0.2)',
-                        'elegant-xl': '0 20px 40px -5px rgba(32, 60, 148, 0.25)',
                     },
                     animation: {
                         'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
                     },
                     keyframes: {
                         fadeInUp: {
-                            '0%': { opacity: '0', transform: 'translateY(30px)' },
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
                             '100%': { opacity: '1', transform: 'translateY(0)' },
                         }
+                    },
+                    boxShadow: {
+                        'soft': '0 10px 40px -10px rgba(0,0,0,0.08)',
+                        'glow': '0 0 20px rgba(164, 134, 86, 0.15)',
                     }
                 }
             }
         }
     </script>
+    <style>
+        @font-face {
+            font-family: 'Gilroy';
+            src: local('Gilroy'), local('sans-serif');
+        }
 
+        body {
+            background-color: #F8F9FA;
+            color: #1C2B4F;
+            background-image:
+                radial-gradient(circle at 10% 20%, rgba(164, 134, 86, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(28, 43, 79, 0.03) 0%, transparent 20%);
+        }
 
-    <link rel="stylesheet" href="styles.css">
+        .glass-pod {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
+
+        .glass-pod:hover {
+            background: rgba(255, 255, 255, 0.95);
+            border-color: rgba(164, 134, 86, 0.3);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+        }
+
+        .glass-pod-intro {
+            background: linear-gradient(135deg, #1C2B4F 0%, #162241 100%);
+            color: white;
+            box-shadow: 0 20px 50px -12px rgba(28, 43, 79, 0.25);
+        }
+
+        .icon-box {
+            background: rgba(28, 43, 79, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .glass-pod:hover .icon-box {
+            background: rgba(164, 134, 86, 0.1);
+            color: #A48656;
+        }
+
+        .text-gradient-gold {
+            background: linear-gradient(to right, #A48656, #d4b483);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
 </head>
 
-<body class="bg-brand-surface text-brand-text font-sans antialiased">
+<body class="antialiased min-h-screen flex flex-col selection:bg-brand-gold selection:text-white">
 
-    <!-- ================= HEADER ================= -->
-    <header class="absolute top-0 left-0 right-0 z-[60] h-20 flex items-center transition-all duration-300"
-        id="main-header">
-        <div class="container mx-auto px-6 lg:px-12 flex justify-between items-center h-full">
-            <!-- Logo -->
-            <a href="#" class="flex items-center gap-3 group">
-                <img src="img/flyadeal_holidays_logo_transparent.png" onerror="this.src='img/flyadeal_logo.png'"
-                    alt="Flyadeal Holidays"
-                    class="h-16 w-auto transition-all duration-300 group-hover:scale-105 drop-shadow-md brightness-0 invert">
-            </a>
+    <!-- Header -->
+    <header
+        class="fixed top-0 w-full z-50 h-24 flex items-center justify-between px-6 lg:px-12 transition-all bg-white/80 backdrop-blur-md border-b border-gray-200">
+        <div class="flex items-center gap-4">
+            <img src="easygds_logo_transparent.png" alt="easyGDS" class="h-6 opacity-80">
+            <div class="w-px h-4 bg-gray-300"></div>
+            <img src="apps_logo_transparent.png" alt="Apps" class="h-6 opacity-80">
+            <div class="hidden md:block h-6 w-px bg-gray-200 ml-4"></div>
+            <span class="hidden md:block text-xs font-bold uppercase tracking-[0.2em] text-gray-400">Partnership
+                Proposal</span>
+        </div>
 
-            <!-- Desktop Navigation -->
-            <div class="hidden lg:flex items-center gap-8 text-sm font-semibold text-white/95">
-                <div
-                    class="flex items-center gap-1.5 cursor-pointer hover:text-white transition-all duration-300 hover:gap-2">
-                    <span>SAR</span>
-                    <i data-lucide="chevron-down" class="w-4 h-4"></i>
-                </div>
-                <div
-                    class="flex items-center gap-2 cursor-pointer hover:text-white transition-all duration-300 hover:gap-3 bg-white/10 px-3 py-1.5 rounded-full backdrop-blur-sm border border-white/20">
-                    <i data-lucide="globe" class="w-4 h-4"></i>
-                    <span>العربية</span>
-                </div>
-                <a href="#" class="hover:text-white transition-all duration-300 hover:underline underline-offset-4">Log
-                    In</a>
-                <a href="#"
-                    class="bg-brand-primary text-white border border-white/20 px-6 py-2.5 rounded-full hover:bg-brand-secondary transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5">Sign
-                    Up</a>
-            </div>
-
-            <!-- Mobile Hamburger -->
-            <button class="lg:hidden text-white" id="mobile-menu-btn">
-                <i data-lucide="menu" class="w-7 h-7"></i>
-            </button>
+        <div class="flex items-center gap-6">
+            <span class="text-xs font-bold uppercase tracking-widest text-brand-gold hidden sm:block">Prepared
+                For</span>
+            <!-- Logo size reduced by 25% -->
+            <img src="Air-Astana-Logo.png" alt="Air Astana" class="h-16 md:h-20 object-contain">
         </div>
     </header>
 
-    <!-- Mobile Menu Overlay -->
-    <div class="fixed inset-0 bg-white z-[55] transform translate-x-full transition-transform duration-300 lg:hidden pt-24 px-6 flex flex-col gap-6"
-        id="mobile-menu">
-        <!-- Replicating Desktop Items -->
-        <div class="flex items-center justify-between border-b pb-4 border-gray-100">
-            <span class="text-xl font-semibold text-brand-text">Currency</span>
-            <div class="flex items-center gap-1.5 text-brand-primary font-bold">
-                <span>SAR</span>
-                <i data-lucide="chevron-down" class="w-5 h-5"></i>
-            </div>
-        </div>
-        <div class="flex items-center justify-between border-b pb-4 border-gray-100">
-            <span class="text-xl font-semibold text-brand-text">Language</span>
-            <div class="flex items-center gap-2 text-brand-primary font-bold">
-                <i data-lucide="globe" class="w-5 h-5"></i>
-                <span>العربية</span>
-            </div>
-        </div>
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto px-6 pt-36 pb-20 max-w-7xl">
 
-        <div class="flex flex-col gap-4 mt-auto mb-10">
-            <a href="#"
-                class="text-center py-3 border border-brand-primary text-brand-primary rounded-full font-bold hover:bg-brand-surface transition-all">Log
-                In</a>
-            <a href="#"
-                class="text-center py-3 bg-brand-primary text-white rounded-full font-bold hover:bg-brand-secondary transition-all shadow-lg">Sign
-                Up</a>
-        </div>
-    </div>
+        <!-- Intro Pod -->
+        <div
+            class="glass-pod-intro rounded-3xl p-8 md:p-14 mb-16 animate-fade-in-up md:flex items-center gap-16 relative overflow-hidden">
+            <!-- Background decoration -->
+            <div class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-brand-gold/10 rounded-full blur-3xl"></div>
 
-    <!-- ================= HERO SECTION ================= -->
-    <section class="relative h-[65vh] min-h-[550px] max-h-[850px] w-full overflow-hidden">
-        <!-- Slides Container -->
-        <div class="absolute inset-0 z-0">
-
-            <!-- Slide 1: Jeddah -->
-            <div class="hero-slide active absolute inset-0">
-                <!-- Background - Verified Jeddah Corniche/Beach -->
-                <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('img/jeddah.jpg');">
-                </div>
-                <!-- Gradient -->
+            <div class="md:w-2/3 relative z-10">
                 <div
-                    class="absolute inset-0 bg-gradient-to-b from-brand-primary/60 via-brand-primary/20 to-brand-secondary/70 mixed-blend-multiply">
+                    class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-brand-gold text-xs font-bold uppercase tracking-widest mb-6">
+                    <span class="w-1.5 h-1.5 rounded-full bg-brand-gold animate-pulse"></span>
+                    Strategic Vision
                 </div>
-                <!-- Content -->
-                <div
-                    class="relative z-10 container mx-auto px-6 lg:px-12 h-full flex flex-col justify-center items-center pb-40 lg:pb-52 pt-24 text-center">
-                    <h1
-                        class="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 drop-shadow-lg leading-tight animate-fade-in-up">
-                        Jeddah <br>
-                        <span class="text-brand-surface italic text-3xl md:text-5xl">from SAR 499</span>
-                    </h1>
+                <h1 class="font-display text-4xl md:text-6xl font-bold mb-6 leading-tight">
+                    The Unified <br><span class="text-brand-gold">Travel Ecosystem</span>
+                </h1>
+                <p class="text-lg text-blue-100/80 leading-relaxed mb-8 max-w-2xl font-light">
+                    Transforming Air Astana into a world-class <strong>Virtual DMC & Holiday Portal</strong>.
+                    Capture the full traveler journey by integrating Flights, Hotels, Tours, and Transfers into a
+                    seamless customer journey.
+                </p>
+
+                <div class="flex flex-wrap gap-4">
                     <div
-                        class="animate-fade-in-up delay-[200ms] flex items-center justify-center gap-6 text-white/95 bg-white/10 backdrop-blur-md px-8 py-4 rounded-full border border-white/20 shadow-lg">
-                        <div class="flex items-center gap-3">
-                            <i data-lucide="plane" class="w-6 h-6"></i>
-                            <span class="font-bold text-lg">Flight</span>
-                        </div>
-                        <span class="text-2xl font-light opacity-50">+</span>
-                        <div class="flex items-center gap-3">
-                            <i data-lucide="hotel" class="w-6 h-6"></i>
-                            <span class="font-bold text-lg">Hotel</span>
-                        </div>
+                        class="flex items-center gap-2 text-sm font-semibold text-white/90 bg-white/10 px-4 py-2 rounded-lg border border-white/10">
+                        <i data-lucide="check-circle" class="w-4 h-4 text-brand-gold"></i> Monetize Inbounds
                     </div>
-                </div>
-            </div>
-
-            <!-- Slide 2: Sharm El Sheikh -->
-            <div class="hero-slide absolute inset-0">
-                <!-- Background - Sharm El Sheikh Beach -->
-                <div class="absolute inset-0 bg-cover bg-center"
-                    style="background-image: url('img/sharm_el_sheikh.jpg');">
-                </div>
-                <!-- Gradient -->
-                <div
-                    class="absolute inset-0 bg-gradient-to-b from-brand-primary/60 via-brand-primary/20 to-brand-secondary/70 mixed-blend-multiply">
-                </div>
-                <!-- Content -->
-                <div
-                    class="relative z-10 container mx-auto px-6 lg:px-12 h-full flex flex-col justify-center items-center pb-40 lg:pb-52 pt-24 text-center">
-                    <h1
-                        class="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 drop-shadow-lg leading-tight">
-                        Sharm El Sheikh <br>
-                        <span class="text-brand-surface italic text-3xl md:text-5xl">from SAR 1,299</span>
-                    </h1>
                     <div
-                        class="flex items-center justify-center gap-6 text-white/95 bg-white/10 backdrop-blur-md px-8 py-4 rounded-full border border-white/20 shadow-lg">
-                        <div class="flex items-center gap-3">
-                            <i data-lucide="plane" class="w-6 h-6"></i>
-                            <span class="font-bold text-lg">Flight</span>
-                        </div>
-                        <span class="text-2xl font-light opacity-50">+</span>
-                        <div class="flex items-center gap-3">
-                            <i data-lucide="hotel" class="w-6 h-6"></i>
-                            <span class="font-bold text-lg">Hotel</span>
-                        </div>
+                        class="flex items-center gap-2 text-sm font-semibold text-white/90 bg-white/10 px-4 py-2 rounded-lg border border-white/10">
+                        <i data-lucide="check-circle" class="w-4 h-4 text-brand-gold"></i> Verified Ecosystem
                     </div>
                 </div>
             </div>
 
-            <!-- Slide 3: Abha -->
-            <div class="hero-slide absolute inset-0">
-                <!-- Background - Abha Mountains -->
-                <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('img/abha.jpg');">
-                </div>
-                <!-- Gradient -->
-                <div
-                    class="absolute inset-0 bg-gradient-to-b from-brand-primary/60 via-brand-primary/20 to-brand-secondary/70 mixed-blend-multiply">
-                </div>
-                <!-- Content -->
-                <div
-                    class="relative z-10 container mx-auto px-6 lg:px-12 h-full flex flex-col justify-center items-center pb-40 lg:pb-52 pt-24 text-center">
-                    <h1
-                        class="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 drop-shadow-lg leading-tight">
-                        Abha <br>
-                        <span class="text-brand-surface italic text-3xl md:text-5xl">from SAR 399</span>
-                    </h1>
+            <!-- Graphic: CSS-based Ecosystem Visual -->
+            <div class="md:w-1/3 mt-12 md:mt-0 flex justify-center relative z-10">
+                <div class="relative w-72 h-72 flex items-center justify-center">
+
+                    <!-- Outer Orbit Ring -->
                     <div
-                        class="flex items-center justify-center gap-6 text-white/95 bg-white/10 backdrop-blur-md px-8 py-4 rounded-full border border-white/20 shadow-lg">
-                        <div class="flex items-center gap-3">
-                            <i data-lucide="plane" class="w-6 h-6"></i>
-                            <span class="font-bold text-lg">Flight</span>
-                        </div>
-                        <span class="text-2xl font-light opacity-50">+</span>
-                        <div class="flex items-center gap-3">
-                            <i data-lucide="hotel" class="w-6 h-6"></i>
-                            <span class="font-bold text-lg">Hotel</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Carousel Navigation Dots -->
-            <div class="absolute bottom-28 md:bottom-32 left-0 right-0 z-20 flex justify-center gap-3">
-                <button
-                    class="carousel-dot active h-2.5 rounded-full transition-all duration-300 bg-white w-8 shadow-sm"
-                    data-index="0" aria-label="Slide 1"></button>
-                <button
-                    class="carousel-dot h-2.5 rounded-full transition-all duration-300 bg-white/40 hover:bg-white/80 w-2.5 shadow-sm hover:scale-110"
-                    data-index="1" aria-label="Slide 2"></button>
-                <button
-                    class="carousel-dot h-2.5 rounded-full transition-all duration-300 bg-white/40 hover:bg-white/80 w-2.5 shadow-sm hover:scale-110"
-                    data-index="2" aria-label="Slide 3"></button>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- ================= STICKY SEARCH BAR ================= -->
-    <div class="sticky top-0 z-[50] -mt-12 lg:-mt-20 px-4 lg:px-6 pb-6 transition-all duration-300"
-        id="search-container-wrapper">
-        <div class="container mx-auto">
-            <!-- Enhanced Search Panel -->
-            <div class="bg-white/10 backdrop-blur-md rounded-2xl shadow-elegant-xl p-2 lg:p-4 max-w-4xl mx-auto transition-all duration-500 border border-white/30 flex flex-col"
-                id="search-panel">
-
-                <!-- Search Tabs -->
-                <div class="flex flex-nowrap overflow-x-auto no-scrollbar gap-1.5 sm:gap-2 mb-4 p-1.5 bg-white/15 backdrop-blur-sm rounded-xl lg:w-max lg:mx-auto transition-all duration-300"
-                    id="search-tabs-container">
-                    <button
-                        class="search-tab active flex items-center gap-2 px-4 sm:px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-200 whitespace-nowrap text-brand-primary bg-white shadow-elegant ring-1 ring-black/5"
-                        data-target="packages">
-                        <i data-lucide="briefcase" class="w-4 h-4"></i>
-                        <span class="hidden sm:inline">Packages</span>
-                    </button>
-                    <button
-                        class="search-tab flex items-center gap-2 px-4 sm:px-6 py-2.5 rounded-full text-sm font-semibold text-white/90 hover:text-white hover:bg-white/10 transition-all duration-200 whitespace-nowrap"
-                        data-target="hotels">
-                        <i data-lucide="bed" class="w-4 h-4"></i>
-                        <span class="hidden sm:inline">Hotels</span>
-                    </button>
-                    <button
-                        class="search-tab flex items-center gap-2 px-4 sm:px-6 py-2.5 rounded-full text-sm font-semibold text-white/90 hover:text-white hover:bg-white/10 transition-all duration-200 whitespace-nowrap"
-                        data-target="tours">
-                        <i data-lucide="map" class="w-4 h-4"></i>
-                        <span class="hidden sm:inline">Tours</span>
-                    </button>
-                    <button
-                        class="search-tab flex items-center gap-2 px-4 sm:px-6 py-2.5 rounded-full text-sm font-semibold text-white/90 hover:text-white hover:bg-white/10 transition-all duration-200 whitespace-nowrap"
-                        data-target="transfers">
-                        <i data-lucide="car" class="w-4 h-4"></i>
-                        <span class="hidden sm:inline">Transfers</span>
-                    </button>
-
-                </div>
-
-                <!-- Search Forms Container -->
-                <div class="px-2 sm:px-3 pb-3 sm:pb-4 transition-all duration-300 origin-top relative"
-                    id="search-inputs-container">
-
-                    <!-- Packages Form -->
-                    <div class="search-form block" id="packages-form">
-                        <!-- Main Inputs Grid -->
+                        class="absolute inset-0 border border-brand-gold/30 rounded-full animate-[spin_20s_linear_infinite]">
+                        <!-- Orbiting Dot -->
                         <div
-                            class="search-form-grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 xl:grid-cols-[1fr_1fr_1fr_1fr_1fr] mb-3">
-                            <!-- Origin -->
-                            <div class="search-input-box" data-field="origin">
-                                <i data-lucide="plane-takeoff" class="input-icon"></i>
-                                <div class="ml-3 w-full min-w-0 flex flex-col justify-center h-full">
-                                    <label class="search-label">From</label>
-                                    <input type="text" id="pkg-origin" data-type="airport_code"
-                                        placeholder="City or Airport" class="search-input auto-input">
-                                </div>
-                            </div>
-                            <!-- Destination -->
-                            <div class="search-input-box" data-field="destination">
-                                <i data-lucide="map-pin" class="input-icon"></i>
-                                <div class="ml-3 w-full min-w-0 flex flex-col justify-center h-full">
-                                    <label class="search-label">To</label>
-                                    <input type="text" id="pkg-dest" data-type="airport_code"
-                                        placeholder="City or Airport" class="search-input auto-input">
-                                </div>
-                            </div>
-                            <!-- Dates -->
-                            <div class="search-input-box" data-field="dates">
-                                <i data-lucide="calendar-days" class="input-icon"></i>
-                                <div class="ml-3 w-full min-w-0 flex flex-col justify-center h-full">
-                                    <label class="search-label">Dates</label>
-                                    <input type="text" id="pkg-dates" placeholder="Departure - Return"
-                                        class="search-input">
-                                </div>
-                            </div>
-                            <!-- Travellers -->
-                            <div class="search-input-box cursor-pointer" id="pkg-traveler-trigger"
-                                data-field="travelers">
-                                <i data-lucide="users" class="input-icon"></i>
-                                <div class="ml-3 w-full min-w-0 flex flex-col justify-center h-full">
-                                    <label class="search-label">Travellers</label>
-                                    <input type="text" id="pkg-traveler-summary" placeholder="2 Travellers, 1 Room"
-                                        readonly class="search-input cursor-pointer">
-                                </div>
-                                <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400 flex-shrink-0 ml-1"></i>
-                                <!-- Popover -->
-                                <div id="pkg-traveler-popover" class="traveler-popover hidden cursor-default">
-                                    <div id="pkg-rooms-container" class="max-h-[280px] overflow-y-auto mb-4 -mr-2 pr-2">
-                                    </div>
-                                    <button type="button" id="pkg-btn-add-room"
-                                        class="text-brand-primary font-semibold text-sm mb-4 hover:underline flex items-center gap-1.5 transition-colors">
-                                        <i data-lucide="plus" class="w-4 h-4"></i> Add Room
-                                    </button>
-                                    <button type="button" id="pkg-btn-done-travelers"
-                                        class="w-full bg-brand-primary text-white py-2.5 rounded-xl font-semibold text-sm hover:bg-brand-secondary shadow-elegant hover:shadow-elegant-lg transition-all active:scale-[0.98]">
-                                        Done
-                                    </button>
-                                </div>
-                            </div>
-                            <!-- Cabin Class -->
-                            <div class="search-input-box cursor-pointer custom-select" data-field="cabin">
-                                <i data-lucide="armchair" class="input-icon"></i>
-                                <div class="ml-3 w-full min-w-0 flex flex-col justify-center h-full">
-                                    <label class="search-label">Cabin</label>
-                                    <div id="pkg-cabin-val" class="search-input selected-val">Economy</div>
-                                </div>
-                                <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400 flex-shrink-0 ml-1"></i>
-                                <!-- Options -->
-                                <div
-                                    class="custom-options hidden absolute top-[calc(100%+4px)] left-0 w-full bg-white rounded-xl shadow-elegant-lg border border-gray-100 z-50 overflow-hidden">
-                                    <div
-                                        class="option-item px-4 py-3 hover:bg-brand-surface text-sm font-semibold text-brand-text cursor-pointer transition-colors">
-                                        Economy</div>
-                                    <div
-                                        class="option-item px-4 py-3 hover:bg-brand-surface text-sm font-semibold text-brand-text cursor-pointer transition-colors">
-                                        Premium Economy</div>
-                                    <div
-                                        class="option-item px-4 py-3 hover:bg-brand-surface text-sm font-semibold text-brand-text cursor-pointer transition-colors">
-                                        Business</div>
-                                    <div
-                                        class="option-item px-4 py-3 hover:bg-brand-surface text-sm font-semibold text-brand-text cursor-pointer transition-colors">
-                                        First</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Bottom Row: Checkbox + Hotel Dates on left, Button on right -->
-                        <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
-                            <!-- Left side: Checkbox and Hotel Dates -->
-                            <div class="flex flex-col gap-3">
-                                <!-- Checkbox -->
-                                <label class="inline-flex items-center gap-3 cursor-pointer group select-none">
-                                    <div class="relative flex items-center">
-                                        <input type="checkbox" id="pkg-partial-hotel"
-                                            class="custom-checkbox peer border-gray-300 hover:border-brand-primary">
-                                        <i data-lucide="check"
-                                            class="check-icon absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 text-white opacity-0 pointer-events-none transition-opacity duration-200"></i>
-                                    </div>
-                                    <span class="text-sm font-medium transition-colors pkg-checkbox-label">
-                                        I only need a hotel for part of my trip
-                                    </span>
-                                </label>
-
-                                <!-- Hotel Dates (shown when checkbox is checked) -->
-                                <div id="pkg-partial-dates-container" class="hidden transition-all duration-300">
-                                    <div class="search-input-box max-w-xs" data-field="hotel-dates">
-                                        <i data-lucide="calendar" class="input-icon"></i>
-                                        <div class="ml-3 w-full min-w-0 flex flex-col justify-center h-full">
-                                            <label class="search-label">Hotel Dates</label>
-                                            <input type="text" id="pkg-hotel-dates" placeholder="Check-in - Check-out"
-                                                class="search-input">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Right side: Search Button -->
-                            <button id="pkg-search-btn" class="search-btn-primary flex-shrink-0">
-                                <span>Search Packages</span>
-                                <i data-lucide="briefcase"></i>
-                            </button>
+                            class="absolute top-1/2 -right-1 w-2 h-2 bg-brand-gold rounded-full shadow-[0_0_10px_rgba(164,134,86,0.8)]">
                         </div>
                     </div>
 
-                    <!-- Hotels Form -->
-                    <div class="search-form hidden" id="hotels-form">
-                        <!-- Main Inputs Grid -->
-                        <div class="search-form-grid grid-cols-1 md:grid-cols-[1.5fr_1fr_1fr] mb-3">
-                            <!-- Destination -->
-                            <div class="search-input-box" data-field="destination">
-                                <i data-lucide="map-pin" class="input-icon"></i>
-                                <div class="ml-3 w-full min-w-0 flex flex-col justify-center h-full">
-                                    <label class="search-label">Destination / Hotel</label>
-                                    <input type="text" id="ht-dest" data-type="any" placeholder="Where are you going?"
-                                        class="search-input auto-input">
-                                </div>
-                            </div>
-                            <!-- Dates -->
-                            <div class="search-input-box" data-field="dates">
-                                <i data-lucide="calendar" class="input-icon"></i>
-                                <div class="ml-3 w-full min-w-0 flex flex-col justify-center h-full">
-                                    <label class="search-label">Dates</label>
-                                    <input type="text" id="ht-dates" placeholder="Check-in - Check-out"
-                                        class="search-input">
-                                </div>
-                            </div>
-                            <!-- Guests -->
-                            <div class="search-input-box cursor-pointer" id="traveler-trigger" data-field="guests">
-                                <i data-lucide="users" class="input-icon"></i>
-                                <div class="ml-3 w-full min-w-0 flex flex-col justify-center h-full">
-                                    <label class="search-label">Guests / Rooms</label>
-                                    <input type="text" id="traveler-summary" placeholder="2 Guests, 1 Room" readonly
-                                        class="search-input cursor-pointer">
-                                </div>
-                                <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400 flex-shrink-0 ml-1"></i>
-                                <!-- Popover -->
-                                <div id="traveler-popover" class="traveler-popover hidden cursor-default">
-                                    <div id="rooms-container" class="max-h-[280px] overflow-y-auto mb-4 -mr-2 pr-2">
-                                    </div>
-                                    <button type="button" id="btn-add-room"
-                                        class="text-brand-primary font-semibold text-sm mb-4 hover:underline flex items-center gap-1.5 transition-colors">
-                                        <i data-lucide="plus" class="w-4 h-4"></i> Add Room
-                                    </button>
-                                    <button type="button" id="btn-done-travelers"
-                                        class="w-full bg-brand-primary text-white py-2.5 rounded-xl font-semibold text-sm hover:bg-brand-secondary shadow-elegant hover:shadow-elegant-lg transition-all active:scale-[0.98]">
-                                        Done
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Bottom Row: Search Button -->
-                        <div class="flex justify-end">
-                            <button id="hotel-search-btn" class="search-btn-primary flex-shrink-0">
-                                <span>Search Hotels</span>
-                                <i data-lucide="search"></i>
-                            </button>
-                        </div>
+                    <!-- Inner Orbit Ring -->
+                    <div
+                        class="absolute inset-8 border border-white/20 rounded-full animate-[spin_15s_linear_infinite_reverse]">
                     </div>
 
-
-
-                    <!-- Tours Form -->
-                    <div class="search-form hidden" id="tours-form">
-                        <!-- Main Inputs Grid -->
-                        <div class="search-form-grid grid-cols-1 md:grid-cols-[1.5fr_1fr_1fr] mb-3">
-                            <!-- Destination/Activity -->
-                            <div class="search-input-box" data-field="activity">
-                                <i data-lucide="compass" class="input-icon"></i>
-                                <div class="ml-3 w-full min-w-0 flex flex-col justify-center h-full">
-                                    <label class="search-label">Destination</label>
-                                    <input type="text" id="tour-dest" data-type="tour_region"
-                                        placeholder="Attractions, tours, activities..." class="search-input auto-input">
-                                </div>
-                            </div>
-                            <!-- Dates -->
-                            <div class="search-input-box" data-field="dates">
-                                <i data-lucide="calendar-days" class="input-icon"></i>
-                                <div class="ml-3 w-full min-w-0 flex flex-col justify-center h-full flex-grow">
-                                    <label class="search-label">Dates</label>
-                                    <input type="text" id="tour-dates" placeholder="Select dates" class="search-input">
-                                </div>
-                            </div>
-                            <!-- Travelers -->
-                            <div class="search-input-box cursor-pointer" id="tour-pax-trigger" data-field="travelers">
-                                <i data-lucide="users" class="input-icon"></i>
-                                <div class="ml-3 w-full min-w-0 flex flex-col justify-center h-full">
-                                    <label class="search-label">Travelers</label>
-                                    <input type="text" id="tour-pax-display" placeholder="1 Adult" readonly
-                                        class="search-input cursor-pointer">
-                                </div>
-                                <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400 flex-shrink-0 ml-1"></i>
-                                <!-- Popover -->
-                                <div id="tour-pax-menu"
-                                    class="traveler-popover hidden cursor-default right-0 left-auto">
-                                    <!-- Adults -->
-                                    <div class="flex justify-between items-center py-3 border-b border-gray-100">
-                                        <div>
-                                            <div class="text-sm font-semibold text-brand-text">Adults</div>
-                                            <div class="text-xs text-gray-400">12+ years</div>
-                                        </div>
-                                        <div class="flex items-center gap-3">
-                                            <button class="counter-btn pax-btn-tour" data-type="adt"
-                                                data-action="minus">−</button>
-                                            <span id="tour-count-adt"
-                                                class="font-semibold w-5 text-center text-brand-text">1</span>
-                                            <button class="counter-btn pax-btn-tour" data-type="adt"
-                                                data-action="plus">+</button>
-                                        </div>
-                                    </div>
-                                    <!-- Children -->
-                                    <div class="flex justify-between items-center py-3 border-b border-gray-100">
-                                        <div>
-                                            <div class="text-sm font-semibold text-brand-text">Children</div>
-                                            <div class="text-xs text-gray-400">2-11 years</div>
-                                        </div>
-                                        <div class="flex items-center gap-3">
-                                            <button class="counter-btn pax-btn-tour" data-type="chd"
-                                                data-action="minus">−</button>
-                                            <span id="tour-count-chd"
-                                                class="font-semibold w-5 text-center text-brand-text">0</span>
-                                            <button class="counter-btn pax-btn-tour" data-type="chd"
-                                                data-action="plus">+</button>
-                                        </div>
-                                    </div>
-                                    <!-- Infants -->
-                                    <div class="flex justify-between items-center py-3 border-b border-gray-100">
-                                        <div>
-                                            <div class="text-sm font-semibold text-brand-text">Infants</div>
-                                            <div class="text-xs text-gray-400">Under 2 years</div>
-                                        </div>
-                                        <div class="flex items-center gap-3">
-                                            <button class="counter-btn pax-btn-tour" data-type="inf"
-                                                data-action="minus">−</button>
-                                            <span id="tour-count-inf"
-                                                class="font-semibold w-5 text-center text-brand-text">0</span>
-                                            <button class="counter-btn pax-btn-tour" data-type="inf"
-                                                data-action="plus">+</button>
-                                        </div>
-                                    </div>
-                                    <!-- Child Ages -->
-                                    <div id="tour-chd-ages-container" class="hidden py-3 border-b border-gray-100">
-                                        <label class="search-label mb-2">Child Ages</label>
-                                        <div id="tour-chd-ages-grid" class="grid grid-cols-2 gap-2"></div>
-                                    </div>
-                                    <!-- Done Button -->
-                                    <button id="tour-btn-done-pax"
-                                        class="w-full mt-4 bg-brand-primary text-white py-2.5 rounded-xl font-semibold text-sm hover:bg-brand-secondary shadow-elegant hover:shadow-elegant-lg transition-all active:scale-[0.98]">
-                                        Done
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Bottom Row: Search Button -->
-                        <div class="flex justify-end">
-                            <button id="tour-search-btn" class="search-btn-primary flex-shrink-0">
-                                <span>Explore</span>
-                                <i data-lucide="arrow-right"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Transfers Form -->
-                    <div class="search-form hidden" id="transfers-form">
-                        <!-- Main Inputs Grid -->
+                    <!-- Connecting Lines (Cross) -->
+                    <div class="absolute inset-0 flex items-center justify-center opacity-20">
+                        <div class="w-full h-px bg-gradient-to-r from-transparent via-brand-gold to-transparent"></div>
                         <div
-                            class="search-form-grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1fr_auto_1fr_0.8fr_0.8fr] mb-3">
-                            <!-- Pickup -->
-                            <div class="search-input-box" data-field="pickup">
-                                <i data-lucide="plane" class="input-icon"></i>
-                                <div class="ml-3 w-full min-w-0 flex flex-col justify-center h-full">
-                                    <label class="search-label">Pickup</label>
-                                    <input type="text" id="tr-pickup" data-type="airport_code"
-                                        placeholder="Airport or location" class="search-input auto-input">
-                                </div>
-                            </div>
-
-                            <!-- Swap Button -->
-                            <div class="hidden sm:flex items-center justify-center h-14">
-                                <button type="button" id="btn-swap-transfer"
-                                    class="w-10 h-10 rounded-full bg-white border border-gray-200 hover:border-brand-primary hover:bg-brand-surface shadow-sm flex items-center justify-center transition-all duration-200 group active:scale-95">
-                                    <i data-lucide="arrow-left-right"
-                                        class="w-4 h-4 text-gray-400 group-hover:text-brand-primary transition-colors"></i>
-                                </button>
-                            </div>
-
-                            <!-- Dropoff -->
-                            <div class="search-input-box" data-field="dropoff">
-                                <i data-lucide="building-2" class="input-icon"></i>
-                                <div class="ml-3 w-full min-w-0 flex flex-col justify-center h-full">
-                                    <label class="search-label">Dropoff</label>
-                                    <input type="text" id="tr-dropoff" data-type="any"
-                                        placeholder="Hotel or destination" class="search-input auto-input">
-                                </div>
-                            </div>
-
-                            <!-- Date -->
-                            <div class="search-input-box" data-field="date">
-                                <i data-lucide="calendar" class="input-icon"></i>
-                                <div class="ml-3 w-full min-w-0 flex flex-col justify-center h-full">
-                                    <label class="search-label">Pickup Date</label>
-                                    <input type="text" id="tr-date" placeholder="Select date" class="search-input">
-                                </div>
-                            </div>
-
-                            <!-- Time -->
-                            <div class="search-input-box cursor-pointer custom-select" data-field="time">
-                                <i data-lucide="clock" class="input-icon"></i>
-                                <div class="ml-3 w-full min-w-0 flex flex-col justify-center h-full">
-                                    <label class="search-label">Time</label>
-                                    <div id="tr-time-val" class="search-input selected-val">12:00</div>
-                                </div>
-                                <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400 flex-shrink-0 ml-1"></i>
-                                <div id="tr-time-opts"
-                                    class="custom-options hidden absolute top-[calc(100%+4px)] left-0 w-full bg-white rounded-xl shadow-elegant-lg border border-gray-100 z-50 overflow-y-auto max-h-48">
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Bottom Row: Search Button -->
-                        <div class="flex justify-end">
-                            <button id="btn-search-transfer" class="search-btn-primary flex-shrink-0">
-                                <span>Search Transfers</span>
-                                <i data-lucide="arrow-right"></i>
-                            </button>
+                            class="h-full w-px bg-gradient-to-b from-transparent via-brand-gold to-transparent absolute">
                         </div>
                     </div>
 
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- ================= TOP DESTINATIONS ================= -->
-    <section class="py-16 lg:py-24 container mx-auto px-6 lg:px-12">
-        <div class="flex flex-col md:flex-row justify-between items-end mb-10 gap-4">
-            <div>
-                <h2 class="font-display text-3xl lg:text-4xl font-bold text-brand-primary mb-3 accent-line">Top
-                    Destinations</h2>
-                <p class="text-brand-muted text-lg font-medium">Curated locations for your next escape.</p>
-            </div>
-            <a href="#"
-                class="hidden md:flex items-center gap-2 text-brand-primary font-bold hover:text-brand-secondary transition-all">
-                See all <i data-lucide="arrow-right" class="w-5 h-5"></i>
-            </a>
-        </div>
+                    <!-- Center Hub: Air Astana -->
+                    <div
+                        class="relative z-20 w-32 h-32 bg-white/95 backdrop-blur-sm rounded-full shadow-[0_0_40px_rgba(164,134,86,0.15)] flex items-center justify-center p-4 border border-white">
+                        <img src="Air-Astana-Logo.png" alt="Air Astana" class="w-full h-auto object-contain">
+                    </div>
 
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <!-- Card 1 -->
-            <a href="#"
-                class="group relative aspect-[3/4] rounded-2xl overflow-hidden shadow-elegant hover:shadow-elegant-lg transition-all duration-500">
-                <img src="img/tabuk.jpg"
-                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-                <div
-                    class="absolute bottom-0 left-0 p-6 text-white translate-y-2 group-hover:translate-y-0 transition-transform">
-                    <h3 class="font-bold text-xl mb-1">Tabuk</h3>
-                    <p class="text-sm opacity-90 font-medium">Saudi Arabia</p>
-                </div>
-            </a>
-            <!-- Card 2 -->
-            <a href="#"
-                class="group relative aspect-[3/4] rounded-2xl overflow-hidden shadow-elegant hover:shadow-elegant-lg transition-all duration-500">
-                <img src="https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?q=80&w=800"
-                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-                <div
-                    class="absolute bottom-0 left-0 p-6 text-white translate-y-2 group-hover:translate-y-0 transition-transform">
-                    <h3 class="font-bold text-xl mb-1">Istanbul</h3>
-                    <p class="text-sm opacity-90 font-medium">Turkey</p>
-                </div>
-            </a>
-            <!-- Card 3 -->
-            <a href="#"
-                class="group relative aspect-[3/4] rounded-2xl overflow-hidden shadow-elegant hover:shadow-elegant-lg transition-all duration-500">
-                <img src="img/amman.jpg"
-                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-                <div
-                    class="absolute bottom-0 left-0 p-6 text-white translate-y-2 group-hover:translate-y-0 transition-transform">
-                    <h3 class="font-bold text-xl mb-1">Amman</h3>
-                    <p class="text-sm opacity-90 font-medium">Jordan</p>
-                </div>
-            </a>
-            <!-- Card 4 -->
-            <a href="#"
-                class="group relative aspect-[3/4] rounded-2xl overflow-hidden shadow-elegant hover:shadow-elegant-lg transition-all duration-500">
-                <img src="img/jazan.jpg"
-                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-                <div
-                    class="absolute bottom-0 left-0 p-6 text-white translate-y-2 group-hover:translate-y-0 transition-transform">
-                    <h3 class="font-bold text-xl mb-1">Jazan</h3>
-                    <p class="text-sm opacity-90 font-medium">Saudi Arabia</p>
-                </div>
-            </a>
-        </div>
-    </section>
-
-    <!-- ================= SPECIAL OFFERS ================= -->
-    <section class="py-16 bg-white border-y border-gray-100">
-        <div class="container mx-auto px-6 lg:px-12">
-            <h2 class="font-display text-3xl font-bold text-brand-primary mb-10 text-center">Exclusive Deals</h2>
-
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Deal 1 -->
-                <div
-                    class="rounded-2xl border border-gray-100 overflow-hidden hover:shadow-elegant-lg transition-all duration-300 group bg-white">
-                    <div class="relative h-48 overflow-hidden">
-                        <img src="img/bay_la_sun_hotel.jpg"
-                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                    <!-- Satellite 1: Flight (Top) -->
+                    <div
+                        class="absolute -top-4 left-1/2 -translate-x-1/2 w-12 h-12 bg-brand-blue text-white rounded-2xl flex items-center justify-center shadow-lg border border-white/10 hover:scale-110 transition-transform cursor-default group">
+                        <i data-lucide="plane" class="w-5 h-5 group-hover:animate-pulse"></i>
                         <div
-                            class="absolute top-4 left-4 bg-brand-primary text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">
-                            Family Favorite</div>
+                            class="absolute top-full mt-2 text-[10px] font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap text-white">
+                            Flight</div>
                     </div>
-                    <div class="p-6">
-                        <div class="flex justify-between items-start mb-2">
-                            <h3 class="font-bold text-lg text-brand-text">Bay La Sun Hotel</h3>
-                            <div class="flex items-center gap-1 bg-brand-surface px-2 py-1 rounded">
-                                <i data-lucide="star" class="w-3 h-3 text-brand-primary fill-current"></i>
-                                <span class="text-xs font-bold text-brand-primary">5.0</span>
-                            </div>
-                        </div>
-                        <p class="text-sm text-brand-muted mb-4 flex items-center gap-1"><i data-lucide="map-pin"
-                                class="w-3 h-3"></i> KAEC, Saudi Arabia</p>
-                        <div class="flex justify-between items-center pt-4 border-t border-gray-100">
-                            <div>
-                                <span class="text-xs text-gray-400 line-through">SAR 1,200</span>
-                                <div class="text-xl font-bold text-brand-primary">SAR 850 <span
-                                        class="text-xs text-brand-muted font-normal">/ night</span></div>
-                            </div>
-                            <button onclick="openExclusiveDeal('KAEC', 'JED')"
-                                class="h-10 px-6 rounded-xl border border-brand-primary text-brand-primary font-bold hover:bg-brand-primary hover:text-white transition-all duration-300 text-sm shadow-sm hover:shadow-md">View
-                                Deal</button>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Deal 2 -->
-                <div
-                    class="rounded-2xl border border-gray-100 overflow-hidden hover:shadow-elegant-lg transition-all duration-300 group bg-white">
-                    <div class="relative h-48 overflow-hidden">
-                        <img src="img/shaden_resort.jpg"
-                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                    <!-- Satellite 2: Hotel (Right) -->
+                    <div
+                        class="absolute top-1/2 -right-4 -translate-y-1/2 w-12 h-12 bg-white text-brand-gold rounded-2xl flex items-center justify-center shadow-lg border border-brand-gold/20 hover:scale-110 transition-transform cursor-default group">
+                        <i data-lucide="bed-double" class="w-5 h-5"></i>
                         <div
-                            class="absolute top-4 left-4 bg-brand-accent text-brand-text text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">
-                            Desert Escape</div>
+                            class="absolute top-full mt-2 text-[10px] font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap text-white">
+                            Hotel</div>
                     </div>
-                    <div class="p-6">
-                        <div class="flex justify-between items-start mb-2">
-                            <h3 class="font-bold text-lg text-brand-text">Shaden Resort</h3>
-                            <div class="flex items-center gap-1 bg-brand-surface px-2 py-1 rounded">
-                                <i data-lucide="star" class="w-3 h-3 text-brand-primary fill-current"></i>
-                                <span class="text-xs font-bold text-brand-primary">4.9</span>
-                            </div>
-                        </div>
-                        <p class="text-sm text-brand-muted mb-4 flex items-center gap-1"><i data-lucide="map-pin"
-                                class="w-3 h-3"></i> Al Ula, Saudi Arabia</p>
-                        <div class="flex justify-between items-center pt-4 border-t border-gray-100">
-                            <div>
-                                <span class="text-xs text-gray-400 line-through">SAR 1,500</span>
-                                <div class="text-xl font-bold text-brand-primary">SAR 1,100 <span
-                                        class="text-xs text-brand-muted font-normal">/ night</span></div>
-                            </div>
-                            <button onclick="openExclusiveDeal('Al Ula', 'ULH')"
-                                class="h-10 px-6 rounded-xl border border-brand-primary text-brand-primary font-bold hover:bg-brand-primary hover:text-white transition-all duration-300 text-sm shadow-sm hover:shadow-md">View
-                                Deal</button>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Deal 3 -->
-                <div
-                    class="rounded-2xl border border-gray-100 overflow-hidden hover:shadow-elegant-lg transition-all duration-300 group bg-white">
-                    <div class="relative h-48 overflow-hidden">
-                        <img src="img/movenpick_al_nawras.jpg"
-                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                    <!-- Satellite 3: Activities (Bottom) -->
+                    <div
+                        class="absolute -bottom-4 left-1/2 -translate-x-1/2 w-12 h-12 bg-brand-gold text-white rounded-2xl flex items-center justify-center shadow-lg border border-white/10 hover:scale-110 transition-transform cursor-default group">
+                        <i data-lucide="map" class="w-5 h-5"></i>
                         <div
-                            class="absolute top-4 left-4 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">
-                            30% Off</div>
+                            class="absolute top-full mt-2 text-[10px] font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap text-white">
+                            Tours</div>
                     </div>
-                    <div class="p-6">
-                        <div class="flex justify-between items-start mb-2">
-                            <h3 class="font-bold text-lg text-brand-text">Mövenpick Al Nawras</h3>
-                            <div class="flex items-center gap-1 bg-brand-surface px-2 py-1 rounded">
-                                <i data-lucide="star" class="w-3 h-3 text-brand-primary fill-current"></i>
-                                <span class="text-xs font-bold text-brand-primary">4.7</span>
-                            </div>
-                        </div>
-                        <p class="text-sm text-brand-muted mb-4 flex items-center gap-1"><i data-lucide="map-pin"
-                                class="w-3 h-3"></i> Jeddah, Saudi Arabia</p>
-                        <div class="flex justify-between items-center pt-4 border-t border-gray-100">
-                            <div>
-                                <span class="text-xs text-gray-400 line-through">SAR 950</span>
-                                <div class="text-xl font-bold text-brand-primary">SAR 807 <span
-                                        class="text-xs text-brand-muted font-normal">/ night</span></div>
-                            </div>
-                            <button onclick="openExclusiveDeal('Jeddah', 'JED')"
-                                class="h-10 px-6 rounded-xl border border-brand-primary text-brand-primary font-bold hover:bg-brand-primary hover:text-white transition-all duration-300 text-sm shadow-sm hover:shadow-md">View
-                                Deal</button>
-                        </div>
+
+                    <!-- Satellite 4: Transfer (Left) -->
+                    <div
+                        class="absolute top-1/2 -left-4 -translate-y-1/2 w-12 h-12 bg-white text-brand-blue rounded-2xl flex items-center justify-center shadow-lg border border-brand-blue/10 hover:scale-110 transition-transform cursor-default group">
+                        <i data-lucide="car" class="w-5 h-5"></i>
+                        <div
+                            class="absolute top-full mt-2 text-[10px] font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap text-white">
+                            Transfer</div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
 
-    <!-- ================= FEATURES / WHY US ================= -->
-    <section class="py-16 bg-brand-surface">
-        <div class="container mx-auto px-6 lg:px-12 text-center">
-            <h2 class="font-display text-3xl font-bold text-brand-primary mb-12">Flyadeal Holidays Exclusive Benefits
+        <!-- Challenges Section -->
+        <div class="mb-16">
+            <h2 class="font-display text-2xl text-brand-blue mb-8 border-l-4 border-brand-gold pl-4">
+                Addressing Key Challenges
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Challenge 1 -->
+                <div class="glass-pod rounded-2xl p-6">
+                    <div class="icon-box p-3 rounded-xl w-fit mb-4 text-red-500 bg-red-50">
+                        <i data-lucide="trending-down" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="font-bold text-brand-blue mb-2">Revenue Leakage</h3>
+                    <p class="text-sm text-gray-500">
+                        Flight-only bookings mean customers spend their holiday budget with OTAs, not you.
+                    </p>
+                </div>
+
+                <!-- Challenge 2 -->
+                <div class="glass-pod rounded-2xl p-6">
+                    <div class="icon-box p-3 rounded-xl w-fit mb-4 text-orange-500 bg-orange-50">
+                        <i data-lucide="layers" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="font-bold text-brand-blue mb-2">Fragmented Experience</h3>
+                    <p class="text-sm text-gray-500">
+                        Disjointed bookings across multiple platforms create friction and lower customer satisfaction.
+                    </p>
+                </div>
+
+                <!-- Challenge 3 -->
+                <div class="glass-pod rounded-2xl p-6">
+                    <div class="icon-box p-3 rounded-xl w-fit mb-4 text-blue-500 bg-blue-50">
+                        <i data-lucide="shield-alert" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="font-bold text-brand-blue mb-2">Trust Deficit</h3>
+                    <p class="text-sm text-gray-500">
+                        Travelers hesitate to book tours or transfers with unknown local agencies.
+                    </p>
+                </div>
+
+                <!-- Challenge 4 -->
+                <div class="glass-pod rounded-2xl p-6">
+                    <div class="icon-box p-3 rounded-xl w-fit mb-4 text-purple-500 bg-purple-50">
+                        <i data-lucide="credit-card" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="font-bold text-brand-blue mb-2">Payment Friction</h3>
+                    <p class="text-sm text-gray-500">
+                        Dealing with foreign curencies, hidden fees, and complex payment flows reduces conversion.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Demo Showcase -->
+        <div class="mb-12">
+            <h2
+                class="font-display text-2xl text-brand-blue mb-8 border-l-4 border-brand-gold pl-4 flex items-center gap-3">
+                Live Demonstrations
+                <span class="text-xs font-sans font-normal text-gray-500 bg-gray-100 px-2 py-1 rounded-full">Click to
+                    view</span>
             </h2>
 
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
-                <div class="flex flex-col items-center group">
-                    <div
-                        class="w-16 h-16 bg-white rounded-2xl shadow-sm flex items-center justify-center text-brand-primary mb-4 group-hover:scale-110 transition-transform duration-300">
-                        <i data-lucide="check-circle" class="w-8 h-8"></i>
-                    </div>
-                    <h3 class="font-bold text-lg mb-2">Best Price Guarantee</h3>
-                    <p class="text-sm text-brand-muted leading-relaxed">We won't be beaten on price for packages.</p>
-                </div>
-                <div class="flex flex-col items-center group">
-                    <div
-                        class="w-16 h-16 bg-white rounded-2xl shadow-sm flex items-center justify-center text-brand-primary mb-4 group-hover:scale-110 transition-transform duration-300">
-                        <i data-lucide="headset" class="w-8 h-8"></i>
-                    </div>
-                    <h3 class="font-bold text-lg mb-2">24/7 Support</h3>
-                    <p class="text-sm text-brand-muted leading-relaxed">Always here to help, whenever you fly.</p>
-                </div>
-                <div class="flex flex-col items-center group">
-                    <div
-                        class="w-16 h-16 bg-white rounded-2xl shadow-sm flex items-center justify-center text-brand-primary mb-4 group-hover:scale-110 transition-transform duration-300">
-                        <i data-lucide="shield" class="w-8 h-8"></i>
-                    </div>
-                    <h3 class="font-bold text-lg mb-2">Peace of Mind</h3>
-                    <p class="text-sm text-brand-muted leading-relaxed">Book with confidence and full transparency.</p>
-                </div>
-                <div class="flex flex-col items-center group">
-                    <div
-                        class="w-16 h-16 bg-white rounded-2xl shadow-sm flex items-center justify-center text-brand-primary mb-4 group-hover:scale-110 transition-transform duration-300">
-                        <i data-lucide="gift" class="w-8 h-8"></i>
-                    </div>
-                    <h3 class="font-bold text-lg mb-2">Exclusive Value-Add</h3>
-                    <p class="text-sm text-brand-muted leading-relaxed">Special perks only for Flyadeal members.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-    <!-- ================= NEWSLETTER ================= -->
-    <section class="py-20 relative overflow-hidden bg-white border-y border-brand-gold/20">
-        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.03]">
-        </div>
-        <div class="container mx-auto px-6 lg:px-12 relative z-10 text-center">
-            <h2 class="font-display text-3xl md:text-4xl font-bold text-brand-primary mb-4">Stay Inspired</h2>
-            <p class="text-brand-muted mb-8 max-w-xl mx-auto">Join 50k+ travelers. Get exclusive travel offers,
-                hidden
-                gem alerts, and tips delivered to your inbox.</p>
-
-            <form class="max-w-2xl mx-auto">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                    <!-- Email Input -->
-                    <div class="relative group">
-                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                            <i data-lucide="mail"
-                                class="h-5 w-5 text-gray-400 group-focus-within:text-brand-primary transition-colors"></i>
+                <!-- Demo 1: Holidays Homepage -->
+                <a href="holidays_homepage.html" target="_blank"
+                    class="glass-pod rounded-2xl p-8 group relative overflow-hidden block">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <i data-lucide="layout" class="w-32 h-32 rotate-12"></i>
+                    </div>
+                    <div class="relative z-10">
+                        <div class="flex justify-between items-start mb-6">
+                            <div class="icon-box p-3 rounded-xl text-brand-blue">
+                                <i data-lucide="home" class="w-6 h-6"></i>
+                            </div>
+                            <i data-lucide="external-link"
+                                class="w-5 h-5 text-gray-300 group-hover:text-brand-gold transition-colors"></i>
                         </div>
-                        <input type="email" placeholder="Your email address"
-                            class="w-full pl-11 pr-4 py-4 rounded-xl bg-brand-surface border-2 border-transparent focus:border-brand-primary/20 outline-none text-brand-text font-medium placeholder:text-gray-400 transition-all shadow-sm group-hover:bg-gray-50">
+                        <h3
+                            class="font-display text-xl text-brand-blue font-bold mb-2 group-hover:text-brand-gold transition-colors">
+                            Air Astana Holidays Homepage</h3>
+                        <p class="text-sm text-gray-500 mb-4">The entry point for the holiday experience.</p>
+                        <span
+                            class="text-xs font-bold uppercase tracking-wider text-brand-gold flex items-center gap-1 group-hover:gap-2 transition-all">
+                            View Page <i data-lucide="arrow-right" class="w-3 h-3"></i>
+                        </span>
                     </div>
+                </a>
 
-                    <!-- City Dropdown -->
-                    <div class="relative group">
-                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                            <i data-lucide="plane-takeoff"
-                                class="h-5 w-5 text-gray-400 group-focus-within:text-brand-primary transition-colors"></i>
-                        </div>
-                        <select
-                            class="w-full pl-11 pr-10 py-4 rounded-xl bg-brand-surface border-2 border-transparent focus:border-brand-primary/20 outline-none text-brand-text font-medium appearance-none cursor-pointer transition-all shadow-sm group-hover:bg-gray-50">
-                            <option value="" disabled selected>Preferred Departure City</option>
-                            <option value="JED">Jeddah (JED)</option>
-                            <option value="RUH">Riyadh (RUH)</option>
-                            <option value="DMM">Dammam (DMM)</option>
-                            <option value="CAI">Cairo (CAI)</option>
-                            <option value="DXB">Dubai (DXB)</option>
-                            <option value="AMM">Amman (AMM)</option>
-                            <option value="IST">Istanbul (IST)</option>
-                            <option value="SSH">Sharm El Sheikh (SSH)</option>
-                            <option value="AHB">Abha (AHB)</option>
-                            <option value="other">Other</option>
-                        </select>
-                        <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
-                            <i data-lucide="chevron-down" class="h-4 w-4 text-gray-400"></i>
-                        </div>
+                <!-- Demo 2: Dynamic Packaging -->
+                <a href="1_air_astana_search_result.html" target="_blank"
+                    class="glass-pod rounded-2xl p-8 group relative overflow-hidden block">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <i data-lucide="search" class="w-32 h-32 rotate-12"></i>
                     </div>
-                </div>
-
-                <button type="button"
-                    class="w-full md:w-auto md:min-w-[200px] bg-brand-primary text-white font-bold px-8 py-4 rounded-xl hover:bg-brand-secondary transition-all shadow-elegant hover:shadow-elegant-lg transform hover:-translate-y-0.5">
-                    Subscribe
-                </button>
-            </form>
-        </div>
-    </section>
-
-    <footer class="bg-brand-primary text-white pt-16 pb-8">
-        <div class="container mx-auto px-6 lg:px-12 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 mb-12">
-            <div class="col-span-2">
-                <img src="img/flyadeal_holidays_logo_transparent.png" onerror="this.src='img/flyadeal_logo.png'"
-                    alt="Flyadeal Holidays" class="h-16 mb-6 drop-shadow-md">
-                <p class="text-white/90 text-sm leading-relaxed max-w-xs mb-6">
-                    Everyday low fares. Enjoy holiday packages, hotels, and experiences with Flyadeal.
-                </p>
-                <div class="flex gap-4">
-                    <a href="#"
-                        class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-brand-accent transition-colors">
-                        <i data-lucide="facebook" class="w-4 h-4"></i>
-                    </a>
-                    <a href="#"
-                        class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-brand-accent transition-colors">
-                        <i data-lucide="instagram" class="w-4 h-4"></i>
-                    </a>
-                    <a href="#"
-                        class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-brand-accent transition-colors">
-                        <i data-lucide="twitter" class="w-4 h-4"></i>
-                    </a>
-                </div>
-            </div>
-
-            <div>
-                <h4 class="font-bold text-lg mb-6">Company</h4>
-                <ul class="space-y-3 text-sm text-white/80">
-                    <li><a href="#" class="hover:text-white transition-colors">About Us</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">Careers</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">Blog</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">Press</a></li>
-                </ul>
-            </div>
-
-            <div>
-                <h4 class="font-bold text-lg mb-6">Support</h4>
-                <ul class="space-y-3 text-sm text-white/80">
-                    <li><a href="#" class="hover:text-white transition-colors">Help Center</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">Contact Us</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">Privacy Policy</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">Terms of Service</a></li>
-                </ul>
-            </div>
-        </div>
-
-        <div
-            class="container mx-auto px-6 lg:px-12 pt-8 border-t border-white/20 flex flex-col md:flex-row justify-between items-center text-sm text-white/60">
-            <p>&copy; 2026 Flyadeal Holidays. All rights reserved.</p>
-            <div class="flex gap-6 mt-4 md:mt-0">
-                <span>Privacy</span>
-                <span>Terms</span>
-                <span>Sitemap</span>
-            </div>
-        </div>
-    </footer>
-
-    <!-- ================= DEAL SEARCH MODAL ================= -->
-    <div id="deal-modal" class="fixed inset-0 z-[100] hidden overflow-y-auto">
-        <!-- Backdrop -->
-        <div class="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity opacity-0" id="deal-modal-backdrop">
-        </div>
-
-        <!-- Modal Wrapper (Flex for centering but allows scroll) -->
-        <div class="flex min-h-full items-center justify-center p-4">
-            <!-- Modal Content (Card) -->
-            <div class="relative w-full max-w-sm md:max-w-md bg-white rounded-2xl shadow-2xl transform scale-95 opacity-0 transition-all duration-300 my-8"
-                id="deal-modal-content">
-
-                <!-- Close Button (Absolute) -->
-                <button id="deal-close-btn"
-                    class="absolute top-4 right-4 z-50 w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-500 hover:text-red-500 transition-colors">
-                    <i data-lucide="x" class="w-5 h-5"></i>
-                </button>
-
-                <!-- Body -->
-                <div class="p-5">
-                    <!-- Data-driven Title -->
-                    <div class="mb-6 pr-8">
-                        <h3 class="text-xl font-bold text-brand-primary mb-1">Book your Trip to <span
-                                id="deal-modal-dest-name">Dubai</span></h3>
-                        <p class="text-xs text-gray-500 uppercase tracking-wider font-semibold">Customize your package
+                    <div class="relative z-10">
+                        <div class="flex justify-between items-start mb-6">
+                            <div class="icon-box p-3 rounded-xl text-brand-blue">
+                                <i data-lucide="package-search" class="w-6 h-6"></i>
+                            </div>
+                            <i data-lucide="external-link"
+                                class="w-5 h-5 text-gray-300 group-hover:text-brand-gold transition-colors"></i>
+                        </div>
+                        <h3
+                            class="font-display text-xl text-brand-blue font-bold mb-2 group-hover:text-brand-gold transition-colors">
+                            Dynamic Packaging Engine</h3>
+                        <p class="text-sm text-gray-500 mb-4">Flight + Hotel + Extras Search Results with real-time
+                            availability.
                         </p>
+                        <span
+                            class="text-xs font-bold uppercase tracking-wider text-brand-gold flex items-center gap-1 group-hover:gap-2 transition-all">
+                            View Page <i data-lucide="arrow-right" class="w-3 h-3"></i>
+                        </span>
                     </div>
+                </a>
 
-                    <!-- Search Form (forced vertical) -->
-                    <div class="search-form block relative">
-                        <div class="grid grid-cols-1 gap-y-4 mb-4">
-
-                            <!-- Origin -->
-                            <div class="search-input-box bg-gray-50/50" data-field="origin">
-                                <i data-lucide="plane-takeoff" class="input-icon"></i>
-                                <div class="ml-3 w-full min-w-0 flex flex-col justify-center h-full">
-                                    <label class="search-label">From</label>
-                                    <input type="text" id="modal-origin" data-type="airport_code"
-                                        placeholder="City or Airport" class="search-input auto-input bg-transparent">
-                                </div>
-                            </div>
-
-                            <!-- Destination (Read Only / Pre-filled) -->
-                            <div class="search-input-box bg-brand-surface/50 border-brand-primary/10"
-                                data-field="destination">
-                                <i data-lucide="map-pin" class="input-icon text-brand-primary"></i>
-                                <div class="ml-3 w-full min-w-0 flex flex-col justify-center h-full">
-                                    <label class="search-label text-brand-primary">To</label>
-                                    <input type="text" id="modal-dest" readonly
-                                        class="search-input text-brand-primary font-bold bg-transparent">
-                                </div>
-                            </div>
-
-                            <!-- Dates -->
-                            <div class="search-input-box" data-field="dates">
-                                <i data-lucide="calendar-days" class="input-icon"></i>
-                                <div class="ml-3 w-full min-w-0 flex flex-col justify-center h-full">
-                                    <label class="search-label">Dates</label>
-                                    <input type="text" id="modal-dates" placeholder="Departure - Return"
-                                        class="search-input">
-                                </div>
-                            </div>
-
-                            <!-- Cabin -->
-                            <div class="search-input-box cursor-pointer custom-select relative" data-field="cabin">
-                                <div class="flex items-center h-full w-full">
-                                    <i data-lucide="armchair" class="input-icon"></i>
-                                    <div class="ml-3 w-full min-w-0 flex flex-col justify-center h-full">
-                                        <label class="search-label">Cabin</label>
-                                        <div id="modal-cabin-val" class="search-input selected-val">Economy</div>
-                                    </div>
-                                    <i data-lucide="chevron-down"
-                                        class="w-4 h-4 text-gray-400 flex-shrink-0 ml-1 mr-4"></i>
-                                </div>
-                                <!-- Options (Static flow for vertical layout) -->
-                                <div class="custom-options hidden w-full bg-white border-t border-gray-100 z-10">
-                                    <div
-                                        class="option-item px-4 py-3 hover:bg-brand-surface text-sm font-semibold text-brand-text cursor-pointer transition-colors">
-                                        Economy</div>
-                                    <div
-                                        class="option-item px-4 py-3 hover:bg-brand-surface text-sm font-semibold text-brand-text cursor-pointer transition-colors">
-                                        Premium Economy</div>
-                                    <div
-                                        class="option-item px-4 py-3 hover:bg-brand-surface text-sm font-semibold text-brand-text cursor-pointer transition-colors">
-                                        Business</div>
-                                    <div
-                                        class="option-item px-4 py-3 hover:bg-brand-surface text-sm font-semibold text-brand-text cursor-pointer transition-colors">
-                                        First</div>
-                                </div>
-                            </div>
-
-                            <!-- Travellers -->
-                            <div class="search-input-box cursor-pointer relative flex-col items-start h-auto"
-                                id="modal-traveler-trigger">
-                                <div class="flex items-center w-full h-[60px]"> <!-- header part -->
-                                    <i data-lucide="users" class="input-icon"></i>
-                                    <div class="ml-3 w-full min-w-0 flex flex-col justify-center h-full">
-                                        <label class="search-label">Travellers</label>
-                                        <input type="text" id="modal-traveler-summary"
-                                            placeholder="2 Travellers, 1 Room" readonly
-                                            class="search-input cursor-pointer bg-transparent">
-                                    </div>
-                                    <i data-lucide="chevron-down"
-                                        class="w-4 h-4 text-gray-400 flex-shrink-0 ml-1 mr-4"></i>
-                                </div>
-
-                                <!-- Popover (Static flow) -->
-                                <div id="modal-traveler-popover"
-                                    class="traveler-popover hidden cursor-default w-full bg-white border-t border-gray-100 p-4">
-                                    <div id="modal-rooms-container"
-                                        class="max-h-[250px] overflow-y-auto mb-4 scrollbar-thin">
-                                    </div>
-                                    <button type="button" id="modal-btn-add-room"
-                                        class="text-brand-primary font-semibold text-sm mb-4 hover:underline flex items-center gap-1.5 transition-colors">
-                                        <i data-lucide="plus" class="w-4 h-4"></i> Add Room
-                                    </button>
-                                    <button type="button" id="modal-btn-done-travelers"
-                                        class="w-full bg-brand-primary text-white py-2.5 rounded-xl font-semibold text-sm hover:bg-brand-secondary shadow-elegant transition-all active:scale-[0.98]">
-                                        Done
-                                    </button>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div class="pt-2">
-                            <button id="modal-search-btn"
-                                class="search-btn-primary w-full h-12 text-sm uppercase tracking-wide">
-                                <span>See Prices</span>
-                                <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                            </button>
-                        </div>
+                <!-- Demo 3: In-Booking Cross Sell -->
+                <a href="air_astana_hotel_cross_sell.html" target="_blank"
+                    class="glass-pod rounded-2xl p-8 group relative overflow-hidden block">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <i data-lucide="bed-double" class="w-32 h-32 rotate-12"></i>
                     </div>
-                </div>
+                    <div class="relative z-10">
+                        <div class="flex justify-between items-start mb-6">
+                            <div class="icon-box p-3 rounded-xl text-brand-blue">
+                                <i data-lucide="briefcase" class="w-6 h-6"></i>
+                            </div>
+                            <i data-lucide="external-link"
+                                class="w-5 h-5 text-gray-300 group-hover:text-brand-gold transition-colors"></i>
+                        </div>
+                        <h3
+                            class="font-display text-xl text-brand-blue font-bold mb-2 group-hover:text-brand-gold transition-colors">
+                            In-Booking Cross Sell</h3>
+                        <p class="text-sm text-gray-500 mb-4">"In-booking" cross-sell with dynamic hotel
+                            recommendations.</p>
+                        <span
+                            class="text-xs font-bold uppercase tracking-wider text-brand-gold flex items-center gap-1 group-hover:gap-2 transition-all">
+                            View Page <i data-lucide="arrow-right" class="w-3 h-3"></i>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Demo 4: Pre-Trip Ancillary -->
+                <a href="air_astana_hotel_cross_sell.html" target="_blank"
+                    class="glass-pod rounded-2xl p-8 group relative overflow-hidden block">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <i data-lucide="mail" class="w-32 h-32 rotate-12"></i>
+                    </div>
+                    <div class="relative z-10">
+                        <div class="flex justify-between items-start mb-6">
+                            <div class="icon-box p-3 rounded-xl text-brand-blue">
+                                <i data-lucide="mail-open" class="w-6 h-6"></i>
+                            </div>
+                            <i data-lucide="external-link"
+                                class="w-5 h-5 text-gray-300 group-hover:text-brand-gold transition-colors"></i>
+                        </div>
+                        <h3
+                            class="font-display text-xl text-brand-blue font-bold mb-2 group-hover:text-brand-gold transition-colors">
+                            Pre-Trip Ancillary</h3>
+                        <p class="text-sm text-gray-500 mb-4">Post-booking and pre-trip newsletters selling hotels,
+                            tours, transfers, car rental and more.</p>
+                        <span
+                            class="text-xs font-bold uppercase tracking-wider text-brand-gold flex items-center gap-1 group-hover:gap-2 transition-all">
+                            View Page <i data-lucide="arrow-right" class="w-3 h-3"></i>
+                        </span>
+                    </div>
+                </a>
+
             </div>
         </div>
-    </div>
-
-    <!-- Reema AI Assistant Widget -->
-    <div class="fixed bottom-6 right-6 z-[100] flex items-end gap-3 pointer-events-none">
-
-        <!-- Avatar Icon -->
-        <div
-            class="relative w-16 h-16 rounded-full bg-brand-surface border-4 border-white shadow-elegant-xl overflow-hidden pointer-events-auto cursor-pointer hover:scale-110 transition-transform duration-300 group">
-            <img src="https://www.flyadeal.com/assets/icons/Chatbot-update-icon.png" alt="Flyadeal AI"
-                class="w-full h-full object-cover">
-            <div class="absolute inset-0 bg-brand-primary/10 group-hover:bg-transparent transition-colors"></div>
         </div>
-    </div>
 
-    <!-- ================= JAVASCRIPT ================= -->
-    <script src="scripts.js" defer></script>
-    <script src="homepage_logic_integrated.js" defer></script>
-    <!-- Script moved to head -->
+        <!-- Presentation Section -->
+        <div class="mb-12">
+            <h2
+                class="font-display text-2xl text-brand-blue mb-8 border-l-4 border-brand-gold pl-4 flex items-center gap-3">
+                Presentation Deck
+            </h2>
+
+            <!-- Interactive Cover -->
+            <div id="presentation-container"
+                class="glass-pod rounded-2xl overflow-hidden shadow-2xl relative w-full aspect-video group cursor-pointer transition-all hover:scale-[1.005]"
+                onclick="loadPresentation()">
+                <div
+                    class="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-white/80 to-brand-light/90 z-10 backdrop-blur-sm">
+                    <div
+                        class="w-20 h-20 rounded-full bg-white shadow-glow flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 border border-brand-gold/20">
+                        <i data-lucide="play" class="w-8 h-8 text-brand-gold ml-1 fill-brand-gold"></i>
+                    </div>
+                    <h3 class="font-display text-2xl text-brand-blue font-bold mb-2">Capabilities Deck</h3>
+                    <p class="text-sm text-gray-500">Click to load full presentation</p>
+                </div>
+            </div>
+
+            <script>
+                function loadPresentation() {
+                    const container = document.getElementById('presentation-container');
+                    const iframeHtml = `
+                    <div class="relative w-full h-full">
+                        <iframe 
+                            src="https://docs.google.com/presentation/d/e/2PACX-1vTS8Mk5-6UE1jUxAYLYY0rmlECO4hGz9Gxm2SsVgpsfWjJ3Az4tQZwHb1Xh73AodSIKBul-YoOUK-hm/pubembed?start=false&loop=false&delayms=3000" 
+                            frameborder="0" 
+                            allowfullscreen="true" 
+                            mozallowfullscreen="true" 
+                            webkitallowfullscreen="true"
+                            class="absolute top-0 left-0 w-full h-full border-0"
+                        ></iframe>
+                    </div>`;
+
+                    container.innerHTML = iframeHtml;
+                    container.onclick = null;
+                    container.classList.remove('cursor-pointer', 'group', 'hover:scale-[1.005]');
+                    // Re-render icons if needed, though iframe content doesn't use lucide
+                }
+            </script>
+        </div>
+
+        <!-- Footer -->
+        <div class="mt-20 pt-8 border-t border-gray-200 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p class="text-xs text-gray-400 uppercase tracking-widest">Confidential Proposal</p>
+            <div class="flex items-center gap-2 grayscale opacity-50">
+                <img src="easygds_logo_transparent.png" class="h-4">
+                <span class="text-xs text-gray-300">|</span>
+                <img src="Air-Astana-Logo.png" class="h-4">
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        lucide.createIcons();
+    </script>
 </body>
 
 </html>

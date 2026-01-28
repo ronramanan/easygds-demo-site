@@ -1035,7 +1035,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // --- Open/Close Logic ---
         // --- Open/Close Logic handled in HTML now to ensure reliability ---
         /* 
-           Logic moved to flyadeal_holidays.html script block to prevent timing issues 
+           Logic moved to index.html script block to prevent timing issues 
            and ensure global availability before DOMContentLoaded if needed.
         */
 

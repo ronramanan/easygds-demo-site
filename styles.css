@@ -5,16 +5,16 @@
 }
 
 ::-webkit-scrollbar-track {
-    background: #F5F8FF;
+    background: #F8FAFC;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #642667;
+    background: #012A48;
     border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #4A1C4C;
+    background: #001A2F;
 }
 
 .no-scrollbar::-webkit-scrollbar {
@@ -51,8 +51,8 @@
 }
 
 .input-container:focus-within {
-    box-shadow: 0 0 0 3px rgba(100, 38, 103, 0.12);
-    border-color: #642667 !important;
+    box-shadow: 0 0 0 3px rgba(1, 42, 72, 0.12);
+    border-color: #012A48 !important;
 }
 
 /* Standardized input styling */
@@ -108,8 +108,8 @@
 }
 
 .search-input-box:focus-within {
-    border-color: #203C94;
-    box-shadow: 0 0 0 3px rgba(100, 38, 103, 0.1);
+    border-color: #A48C64;
+    box-shadow: 0 0 0 3px rgba(1, 42, 72, 0.1);
 }
 
 .search-input-box .input-icon {
@@ -121,7 +121,7 @@
 }
 
 .search-input-box:focus-within .input-icon {
-    color: #642667;
+    color: #012A48;
 }
 
 /* Search form grid standardization */
@@ -133,7 +133,7 @@
 
 /* Responsive search button */
 .search-btn-primary {
-    background-color: #642667;
+    background-color: #012A48;
     color: white;
     height: 3.5rem;
     padding-left: 2rem;
@@ -141,7 +141,7 @@
     border-radius: 0.75rem;
     font-weight: 700;
     font-size: 1rem;
-    box-shadow: 0 4px 20px -5px rgba(100, 38, 103, 0.15);
+    box-shadow: 0 4px 20px -5px rgba(1, 42, 72, 0.15);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     align-items: center;
@@ -155,8 +155,8 @@
 }
 
 .search-btn-primary:hover {
-    background-color: #4A1C4C;
-    box-shadow: 0 10px 30px -5px rgba(100, 38, 103, 0.2);
+    background-color: #001A2F;
+    box-shadow: 0 10px 30px -5px rgba(1, 42, 72, 0.2);
 }
 
 .search-btn-primary:active {
@@ -227,8 +227,8 @@
 }
 
 #search-panel.is-sticky .search-tab:not(.active):hover {
-    color: #642667;
-    background-color: rgba(100, 38, 103, 0.06);
+    color: #012A48;
+    background-color: rgba(1, 42, 72, 0.06);
 }
 
 /* Button Enhancements */
@@ -262,7 +262,7 @@
     bottom: -12px;
     width: 60px;
     height: 4px;
-    background: #642667;
+    background: #A48C64;
     border-radius: 2px;
 }
 
@@ -316,7 +316,7 @@
 
 /* Radio button styling for glass panels */
 .search-form input[type="radio"] {
-    accent-color: #642667;
+    accent-color: #012A48;
 }
 
 #search-panel.is-sticky .search-form input[type="radio"]+span {
@@ -324,7 +324,7 @@
 }
 
 #search-panel.is-sticky .search-form label:hover input[type="radio"]+span {
-    color: #203C94;
+    color: #A48C64;
 }
 
 /* Custom checkbox styling */
@@ -340,16 +340,16 @@
 }
 
 .custom-checkbox:hover {
-    border-color: #642667;
+    border-color: #012A48;
 }
 
 .custom-checkbox:checked {
-    background-color: #642667;
-    border-color: #642667;
+    background-color: #012A48;
+    border-color: #012A48;
 }
 
 .custom-checkbox:focus {
-    box-shadow: 0 0 0 3px rgba(100, 38, 103, 0.2);
+    box-shadow: 0 0 0 3px rgba(1, 42, 72, 0.2);
     outline: none;
 }
 
@@ -365,7 +365,7 @@
     width: 20rem;
     background-color: white;
     border-radius: 0.75rem;
-    box-shadow: 0 20px 40px -5px rgba(100, 38, 103, 0.25);
+    box-shadow: 0 20px 40px -5px rgba(1, 42, 72, 0.25);
     padding: 1.25rem;
     z-index: 60;
     border: 1px solid #F3F4F6;
@@ -401,9 +401,9 @@
 }
 
 .counter-btn:hover {
-    border-color: #642667;
-    color: #642667;
-    background-color: #F5F8FF;
+    border-color: #012A48;
+    color: #012A48;
+    background-color: #F8FAFC;
 }
 
 .counter-btn:disabled {
@@ -443,7 +443,7 @@
 }
 
 .custom-select .option-item:hover {
-    background-color: #F5F8FF;
+    background-color: #F8FAFC;
 }
 
 .custom-select .option-item:active {
@@ -467,14 +467,14 @@
 }
 
 #search-panel.is-sticky label:hover span {
-    color: #642667;
+    color: #012A48;
 }
 
 /* Focus visible for accessibility */
 .search-input:focus-visible,
 .search-btn-primary:focus-visible,
 .search-tab:focus-visible {
-    outline: 2px solid #642667;
+    outline: 2px solid #012A48;
     outline-offset: 2px;
 }
 
@@ -566,7 +566,7 @@ label:hover .pkg-checkbox-label {
     background: white !important;
     border: 1px solid #E5E7EB !important;
     border-radius: 0.75rem !important;
-    box-shadow: 0 20px 40px -5px rgba(100, 38, 103, 0.25) !important;
+    box-shadow: 0 20px 40px -5px rgba(1, 42, 72, 0.25) !important;
     max-height: 320px !important;
     overflow-y: auto !important;
     z-index: 100 !important;
@@ -589,7 +589,7 @@ label:hover .pkg-checkbox-label {
 }
 
 .autocomplete-results .p-2:hover {
-    background-color: #F5F8FF !important;
+    background-color: #F8FAFC !important;
 }
 
 /* Loading state in autocomplete */
