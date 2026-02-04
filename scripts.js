@@ -220,11 +220,28 @@ function formatDate(date) {
     return `${year}-${month}-${day}`;
 }
 
+function updateInputError(input, isError) {
+    const box = input.closest('.search-input-box');
+    if (!box) return;
+    if (isError) {
+        if (!box.classList.contains('border-red-500')) {
+            box.classList.add('border-red-500', 'ring-1', 'ring-red-500');
+            const removeCb = () => {
+                box.classList.remove('border-red-500', 'ring-1', 'ring-red-500');
+                input.removeEventListener('input', removeCb);
+            };
+            input.addEventListener('input', removeCb);
+        }
+    } else {
+        box.classList.remove('border-red-500', 'ring-1', 'ring-red-500');
+    }
+}
+
 function getDefaultDates() {
     const start = new Date();
-    start.setDate(start.getDate() + 14); // 2 weeks out
+    start.setDate(start.getDate() + 30); // 30 days out
     const end = new Date();
-    end.setDate(end.getDate() + 17); // 3 days trip
+    end.setDate(end.getDate() + 33); // 3 days trip
     const fmt = (d) => d.toISOString().split('T')[0];
     return { startStr: fmt(start), endStr: fmt(end) };
 }
@@ -474,7 +491,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ================= FLIGHT LOGIC =================
-    flatpickr('#fl-dates', { mode: "range", dateFormat: "Y-m-d", minDate: "today" });
+    const defDates = getDefaultDates();
+    flatpickr('#fl-dates', { mode: "range", dateFormat: "Y-m-d", minDate: "today", defaultDate: [defDates.startStr, defDates.endStr] });
 
     // Trip Type
     document.querySelectorAll('input[name="ft_type"]').forEach(radio => {
@@ -593,6 +611,11 @@ document.addEventListener('DOMContentLoaded', () => {
     })();
 
     document.getElementById('flight-search-btn').onclick = () => {
+        const originInput = document.getElementById('fl-origin');
+        const destInput = document.getElementById('fl-dest');
+        updateInputError(originInput, !originInput.value);
+        updateInputError(destInput, !destInput.value);
+        if (!originInput.value || !destInput.value) return;
         const dates = document.getElementById('fl-dates').value.split(' to ');
         const def = getDefaultDates();
         const paxState = flightPax.getState();
@@ -627,16 +650,56 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // ================= PACKAGE LOGIC =================
-    flatpickr('#pkg-dates', { mode: "range", dateFormat: "Y-m-d", minDate: "today" });
-    flatpickr('#pkg-hotel-dates', { mode: "range", dateFormat: "Y-m-d", minDate: "today" });
+    // Initialize pickers with variable assignment for access
+    const pkgDatesPicker = flatpickr('#pkg-dates', {
+        mode: "range",
+        dateFormat: "Y-m-d",
+        minDate: "today",
+        defaultDate: [defDates.startStr, defDates.endStr],
+        onChange: (selectedDates) => {
+            if (selectedDates.length === 2 && pkgHotelPicker) {
+                // Constrain hotel picker to flight dates
+                pkgHotelPicker.set('minDate', selectedDates[0]);
+                pkgHotelPicker.set('maxDate', selectedDates[1]);
+                pkgHotelPicker.clear(); // Clear previous invalid selection
+            }
+        }
+    });
+
+    const pkgHotelPicker = flatpickr('#pkg-hotel-dates', {
+        mode: "range",
+        dateFormat: "Y-m-d",
+        minDate: defDates.startStr,
+        maxDate: defDates.endStr
+    });
 
     const pkgCheck = document.getElementById('pkg-partial-hotel');
     const pkgHotelCont = document.getElementById('pkg-partial-dates-container');
     if (pkgCheck) {
         pkgCheck.addEventListener('change', (e) => {
-            e.target.checked ? pkgHotelCont.classList.remove('hidden') : pkgHotelCont.classList.add('hidden');
+            if (e.target.checked) {
+                pkgHotelCont.classList.remove('hidden');
+                // Sync constraints immediately on check
+                const flightDates = pkgDatesPicker.selectedDates;
+                if (flightDates.length === 2) {
+                    pkgHotelPicker.set('minDate', flightDates[0]);
+                    pkgHotelPicker.set('maxDate', flightDates[1]);
+                }
+            } else {
+                pkgHotelCont.classList.add('hidden');
+            }
         });
     }
+
+    const validateDateRange = (innerDates, outerDates) => {
+        if (!innerDates || !outerDates) return true;
+        const [outerStart, outerEnd] = outerDates.map(d => new Date(d));
+        const [innerStart, innerEnd] = innerDates.map(d => new Date(d));
+
+        // Flight dates might be single for one way, but for package usually range.
+        // Assuming range for validation context.
+        return innerStart >= outerStart && innerEnd <= outerEnd;
+    };
 
     // Package API Logic
     const pkgTravelerState = [{ id: 1, adults: 2, children: [], infants: 0 }];
@@ -742,12 +805,38 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     document.getElementById('pkg-search-btn').onclick = () => {
+        const originInput = document.getElementById('pkg-origin');
+        const destInput = document.getElementById('pkg-dest');
+        updateInputError(originInput, !originInput.value);
+        updateInputError(destInput, !destInput.value);
+        if (!originInput.value || !destInput.value) return;
+
         const dates = document.getElementById('pkg-dates').value.split(' to ');
         const def = getDefaultDates();
 
+        // Check Partial Hotel Date Logic
+        const isSep = document.getElementById('pkg-partial-hotel').checked;
+        if (isSep) {
+            const hInput = document.getElementById('pkg-hotel-dates');
+            const hDates = hInput.value.split(' to ');
+
+            if (hDates.length < 2) {
+                updateInputError(hInput, true);
+                return;
+            } else {
+                updateInputError(hInput, false);
+            }
+
+            if (dates.length === 2 && !validateDateRange(hDates, dates)) {
+                hInput.value = ''; // Clear invalid
+                hInput.placeholder = "Dates must be within flight dates";
+                updateInputError(hInput, true);
+                return;
+            }
+        }
+
         const originCode = getCode('pkg-origin', 'SIN');
         const destCode = getCode('pkg-dest', 'HKT');
-        const destInput = document.getElementById('pkg-dest');
         const destId = (destInput && destInput.dataset.id) ? destInput.dataset.id : destCode;
 
         const travelersApi = [];
@@ -758,7 +847,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         const cabinVal = document.getElementById('pkg-cabin-val').textContent;
-        const isSep = document.getElementById('pkg-partial-hotel').checked;
+        // isSep already defined above
 
         go({
             process: 'bundle',
@@ -777,8 +866,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 des_type: 'airport_code',
                 ht_des_code: destCode,
                 ht_des_type: 'airport_code',
-                ht_checkin_date: dates[0] || def.startStr,
-                ht_checkout_date: dates[1] || def.endStr,
+                ht_des_type: 'airport_code',
+                ht_checkin_date: isSep ? document.getElementById('pkg-hotel-dates').value.split(' to ')[0] : (dates[0] || def.startStr),
+                ht_checkout_date: isSep ? document.getElementById('pkg-hotel-dates').value.split(' to ')[1] : (dates[1] || def.endStr),
                 is_separate: isSep,
                 stars: null
             }),
@@ -788,7 +878,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // ================= HOTEL LOGIC =================
-    flatpickr('#ht-dates', { mode: "range", dateFormat: "Y-m-d", minDate: "today" });
+    flatpickr('#ht-dates', { mode: "range", dateFormat: "Y-m-d", minDate: "today", defaultDate: [defDates.startStr, defDates.endStr] });
 
     // Hotel Traveler state reuse similar structure but separate instance
     const htTravelerState = [{ id: 1, adults: 2, children: [], infants: 0 }];
@@ -866,9 +956,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     document.getElementById('hotel-search-btn').onclick = () => {
+        const destInput = document.getElementById('ht-dest');
+        updateInputError(destInput, !destInput.value);
+        if (!destInput.value) return;
         const dates = document.getElementById('ht-dates').value.split(' to ');
         const def = getDefaultDates();
-        const destInput = document.getElementById('ht-dest');
         const selType = destInput.dataset.selType || 'place_id';
         const code = destInput.dataset.code || '2766';
 
@@ -964,6 +1056,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const bottomInput = document.getElementById('tr-dropoff');
         const isFromAirport = topInput.dataset.type === 'airport_code';
 
+        // Validation
+        let isValid = true;
+        const inputs = [topInput, bottomInput];
+        inputs.forEach(input => {
+            if (!input.value) {
+                updateInputError(input, true);
+                isValid = false;
+            } else {
+                updateInputError(input, false);
+            }
+        });
+        if (!isValid) return;
+
         let airportCode, placeId, placeType;
 
         if (isFromAirport) {
@@ -996,7 +1101,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // ================= TOUR LOGIC =================
-    flatpickr('#tour-dates', { mode: "range", dateFormat: "Y-m-d", minDate: "today" });
+    flatpickr('#tour-dates', { mode: "range", dateFormat: "Y-m-d", minDate: "today", defaultDate: [defDates.startStr, defDates.endStr] });
 
     // Tour Traveler State
     const tourPax = (function () {
@@ -1093,8 +1198,11 @@ document.addEventListener('DOMContentLoaded', () => {
     })();
 
     document.getElementById('tour-search-btn').onclick = () => {
-        const dates = document.getElementById('tour-dates').value.split(' to ');
         const destInput = document.getElementById('tour-dest');
+        updateInputError(destInput, !destInput.value);
+        if (!destInput.value) return;
+
+        const dates = document.getElementById('tour-dates').value.split(' to ');
         const desCode = destInput.dataset.id || destInput.dataset.code || '178312';
         // API Docs say: tr_des_type should be 'place_id' for tours
         const desType = 'place_id';
@@ -1254,6 +1362,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // --- Search Handler ---
         document.getElementById('modal-search-btn').onclick = () => {
+            const originInput = document.getElementById('modal-origin');
+            updateInputError(originInput, !originInput.value);
+            if (!originInput.value) return;
+
             const dates = document.getElementById('modal-dates').value.split(' to ');
             const def = getDefaultDates();
             const originCode = getCode('modal-origin', 'SIN');
