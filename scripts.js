@@ -257,6 +257,7 @@ document.addEventListener('DOMContentLoaded', () => {
             currencyTriggerDesktop.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
+                if (langMenuDesk) langMenuDesk.classList.add('hidden'); // Close language menu
                 currencyMenuDesktop.classList.toggle('hidden');
             });
         }
@@ -355,6 +356,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (langTriggerDesk) {
             langTriggerDesk.addEventListener('click', (e) => {
                 e.preventDefault(); e.stopPropagation();
+                if (currencyMenuDesktop) currencyMenuDesktop.classList.add('hidden'); // Close currency menu
                 langMenuDesk.classList.toggle('hidden');
             });
         }
@@ -466,7 +468,10 @@ async function fetchLocations(query, type) {
 
     try {
         const res = await fetch(url);
-        if (!res.ok) throw new Error("API Request Failed");
+        if (!res.ok) {
+            console.error(`API Request Failed: ${res.status} ${res.statusText} for URL: ${url}`);
+            throw new Error(`API Request Failed: ${res.status}`);
+        }
         const data = await res.json();
         let results = [];
 
