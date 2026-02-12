@@ -21,10 +21,19 @@ const mimeTypes = {
 const server = http.createServer((req, res) => {
     // 1. Handle API Proxy requests
     if (req.url.startsWith('/api')) {
+        // Remove trailing slash if present (e.g. /api/places/ -> /api/places)
+        // to avoid 404s from upstream API which is sensitive to slashes
+        const parsedUrl = url.parse(req.url);
+        // Note: 'url' module is already imported at the top
+        let path = parsedUrl.pathname;
+        if (path.endsWith('/') && path.length > 1) {
+            path = path.slice(0, -1);
+        }
+
         const options = {
             hostname: targetHost,
             port: 443,
-            path: req.url,
+            path: path + (parsedUrl.search || ''),
             method: req.method,
             headers: {
                 ...req.headers,
