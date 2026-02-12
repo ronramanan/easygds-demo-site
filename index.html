@@ -63,27 +63,47 @@
 <body class="bg-brand-surface text-brand-text font-sans antialiased">
 
     <!-- ================= HEADER ================= -->
-    <header class="absolute top-0 left-0 right-0 z-[60] h-20 flex items-center transition-all duration-300"
+    <header class="absolute top-0 left-0 right-0 z-[60] h-16 flex items-center transition-all duration-300"
         id="main-header">
         <div class="container mx-auto px-6 lg:px-12 flex justify-between items-center h-full">
             <!-- Logo -->
             <a href="#" class="flex items-center gap-3 group">
                 <img src="easygds_logo_transparent.png" alt="EasyGDS Logo"
-                    class="h-10 w-auto brightness-0 invert transition-all duration-300 group-hover:scale-105 drop-shadow-md">
+                    class="h-6 w-auto brightness-0 invert transition-all duration-300 group-hover:scale-105 drop-shadow-md">
             </a>
 
             <!-- Desktop Navigation -->
-            <div class="hidden lg:flex items-center gap-8 text-sm font-semibold text-white/95">
-                <div
-                    class="flex items-center gap-1.5 cursor-pointer hover:text-white transition-all duration-300 hover:gap-2">
-                    <span>USD</span>
-                    <i data-lucide="chevron-down" class="w-4 h-4"></i>
+            <div class="hidden lg:flex items-center gap-6 text-sm font-semibold text-white/95">
+                <div class="relative">
+                    <div id="currency-trigger-desktop"
+                        class="flex items-center gap-1.5 cursor-pointer hover:text-white transition-all duration-300 select-none">
+                        <span id="currency-display-desktop">USD</span>
+                        <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                    </div>
+                    <!-- Dropdown -->
+                    <div id="currency-menu-desktop"
+                        class="hidden absolute top-full left-0 mt-2 w-32 bg-white rounded-xl shadow-elegant-lg border border-gray-100 overflow-hidden z-[70] py-1">
+                        <div class="currency-list max-h-64 overflow-y-auto"
+                            style="scrollbar-width: thin; scrollbar-color: #CBD5E1 transparent;">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
                 </div>
-                <div
-                    class="flex items-center gap-2 cursor-pointer hover:text-white transition-all duration-300 hover:gap-3">
-                    <img src="https://flagcdn.com/w20/us.png" alt="US flag" class="w-5 h-auto rounded shadow-sm">
-                    <span>EN</span>
-                    <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                <div class="relative">
+                    <div id="lang-trigger-desktop"
+                        class="flex items-center gap-2 cursor-pointer hover:text-white transition-all duration-300 select-none">
+                        <img id="lang-display-desktop-flag" src="https://flagcdn.com/w20/us.png" alt="flag"
+                            class="w-5 h-auto rounded shadow-sm">
+                        <span id="lang-display-desktop-label">EN</span>
+                        <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                    </div>
+                    <!-- Dropdown -->
+                    <div id="lang-menu-desktop"
+                        class="hidden absolute top-full right-0 mt-2 w-32 bg-white rounded-xl shadow-elegant-lg border border-gray-100 overflow-hidden z-[70] py-1">
+                        <div class="lang-list" style="scrollbar-width: thin;">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
                 </div>
                 <a href="#" class="hover:text-white transition-all duration-300 hover:underline underline-offset-4">Log
                     In</a>
@@ -103,22 +123,35 @@
     <div class="fixed inset-0 bg-white z-[55] transform translate-x-full transition-transform duration-300 lg:hidden pt-20 px-6 flex flex-col gap-6"
         id="mobile-menu">
         <!-- Currency Selector -->
-        <div
-            class="flex items-center justify-between text-xl font-semibold border-b pb-4 border-gray-100 hover:text-brand-primary transition-colors cursor-pointer">
-            <span>Currency</span>
-            <div class="flex items-center gap-2">
-                <span>USD</span>
-                <i data-lucide="chevron-down" class="w-5 h-5"></i>
+        <div class="border-b border-gray-100 pb-4">
+            <button id="currency-trigger-mobile"
+                class="w-full flex items-center justify-between text-xl font-semibold hover:text-brand-primary transition-colors cursor-pointer outline-none">
+                <span>Currency</span>
+                <div class="flex items-center gap-2">
+                    <span id="currency-display-mobile">USD</span>
+                    <i data-lucide="chevron-down" class="w-5 h-5 transition-transform duration-300"
+                        id="currency-chevron-mobile"></i>
+                </div>
+            </button>
+            <div id="currency-menu-mobile" class="hidden mt-4 pl-0 grid grid-cols-4 gap-2">
+                <!-- Populated by JS -->
             </div>
         </div>
         <!-- Language Selector -->
-        <div
-            class="flex items-center justify-between text-xl font-semibold border-b pb-4 border-gray-100 hover:text-brand-primary transition-colors cursor-pointer">
-            <span>Language</span>
-            <div class="flex items-center gap-2">
-                <img src="https://flagcdn.com/w20/us.png" alt="US flag" class="w-6 h-auto rounded shadow-sm">
-                <span>EN</span>
-                <i data-lucide="chevron-down" class="w-5 h-5"></i>
+        <div class="border-b border-gray-100 pb-4">
+            <button id="lang-trigger-mobile"
+                class="w-full flex items-center justify-between text-xl font-semibold hover:text-brand-primary transition-colors cursor-pointer outline-none">
+                <span>Language</span>
+                <div class="flex items-center gap-2">
+                    <img id="lang-display-mobile-flag" src="https://flagcdn.com/w20/us.png" alt="flag"
+                        class="w-6 h-auto rounded shadow-sm">
+                    <span id="lang-display-mobile-label">EN</span>
+                    <i data-lucide="chevron-down" class="w-5 h-5 transition-transform duration-300"
+                        id="lang-chevron-mobile"></i>
+                </div>
+            </button>
+            <div id="lang-menu-mobile" class="hidden mt-4 pl-0 grid grid-cols-4 gap-2">
+                <!-- Populated by JS -->
             </div>
         </div>
         <div class="flex flex-col gap-4 mt-4">
@@ -132,7 +165,7 @@
     </div>
 
     <!-- ================= HERO SECTION ================= -->
-    <section class="relative h-[65vh] min-h-[550px] max-h-[850px] w-full overflow-hidden">
+    <section class="relative h-[55vh] min-h-[450px] max-h-[700px] w-full overflow-hidden">
         <!-- Slides Container -->
         <div class="absolute inset-0 z-0">
 
@@ -148,11 +181,11 @@
                 </div>
                 <!-- Content -->
                 <div
-                    class="relative z-10 container mx-auto px-6 lg:px-12 h-full flex flex-col justify-center items-center pb-40 lg:pb-52 pt-24 text-center">
+                    class="relative z-10 container mx-auto px-6 lg:px-12 h-full flex flex-col justify-center items-center pb-24 lg:pb-32 pt-20 text-center">
                     <h1
-                        class="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 drop-shadow-lg leading-tight animate-fade-in-up">
+                        class="font-display text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-4 drop-shadow-lg leading-tight animate-fade-in-up">
                         Kuala Lumpur <br>
-                        <span class="text-brand-surface italic text-3xl md:text-5xl">from $599</span>
+                        <span class="text-brand-surface italic text-2xl md:text-4xl">from $599</span>
                     </h1>
                     <div
                         class="animate-fade-in-up delay-[200ms] flex items-center justify-center gap-6 text-white/95 bg-white/10 backdrop-blur-md px-8 py-4 rounded-full border border-white/20 shadow-lg">
@@ -181,11 +214,11 @@
                 </div>
                 <!-- Content -->
                 <div
-                    class="relative z-10 container mx-auto px-6 lg:px-12 h-full flex flex-col justify-center items-center pb-40 lg:pb-52 pt-24 text-center">
+                    class="relative z-10 container mx-auto px-6 lg:px-12 h-full flex flex-col justify-center items-center pb-24 lg:pb-32 pt-20 text-center">
                     <h1
-                        class="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 drop-shadow-lg leading-tight">
+                        class="font-display text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-4 drop-shadow-lg leading-tight">
                         Maldives <br>
-                        <span class="text-brand-surface italic text-3xl md:text-5xl">from $1,299</span>
+                        <span class="text-brand-surface italic text-2xl md:text-4xl">from $1,299</span>
                     </h1>
                     <div
                         class="flex items-center justify-center gap-6 text-white/95 bg-white/10 backdrop-blur-md px-8 py-4 rounded-full border border-white/20 shadow-lg">
@@ -213,11 +246,11 @@
                 </div>
                 <!-- Content -->
                 <div
-                    class="relative z-10 container mx-auto px-6 lg:px-12 h-full flex flex-col justify-center items-center pb-40 lg:pb-52 pt-24 text-center">
+                    class="relative z-10 container mx-auto px-6 lg:px-12 h-full flex flex-col justify-center items-center pb-24 lg:pb-32 pt-20 text-center">
                     <h1
-                        class="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 drop-shadow-lg leading-tight">
+                        class="font-display text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-4 drop-shadow-lg leading-tight">
                         Dubai <br>
-                        <span class="text-brand-surface italic text-3xl md:text-5xl">from $899</span>
+                        <span class="text-brand-surface italic text-2xl md:text-4xl">from $899</span>
                     </h1>
                     <div
                         class="flex items-center justify-center gap-6 text-white/95 bg-white/10 backdrop-blur-md px-8 py-4 rounded-full border border-white/20 shadow-lg">
@@ -251,7 +284,7 @@
     </section>
 
     <!-- ================= STICKY SEARCH BAR ================= -->
-    <div class="sticky top-0 z-[50] -mt-12 lg:-mt-20 px-4 lg:px-6 pb-6 transition-all duration-300"
+    <div class="sticky top-0 z-[50] -mt-8 lg:-mt-16 px-4 lg:px-6 pb-6 transition-all duration-300"
         id="search-container-wrapper">
         <div class="container mx-auto">
             <!-- Enhanced Search Panel -->
@@ -796,10 +829,10 @@
         </div>
     </div>
     <!-- ================= TOP DESTINATIONS ================= -->
-    <section class="py-16 lg:py-24 container mx-auto px-6 lg:px-12">
-        <div class="flex flex-col md:flex-row justify-between items-end mb-10 gap-4">
+    <section class="py-10 lg:py-14 container mx-auto px-6 lg:px-12">
+        <div class="flex flex-col md:flex-row justify-between items-end mb-8 gap-4">
             <div>
-                <h2 class="font-display text-3xl lg:text-4xl font-bold text-brand-primary mb-3 accent-line">Top
+                <h2 class="font-display text-2xl lg:text-3xl font-bold text-brand-primary mb-2 accent-line">Top
                     Destinations</h2>
                 <p class="text-brand-muted text-lg font-medium">Curated locations for your next escape.</p>
             </div>
@@ -812,7 +845,7 @@
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
             <!-- Card 1 -->
             <a href="#"
-                class="group relative aspect-[3/4] rounded-2xl overflow-hidden shadow-elegant hover:shadow-elegant-lg transition-all duration-500">
+                class="group relative aspect-[4/5] rounded-2xl overflow-hidden shadow-elegant hover:shadow-elegant-lg transition-all duration-500">
                 <img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?q=80&w=800" loading="lazy"
                     class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
@@ -824,7 +857,7 @@
             </a>
             <!-- Card 2 -->
             <a href="#"
-                class="group relative aspect-[3/4] rounded-2xl overflow-hidden shadow-elegant hover:shadow-elegant-lg transition-all duration-500">
+                class="group relative aspect-[4/5] rounded-2xl overflow-hidden shadow-elegant hover:shadow-elegant-lg transition-all duration-500">
                 <img src="https://images.unsplash.com/photo-1602940659805-770d1b3b9911?q=80&w=800" loading="lazy"
                     class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
@@ -836,7 +869,7 @@
             </a>
             <!-- Card 3 -->
             <a href="#"
-                class="group relative aspect-[3/4] rounded-2xl overflow-hidden shadow-elegant hover:shadow-elegant-lg transition-all duration-500">
+                class="group relative aspect-[4/5] rounded-2xl overflow-hidden shadow-elegant hover:shadow-elegant-lg transition-all duration-500">
                 <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?q=80&w=800" loading="lazy"
                     class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
@@ -848,7 +881,7 @@
             </a>
             <!-- Card 4 -->
             <a href="#"
-                class="group relative aspect-[3/4] rounded-2xl overflow-hidden shadow-elegant hover:shadow-elegant-lg transition-all duration-500">
+                class="group relative aspect-[4/5] rounded-2xl overflow-hidden shadow-elegant hover:shadow-elegant-lg transition-all duration-500">
                 <img src="https://images.unsplash.com/photo-1531366936337-7c912a4589a7?q=80&w=800" loading="lazy"
                     class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
@@ -862,9 +895,9 @@
     </section>
 
     <!-- ================= SPECIAL OFFERS ================= -->
-    <section class="py-16 bg-white border-y border-gray-100">
+    <section class="py-12 bg-white border-y border-gray-100">
         <div class="container mx-auto px-6 lg:px-12">
-            <h2 class="font-display text-3xl font-bold text-brand-primary mb-10 text-center">Exclusive Deals</h2>
+            <h2 class="font-display text-2xl font-bold text-brand-primary mb-8 text-center">Exclusive Deals</h2>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Deal 1: Dubai -->
@@ -975,15 +1008,15 @@
     </section>
 
     <!-- ================= FEATURES / WHY US ================= -->
-    <section class="py-16 bg-brand-surface">
+    <section class="py-12 bg-brand-surface">
         <div class="container mx-auto px-6 lg:px-12 text-center">
-            <h2 class="font-display text-3xl font-bold text-brand-primary mb-12">Why Choose EasyGDS?</h2>
+            <h2 class="font-display text-2xl font-bold text-brand-primary mb-8">Why Choose EasyGDS?</h2>
 
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
                 <div class="flex flex-col items-center group">
                     <div
-                        class="w-16 h-16 bg-white rounded-2xl shadow-sm flex items-center justify-center text-brand-primary mb-4 group-hover:scale-110 transition-transform duration-300">
-                        <i data-lucide="shield-check" class="w-8 h-8"></i>
+                        class="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center text-brand-primary mb-4 group-hover:scale-110 transition-transform duration-300">
+                        <i data-lucide="shield-check" class="w-6 h-6"></i>
                     </div>
                     <h3 class="font-bold text-lg mb-2">Secure Booking</h3>
                     <p class="text-sm text-brand-muted leading-relaxed">Advanced encryption keeps your personal data
@@ -991,8 +1024,8 @@
                 </div>
                 <div class="flex flex-col items-center group">
                     <div
-                        class="w-16 h-16 bg-white rounded-2xl shadow-sm flex items-center justify-center text-brand-primary mb-4 group-hover:scale-110 transition-transform duration-300">
-                        <i data-lucide="tag" class="w-8 h-8"></i>
+                        class="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center text-brand-primary mb-4 group-hover:scale-110 transition-transform duration-300">
+                        <i data-lucide="tag" class="w-6 h-6"></i>
                     </div>
                     <h3 class="font-bold text-lg mb-2">Best Prices</h3>
                     <p class="text-sm text-brand-muted leading-relaxed">We match any competitor's price for
@@ -1001,8 +1034,8 @@
                 </div>
                 <div class="flex flex-col items-center group">
                     <div
-                        class="w-16 h-16 bg-white rounded-2xl shadow-sm flex items-center justify-center text-brand-primary mb-4 group-hover:scale-110 transition-transform duration-300">
-                        <i data-lucide="headset" class="w-8 h-8"></i>
+                        class="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center text-brand-primary mb-4 group-hover:scale-110 transition-transform duration-300">
+                        <i data-lucide="headset" class="w-6 h-6"></i>
                     </div>
                     <h3 class="font-bold text-lg mb-2">24/7 Support</h3>
                     <p class="text-sm text-brand-muted leading-relaxed">Our support team is always available to help
@@ -1010,8 +1043,8 @@
                 </div>
                 <div class="flex flex-col items-center group">
                     <div
-                        class="w-16 h-16 bg-white rounded-2xl shadow-sm flex items-center justify-center text-brand-primary mb-4 group-hover:scale-110 transition-transform duration-300">
-                        <i data-lucide="gem" class="w-8 h-8"></i>
+                        class="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center text-brand-primary mb-4 group-hover:scale-110 transition-transform duration-300">
+                        <i data-lucide="gem" class="w-6 h-6"></i>
                     </div>
                     <h3 class="font-bold text-lg mb-2">Premium Quality</h3>
                     <p class="text-sm text-brand-muted leading-relaxed">Handpicked experiences for the discerning
@@ -1022,11 +1055,11 @@
     </section>
 
     <!-- ================= NEWSLETTER ================= -->
-    <section class="py-20 relative overflow-hidden bg-white border-y border-brand-gold/20">
+    <section class="py-16 relative overflow-hidden bg-white border-y border-brand-gold/20">
         <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.03]">
         </div>
         <div class="container mx-auto px-6 lg:px-12 relative z-10 text-center">
-            <h2 class="font-display text-3xl md:text-4xl font-bold text-brand-primary mb-4">Stay Inspired</h2>
+            <h2 class="font-display text-2xl md:text-3xl font-bold text-brand-primary mb-3">Stay Inspired</h2>
             <p class="text-brand-muted mb-8 max-w-xl mx-auto">Join 50k+ travelers. Get exclusive travel offers,
                 hidden
                 gem alerts, and tips delivered to your inbox.</p>
