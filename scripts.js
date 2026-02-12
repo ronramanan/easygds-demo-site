@@ -1,3 +1,6 @@
+window.APP_CURRENCY = 'USD'; // Default Currency
+window.APP_LANGUAGE = 'en-US'; // Default Language
+
 // Global definition to ensure it works regardless of load order or other script failures
 window.openExclusiveDeal = function (city, code) {
     console.log("Opening Deal Modal (Exclusive) for:", city, code);
@@ -265,6 +268,205 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Popovers are handled by homepage_logic_integrated.js
+
+
+    // --- Currency Dropdown Logic ---
+    const currencyCurrencies = ['AED', 'AUD', 'EUR', 'GBP', 'INR', 'JPY', 'MYR', 'NZD', 'SAR', 'SGD', 'TRY', 'USD', 'VND'];
+    const currencyTriggerDesktop = document.getElementById('currency-trigger-desktop');
+    const currencyMenuDesktop = document.getElementById('currency-menu-desktop');
+    const currencyTriggerMobile = document.getElementById('currency-trigger-mobile');
+    const currencyMenuMobile = document.getElementById('currency-menu-mobile');
+
+    function setCurrency(code) {
+        window.APP_CURRENCY = code;
+        // Update Displays
+        const dDesk = document.getElementById('currency-display-desktop');
+        const dMob = document.getElementById('currency-display-mobile');
+        if (dDesk) dDesk.textContent = code;
+        if (dMob) dMob.textContent = code;
+
+        // Visual Feedback (Desktop)
+        if (currencyMenuDesktop) {
+            currencyMenuDesktop.querySelectorAll('.currency-item').forEach(el => {
+                if (el.dataset.val === code) el.classList.add('bg-brand-surface', 'text-brand-primary', 'font-bold');
+                else el.classList.remove('bg-brand-surface', 'text-brand-primary', 'font-bold');
+            });
+        }
+        // Visual Feedback (Mobile)
+        if (currencyMenuMobile) {
+            currencyMenuMobile.querySelectorAll('.currency-item-mobile').forEach(el => {
+                if (el.dataset.val === code) el.classList.add('border-brand-primary', 'text-brand-primary', 'bg-brand-surface');
+                else el.classList.remove('border-brand-primary', 'text-brand-primary', 'bg-brand-surface');
+            });
+        }
+
+        // Close Desktop Menu
+        if (currencyMenuDesktop) currencyMenuDesktop.classList.add('hidden');
+    }
+
+    // Init Desktop Menu
+    if (currencyMenuDesktop) {
+        const listContainer = currencyMenuDesktop.querySelector('.currency-list');
+        listContainer.innerHTML = '';
+        currencyCurrencies.forEach(c => {
+            const item = document.createElement('div');
+            item.className = 'currency-item px-4 py-2 hover:bg-brand-surface cursor-pointer text-sm font-medium text-brand-text transition-colors flex justify-between items-center';
+            if (c === window.APP_CURRENCY) item.classList.add('bg-brand-surface', 'text-brand-primary', 'font-bold');
+            item.textContent = c;
+            item.dataset.val = c;
+            item.onclick = (e) => { e.stopPropagation(); setCurrency(c); };
+            listContainer.appendChild(item);
+        });
+
+        // Toggle (and close language dropdown)
+        if (currencyTriggerDesktop) {
+            currencyTriggerDesktop.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (langMenuDesk) langMenuDesk.classList.add('hidden');
+                currencyMenuDesktop.classList.toggle('hidden');
+            });
+        }
+    }
+
+    // Init Mobile Menu
+    if (currencyMenuMobile) {
+        currencyMenuMobile.innerHTML = '';
+        currencyCurrencies.forEach(c => {
+            const item = document.createElement('div');
+            item.className = 'currency-item-mobile py-2 px-3 text-center border border-gray-200 rounded-lg text-sm font-medium hover:border-brand-primary hover:text-brand-primary cursor-pointer transition-colors';
+            if (c === window.APP_CURRENCY) item.classList.add('border-brand-primary', 'text-brand-primary', 'bg-brand-surface');
+            item.textContent = c;
+            item.dataset.val = c;
+            item.onclick = (e) => { e.stopPropagation(); setCurrency(c); };
+            currencyMenuMobile.appendChild(item);
+        });
+
+        if (currencyTriggerMobile) {
+            currencyTriggerMobile.addEventListener('click', (e) => {
+                // Close language mobile menu
+                if (langMenuMob && !langMenuMob.classList.contains('hidden')) {
+                    langMenuMob.classList.add('hidden');
+                    const langChev = document.getElementById('lang-chevron-mobile');
+                    if (langChev) langChev.classList.remove('rotate-180');
+                }
+                const chevron = document.getElementById('currency-chevron-mobile');
+                currencyMenuMobile.classList.toggle('hidden');
+                if (chevron) chevron.classList.toggle('rotate-180');
+            });
+        }
+    }
+
+
+    // --- Language Dropdown Logic ---
+    const appLanguages = [
+        { code: 'en-US', label: 'EN', flag: 'us' },
+        { code: 'de-DE', label: 'DE', flag: 'de' },
+        { code: 'ru-RU', label: 'RU', flag: 'ru' },
+        { code: 'ja-JP', label: 'JP', flag: 'jp' }
+    ];
+    const langTriggerDesk = document.getElementById('lang-trigger-desktop');
+    const langMenuDesk = document.getElementById('lang-menu-desktop');
+    const langTriggerMob = document.getElementById('lang-trigger-mobile');
+    const langMenuMob = document.getElementById('lang-menu-mobile');
+
+    function setLanguage(langObj) {
+        window.APP_LANGUAGE = langObj.code;
+
+        // Update Displays
+        const updateDisplay = (prefix) => {
+            const label = document.getElementById(`${prefix}-label`);
+            const flag = document.getElementById(`${prefix}-flag`);
+            if (label) label.textContent = langObj.label;
+            if (flag) flag.src = `https://flagcdn.com/w20/${langObj.flag}.png`;
+        };
+        updateDisplay('lang-display-desktop');
+        updateDisplay('lang-display-mobile');
+
+        // Visual Feedback
+        const updateActive = (menu, itemClass, activeClass) => {
+            if (!menu) return;
+            menu.querySelectorAll(itemClass).forEach(el => {
+                if (el.dataset.code === langObj.code) el.classList.add(...activeClass.split(' '));
+                else el.classList.remove(...activeClass.split(' '));
+            });
+        };
+
+        if (langMenuDesk) updateActive(langMenuDesk, '.lang-item', 'bg-brand-surface text-brand-primary font-bold');
+        if (langMenuMob) updateActive(langMenuMob, '.lang-item-mobile', 'border-brand-primary text-brand-primary bg-brand-surface');
+
+        // Close Menu
+        if (langMenuDesk) langMenuDesk.classList.add('hidden');
+    }
+
+    // Init Desktop Lang Menu
+    if (langMenuDesk) {
+        const list = langMenuDesk.querySelector('.lang-list');
+        list.innerHTML = '';
+        appLanguages.forEach(l => {
+            const item = document.createElement('div');
+            item.className = 'lang-item px-4 py-2 hover:bg-brand-surface cursor-pointer text-sm font-medium text-brand-text transition-colors flex items-center gap-3';
+            if (l.code === window.APP_LANGUAGE) item.classList.add('bg-brand-surface', 'text-brand-primary', 'font-bold');
+            item.dataset.code = l.code;
+            item.innerHTML = `
+                <img src="https://flagcdn.com/w20/${l.flag}.png" class="w-5 h-auto rounded shadow-sm">
+                <span>${l.label}</span>
+            `;
+            item.onclick = (e) => { e.stopPropagation(); setLanguage(l); };
+            list.appendChild(item);
+        });
+
+        if (langTriggerDesk) {
+            langTriggerDesk.addEventListener('click', (e) => {
+                e.preventDefault(); e.stopPropagation();
+                if (currencyMenuDesktop) currencyMenuDesktop.classList.add('hidden');
+                langMenuDesk.classList.toggle('hidden');
+            });
+        }
+    }
+
+    // Init Mobile Lang Menu
+    if (langMenuMob) {
+        langMenuMob.innerHTML = '';
+        appLanguages.forEach(l => {
+            const item = document.createElement('div');
+            item.className = 'lang-item-mobile py-2 px-3 flex items-center justify-center gap-2 border border-gray-200 rounded-lg text-sm font-medium hover:border-brand-primary hover:text-brand-primary cursor-pointer transition-colors';
+            if (l.code === window.APP_LANGUAGE) item.classList.add('border-brand-primary', 'text-brand-primary', 'bg-brand-surface');
+            item.dataset.code = l.code;
+            item.innerHTML = `
+                <img src="https://flagcdn.com/w20/${l.flag}.png" class="w-4 h-auto rounded shadow-sm">
+                <span>${l.label}</span>
+            `;
+            item.onclick = (e) => { e.stopPropagation(); setLanguage(l); };
+            langMenuMob.appendChild(item);
+        });
+
+        if (langTriggerMob) {
+            langTriggerMob.addEventListener('click', () => {
+                // Close currency mobile menu
+                if (currencyMenuMobile && !currencyMenuMobile.classList.contains('hidden')) {
+                    currencyMenuMobile.classList.add('hidden');
+                    const currChev = document.getElementById('currency-chevron-mobile');
+                    if (currChev) currChev.classList.remove('rotate-180');
+                }
+                const chev = document.getElementById('lang-chevron-mobile');
+                langMenuMob.classList.toggle('hidden');
+                if (chev) chev.classList.toggle('rotate-180');
+            });
+        }
+    }
+
+    // --- Close all desktop dropdowns on outside click ---
+    document.addEventListener('click', (e) => {
+        if (currencyMenuDesktop && currencyTriggerDesktop &&
+            !currencyTriggerDesktop.contains(e.target) && !currencyMenuDesktop.contains(e.target)) {
+            currencyMenuDesktop.classList.add('hidden');
+        }
+        if (langMenuDesk && langTriggerDesk &&
+            !langTriggerDesk.contains(e.target) && !langMenuDesk.contains(e.target)) {
+            langMenuDesk.classList.add('hidden');
+        }
+    });
 });
 
 // ================= CONFIGURATION =================
@@ -472,12 +674,12 @@ function go(paramsObj, customPath, newTab) {
     } else {
         base = 'https://demo.apps.easygds.com/shopping/processes/' + (paramsObj.process || 'flight');
     }
-    paramsObj.currency_code = 'EUR';
-    paramsObj.language_code = 'en-US';
+    paramsObj.currency_code = window.APP_CURRENCY;
+    paramsObj.language_code = window.APP_LANGUAGE;
     paramsObj.session_id = SESSION_ID;
     paramsObj.office_domain = 'demo.b2c.easygds.com';
     paramsObj.scope_type = 'B2C';
-    paramsObj.disabled_currency = 'true';
+    paramsObj.disabled_currency = 'false';
     paramsObj.search_id = Array.from(crypto.getRandomValues(new Uint8Array(16)))
         .map(b => b.toString(16).padStart(2, '0')).join('');
 
