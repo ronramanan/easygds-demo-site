@@ -439,31 +439,20 @@ function getDefaultDates() {
 }
 
 async function fetchLocations(query, type) {
-    let url;
-    if (type === 'airport_code') {
-        url = new URL(`${API_BASE_URL}/places/cities-with-airports`, window.location.origin);
-        url.searchParams.append("search_text", query);
-        url.searchParams.append("language_code", "en-US");
-    } else if (type === 'tour_region') {
-        url = new URL(`${API_BASE_URL}/places`, window.location.origin);
-        url.searchParams.append("search_text", query);
-        url.searchParams.append("language_code", "en-US");
-        url.searchParams.append("types", "country,airport,administrative_area_level_4,administrative_area_level_3");
-        url.searchParams.append("property_included", "false");
-        url.searchParams.append("with_properties", "false"); // EXPLICITLY EXCLUDE HOTELS
-        url.searchParams.append("has_code", "false");
-        url.searchParams.append("per_page", "20");
-        url.searchParams.append("page", "1");
+    const url = new URL(`${API_BASE_URL}/places`, window.location.origin);
+    url.searchParams.append("search_text", query);
+    url.searchParams.append("language_code", "en-US");
+    url.searchParams.append("types", "country,airport,administrative_area_level_4,administrative_area_level_3");
+    url.searchParams.append("has_code", "false");
+    url.searchParams.append("per_page", "20");
+    url.searchParams.append("page", "1");
+
+    // Handle specific type logic for properties (hotels)
+    if (type === 'tour_region' || type === 'airport_code') {
+        url.searchParams.append("with_properties", "false");
     } else {
-        url = new URL(`${API_BASE_URL}/places`, window.location.origin);
-        url.searchParams.append("search_text", query);
-        url.searchParams.append("language_code", "en-US");
-        url.searchParams.append("types", "country,airport,administrative_area_level_4,administrative_area_level_3");
-        url.searchParams.append("property_included", "false");
+        // For hotels or generic search, we might want properties
         url.searchParams.append("with_properties", "true");
-        url.searchParams.append("has_code", "false");
-        url.searchParams.append("per_page", "20");
-        url.searchParams.append("page", "1");
     }
 
     try {
