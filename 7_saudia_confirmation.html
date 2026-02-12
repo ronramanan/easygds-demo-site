@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Saudia Holidays - Booking Confirmation</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+        rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#006C35", // Saudia Green
+                        secondary: "#006C35", // Saudia Green
+                        "primary-hover": "#005a2b",
+                        "primary-light": "#E8F0FE",
+                        "text-main": "#1A1A1A",
+                        "text-muted": "#555555",
+                        "bg-surface": "#F9F9F9",
+                        success: "#059669",
+                        amber: "#B09255",
+                        gold: "#B09255",
+                    },
+                    fontFamily: {
+                        display: ["Outfit", "sans-serif"],
+                        sans: ["Outfit", "sans-serif"],
+                    },
+                    fontSize: {
+                        'xs': '0.8125rem',
+                        'sm': '0.9375rem',
+                        'base': '1rem',
+                        'lg': '1.125rem',
+                        'xl': '1.25rem',
+                        '2xl': '1.5rem',
+                        '3xl': '1.875rem',
+                        '4xl': '2.25rem',
+                    },
+                    boxShadow: {
+                        'refined': '0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 10px 20px -5px rgba(0, 0, 0, 0.08)',
+                        'refined-lg': '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 20px 30px -10px rgba(0, 0, 0, 0.12)',
+                        'blue': '0 4px 14px 0 rgba(0, 108, 53, 0.15)',
+                        'float': '0 5px 15px -5px rgba(0, 0, 0, 0.08)',
+                    },
+                    animation: {
+                        'slide-down': 'slideDown 0.3s ease-out',
+                    },
+                    keyframes: {
+                        slideDown: {
+                            '0%': { opacity: '0', transform: 'translateY(-10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                    }
+                },
+            },
+        };
+    </script>
+    <style>
+        .material-icons-round,
+        .material-symbols-outlined {
+            vertical-align: middle;
+        }
+
+        /* Compact components */
+        .card-compact {
+            padding: 1.25rem;
+        }
+
+        .tailfin-icon {
+            width: 18px;
+            height: 18px;
+            background-color: #006C35;
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 30% 100%, 0 70%);
+            border-radius: 2px;
+            display: inline-block;
+            flex-shrink: 0;
+        }
+
+        .tailfin-icon.return {
+            transform: scaleX(-1);
+        }
+
+        /* Smooth expand animation */
+        .expand-section {
+            animation: slideDown 0.3s ease-out;
+        }
+    </style>
+</head>
+
+<body class="bg-bg-surface font-sans text-text-main antialiased pb-12 text-base">
+
+    <!-- Sticky Header Container -->
+    <nav class="sticky top-0 z-50 bg-white border-b-2 border-gray-100 shadow-refined relative">
+
+        <!-- Row 1: Brand & Profile -->
+        <div class="container mx-auto px-4 lg:px-6 h-14 flex justify-between items-center bg-white relative z-30">
+            <div class="flex items-center gap-4">
+                <img src="./assets/saudia_logo.png" alt="Saudia" class="h-[100px] object-contain relative z-50">
+                <div class="h-6 w-px bg-gray-200 hidden sm:block ml-2"></div>
+            </div>
+            <div class="flex items-center gap-3">
+                <!-- Language & Country Selector -->
+                <button
+                    class="flex items-center gap-2 text-xs font-bold text-text-muted hover:text-primary transition-colors group">
+                    <img src="https://flagcdn.com/w40/sa.png" alt="Saudi Arabia"
+                        class="w-5 h-auto rounded-sm shadow-sm group-hover:shadow-md transition-all">
+                    <span class="hidden sm:inline">Saudi Arabia <span class="text-gray-300 mx-1">|</span> EN</span>
+                </button>
+                <div class="h-4 w-px bg-gray-200 hidden sm:block"></div>
+
+                <button class="text-xs font-bold text-text-muted hover:text-primary transition-colors">SAR</button>
+                <button
+                    class="p-2 rounded-full hover:bg-primary-light text-text-muted hover:text-primary transition-all duration-300 hover:scale-105">
+                    <span class="material-icons-round text-xl">person_outline</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <!-- Confirmation Banner -->
+        <div class="bg-white rounded-xl shadow-float border border-gray-200 p-6 text-center mb-8">
+            <div class="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8">
+                <div class="flex items-center gap-4">
+                    <div class="w-14 h-14 bg-success/10 rounded-full flex items-center justify-center flex-shrink-0">
+                        <span class="material-icons-round text-success text-4xl">check_circle</span>
+                    </div>
+                    <div class="text-left">
+                        <h1 class="text-2xl font-bold text-secondary tracking-tight">Your trip is confirmed!</h1>
+                        <p class="text-text-muted text-sm leading-tight mt-1">Thank you for booking with Saudia
+                            Holidays.</p>
+                    </div>
+                </div>
+
+                <div class="hidden md:block w-px h-12 bg-gray-100"></div>
+
+                <div class="flex items-center gap-3 bg-bg-surface px-6 py-3 rounded-xl border border-gray-200">
+                    <span class="text-xs font-bold uppercase tracking-widest text-text-muted">Booking Reference</span>
+                    <span class="text-xl font-bold text-primary tracking-wider">XYZ123</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Main Content -->
+            <div class="lg:col-span-2 space-y-6">
+
+                <!-- Flight Booking (New addition to match content richness for multi-product) -->
+                <div class="bg-white rounded-xl shadow-float border border-gray-200 overflow-hidden">
+                    <div class="p-6">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                                <span class="material-icons-round text-primary text-xl">flight</span>
+                            </div>
+                            <h2 class="text-xl font-bold text-secondary">Flight Itinerary</h2>
+                        </div>
+
+                        <!-- Outbound -->
+                        <div class="border-b border-gray-100 pb-4 mb-4 last:border-0 last:pb-0 last:mb-0">
+                            <div class="flex justify-between items-center mb-2">
+                                <div class="flex items-center gap-3">
+                                    <img src="./assets/saudia_icon.png" class="w-8 h-8 object-contain" alt="Saudia">
+                                    <div>
+                                        <p class="font-bold text-secondary text-base">London (LHR) &rarr; Kuala Lumpur
+                                            (KUL)</p>
+                                        <p class="text-xs text-text-muted">Saudia SV 123 • Economy</p>
+                                    </div>
+                                </div>
+                                <span class="text-xs font-bold text-text-muted">15 Jan</span>
+                            </div>
+                            <div class="flex items-center justify-between pl-11">
+                                <div>
+                                    <span class="text-lg font-bold text-secondary">08:00</span>
+                                    <p class="text-[10px] text-text-muted">LHR</p>
+                                </div>
+                                <div class="flex-grow mx-4 relative h-px bg-gray-200">
+                                    <div
+                                        class="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 bg-gray-50 px-2 text-[10px] text-text-muted">
+                                        13h 05m</div>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-lg font-bold text-secondary">09:05</span>
+                                    <p class="text-[10px] text-text-muted">KUL (+1)</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Return -->
+                        <div class="border-b border-gray-100 pb-4 mb-4 last:border-0 last:pb-0 last:mb-0">
+                            <div class="flex justify-between items-center mb-2">
+                                <div class="flex items-center gap-3">
+                                    <img src="./assets/saudia_icon.png" class="w-8 h-8 object-contain" alt="Saudia">
+                                    <div>
+                                        <p class="font-bold text-secondary text-base">Kuala Lumpur (KUL) &rarr; London
+                                            (LHR)</p>
+                                        <p class="text-xs text-text-muted">Saudia SV 124 • Economy</p>
+                                    </div>
+                                </div>
+                                <span class="text-xs font-bold text-text-muted">20 Jan</span>
+                            </div>
+                            <div class="flex items-center justify-between pl-11">
+                                <div>
+                                    <span class="text-lg font-bold text-secondary">14:00</span>
+                                    <p class="text-[10px] text-text-muted">KUL</p>
+                                </div>
+                                <div class="flex-grow mx-4 relative h-px bg-gray-200">
+                                    <div
+                                        class="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 bg-gray-50 px-2 text-[10px] text-text-muted">
+                                        13h 05m</div>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-lg font-bold text-secondary">15:05</span>
+                                    <p class="text-[10px] text-text-muted">LHR</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Hotel Booking -->
+                <div class="bg-white rounded-xl shadow-float border border-gray-200 overflow-hidden">
+                    <div class="p-6">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                                <span class="material-icons-round text-primary text-xl">hotel</span>
+                            </div>
+                            <h2 class="text-xl font-bold text-secondary">Hotel Booking</h2>
+                        </div>
+
+                        <div class="flex flex-col md:flex-row gap-6">
+                            <img alt="EQ Kuala Lumpur" class="w-full md:w-48 h-32 object-cover rounded-xl"
+                                src="https://images.unsplash.com/photo-1590490360182-c87299690d6e?auto=format&fit=crop&q=80&w=1000" />
+                            <div class="flex-grow">
+                                <h3 class="font-bold text-lg text-secondary">EQ Kuala Lumpur</h3>
+                                <p class="text-sm text-text-muted flex items-center gap-1 mt-1">
+                                    <span class="material-icons-round text-primary text-base">location_on</span>
+                                    Kuala Lumpur City Centre
+                                </p>
+
+                                <div class="mt-4 grid grid-cols-2 gap-y-2 gap-x-8 text-sm">
+                                    <div>
+                                        <span class="text-xs text-text-muted uppercase font-bold block">Check-in</span>
+                                        <span class="font-medium text-text-main">15 Jan 2026</span>
+                                    </div>
+                                    <div>
+                                        <span class="text-xs text-text-muted uppercase font-bold block">Check-out</span>
+                                        <span class="font-medium text-text-main">20 Jan 2026</span>
+                                    </div>
+                                    <div>
+                                        <span class="text-xs text-text-muted uppercase font-bold block">Guests</span>
+                                        <span class="font-medium text-text-main">2 Adults, 1 Room</span>
+                                    </div>
+                                    <div>
+                                        <span class="text-xs text-text-muted uppercase font-bold block">Board
+                                            Basis</span>
+                                        <span class="font-medium text-text-main">Breakfast Included</span>
+                                    </div>
+                                </div>
+
+                                <div class="mt-4 pt-4 border-t border-gray-100">
+                                    <div class="flex items-start gap-2">
+                                        <span
+                                            class="material-icons-round text-success text-sm mt-0.5">event_available</span>
+                                        <div>
+                                            <p class="text-sm font-bold text-success">Free Cancellation available</p>
+                                            <p class="text-xs text-text-muted">Cancel before <strong>01 Jan
+                                                    2026</strong> for a full refund.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cross-sell Placeholder -->
+                <div class="bg-white rounded-xl shadow-float border border-gray-200 overflow-hidden p-6">
+                    <div
+                        class="border-2 border-dashed border-gray-200 rounded-lg bg-gray-50 flex flex-col items-center justify-center py-8 text-center h-full">
+                        <span class="material-icons-round text-gray-400 text-3xl mb-2">stars</span>
+                        <h3 class="text-sm font-bold text-gray-500">Upgrade Your Trip</h3>
+                        <p class="text-xs text-gray-400 mt-1 max-w-xs mx-auto">Exclusive partner offers and extras will
+                            be displayed here.</p>
+                    </div>
+                </div>
+
+                <!-- Points Earning Info -->
+                <div class="bg-[#F0FDF4] rounded-xl border border-[#DCFCE7] p-5 flex items-start gap-4 shadow-sm">
+                    <div class="flex-shrink-0 mt-0.5">
+                        <span class="material-icons-round text-primary text-3xl">verified</span>
+                    </div>
+                    <p class="text-sm text-text-main font-medium leading-relaxed">
+                        Your member account will be credited with <span class="text-primary font-bold">4,500
+                            Miles</span>
+                        after you complete your trip.
+                    </p>
+                </div>
+
+                <!-- Terms & Conditions -->
+                <div class="bg-white rounded-xl shadow-float border border-gray-200 overflow-hidden p-6">
+                    <h3 class="font-bold text-lg mb-4 text-secondary">Terms & Conditions</h3>
+                    <div class="text-xs text-text-muted space-y-3 leading-relaxed">
+                        <p><strong>General Policies:</strong> By proceeding with this booking, you agree to the terms
+                            regarding conduct, liability, and damages.</p>
+                        <p><strong>Check-in/Check-out:</strong> Standard check-in time is 3:00 PM and check-out time is
+                            11:00 AM.</p>
+                        <p><strong>Travel Documents:</strong> Please ensure you have valid passports and visas for your
+                            destination.</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Sidebar -->
+            <div class="lg:col-span-1 space-y-6">
+
+                <!-- Guest Details -->
+                <div class="bg-white rounded-xl shadow-float border border-gray-200 p-6">
+                    <h3 class="font-bold text-lg mb-4 text-secondary">Guest Details</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3">
+                            <div
+                                class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-text-muted">
+                                <span class="material-icons-round text-sm">person</span>
+                            </div>
+                            <div>
+                                <p class="font-bold text-text-main text-sm">Mr John Smith</p>
+                                <p class="text-xs text-text-muted">Primary Guest</p>
+                            </div>
+                        </div>
+                        <div class="border-t border-gray-100"></div>
+                        <div class="flex items-center gap-3">
+                            <div
+                                class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-text-muted">
+                                <span class="material-icons-round text-sm">person</span>
+                            </div>
+                            <div>
+                                <p class="font-bold text-text-main text-sm">Ms Jane Doe</p>
+                                <p class="text-xs text-text-muted">Guest</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- What's next? -->
+                <div class="bg-white rounded-xl shadow-float border border-gray-200 p-6">
+                    <h3 class="font-bold text-lg mb-4 text-secondary">What's next?</h3>
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-3">
+                            <div class="w-6 flex-shrink-0">
+                                <span class="material-icons-round text-primary text-xl">email</span>
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="font-bold text-secondary text-sm">Check your email</h4>
+                                <p class="text-xs text-text-muted mt-1 leading-relaxed">We've sent a detailed
+                                    confirmation email with your ticket and hotel voucher.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="w-6 flex-shrink-0">
+                                <span class="material-icons-round text-primary text-xl">edit_document</span>
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="font-bold text-secondary text-sm">Manage your booking</h4>
+                                <p class="text-xs text-text-muted mt-1 leading-relaxed">You can log in to view your
+                                    itinerary, add special requests, or make changes.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Summary -->
+                <div class="bg-white rounded-xl shadow-float border border-gray-200 p-6">
+                    <h3 class="font-bold text-lg mb-4 text-secondary">Payment Summary</h3>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-text-muted">Package Total</span>
+                            <span class="text-black font-medium">SAR 5,000.00</span>
+                        </div>
+                        <div class="flex justify-between text-success">
+                            <span>Discount</span>
+                            <span>-SAR 130.00</span>
+                        </div>
+                    </div>
+                    <div class="border-t border-gray-100 my-4"></div>
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="font-bold text-lg text-secondary">Total Paid</span>
+                        <span class="font-bold text-2xl text-black">SAR 4,870.00</span>
+                    </div>
+                    <div class="bg-gray-50 rounded-lg p-3 border border-gray-100 space-y-3">
+                        <div class="flex items-center gap-3">
+                            <span class="material-icons-round text-text-muted">credit_card</span>
+                            <div>
+                                <p class="text-xs text-text-muted font-medium uppercase">Paid with Visa</p>
+                                <p class="text-sm font-bold text-black">SAR 4,870.00</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-white border-t border-gray-200 py-6 mt-auto">
+        <div class="container mx-auto px-4 text-center text-text-muted text-xs">
+            &copy; 2026 Saudia Holidays. All rights reserved.
+        </div>
+    </footer>
+</body>
+
+</html>

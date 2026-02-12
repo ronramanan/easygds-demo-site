@@ -1,0 +1,1643 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Saudia Holidays</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#006C35", // saudia Blue
+                        secondary: "#006C35", // saudia Dark Blue
+                        "primary-hover": "#006C35",
+                        "primary-light": "#E8F0FE",
+                        "text-main": "#1A1A1A",
+                        "text-muted": "#555555",
+                        "bg-surface": "#F9F9F9",
+                        success: "#4CAF50",
+                        amber: "#B09255", // Keep for accent if needed
+                        gold: "#B09255",
+                    },
+                    fontFamily: { display: ["Outfit", "sans-serif"], sans: ["Outfit", "sans-serif"] },
+                    fontSize: {
+                        'xs': '0.8125rem',
+                        'sm': '0.9375rem',
+                        'base': '1rem',
+                        'lg': '1.125rem',
+                        'xl': '1.25rem',
+                        '2xl': '1.5rem',
+                        '3xl': '1.875rem',
+                        '4xl': '2.25rem',
+                    },
+                    boxShadow: {
+                        'refined': '0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 10px 20px -5px rgba(0, 0, 0, 0.08)',
+                        'refined-lg': '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 20px 30px -10px rgba(0, 0, 0, 0.12)',
+                        'refined-xl': '0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 30px 60px -15px rgba(0, 0, 0, 0.15)',
+                        'blue': '0 4px 14px 0 rgba(32, 60, 148, 0.15)',
+                        'blue-lg': '0 10px 25px -5px rgba(32, 60, 148, 0.25)',
+                        'inner-subtle': 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.03)',
+                        'subtle': '0 2px 10px -5px rgba(32, 60, 148, 0.15)',
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.4s ease-out',
+                        'slide-down': 'slideDown 0.3s ease-out',
+                        'scale-in': 'scaleIn 0.3s ease-out',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideDown: {
+                            '0%': { opacity: '0', transform: 'translateY(-10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        scaleIn: {
+                            '0%': { opacity: '0', transform: 'scale(0.95)' },
+                            '100%': { opacity: '1', transform: 'scale(1)' },
+                        },
+                    }
+                },
+            },
+        };
+    </script>
+    <style>
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #F5F5F5;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #203C94;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #1A3994;
+        }
+
+        /* Card hover animation */
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-4px);
+        }
+
+        /* Image zoom on hover */
+        .image-zoom-container {
+            overflow: hidden;
+        }
+
+        .image-zoom {
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .image-zoom-container:hover .image-zoom {
+            transform: scale(1.08);
+        }
+
+        /* Premium badge with subtle gradient */
+        .badge-premium {
+            background: linear-gradient(135deg, #203C94 0%, #1A3994 100%);
+        }
+
+        /* Refined rating badge */
+        .rating-badge {
+            background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%);
+            backdrop-filter: blur(8px);
+        }
+
+        /* Gold star - Updated to vibrant Gold/Amber */
+        .star-gold {
+            color: #F59E0B;
+            /* Vibrant Amber for stars */
+            filter: drop-shadow(0 1px 2px rgba(245, 158, 11, 0.3));
+        }
+
+        /* Smooth expand animation */
+        .expand-section {
+            animation: slideDown 0.3s ease-out;
+        }
+
+        /* Subtle accent bar */
+        .accent-bar {
+            background: linear-gradient(180deg, #203C94 0%, #1A3994 100%);
+        }
+
+        /* Dual Range Slider Styles */
+        .range-slider-container {
+            position: relative;
+            height: 24px;
+        }
+
+        .range-slider-track {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 4px;
+            width: 100%;
+            background: #E5E7EB;
+            border-radius: 2px;
+            z-index: 1;
+        }
+
+        .range-slider-progress {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 4px;
+            background: #203C94;
+            z-index: 2;
+            border-radius: 2px;
+        }
+
+        .range-input {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            background: none;
+            pointer-events: none;
+            appearance: none;
+            -webkit-appearance: none;
+            z-index: 3;
+            margin: 0;
+            padding: 0;
+            border: none;
+        }
+
+        .range-input::-webkit-slider-thumb {
+            pointer-events: auto;
+            appearance: none;
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 2px solid #203C94;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+            transition: transform 0.1s, background-color 0.2s;
+        }
+
+        .range-input::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+            background-color: #f0f4ff;
+        }
+
+        .range-input::-moz-range-thumb {
+            pointer-events: auto;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 2px solid #203C94;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+            border: none;
+        }
+    </style>
+</head>
+
+<body class="bg-bg-surface font-sans text-text-main antialiased pb-12 text-base">
+
+    <!-- Sticky Header Container -->
+    <nav class="sticky top-0 z-50 bg-white border-b-2 border-gray-100 shadow-refined relative">
+
+        <!-- Row 1: Brand & Profile -->
+        <div class="container mx-auto px-4 lg:px-6 h-14 flex justify-between items-center bg-white relative z-30">
+            <div class="flex items-center gap-4">
+                <img src="./assets/saudia_logo.png" alt="Saudia" class="h-[100px] object-contain relative z-50">
+                <div class="h-6 w-px bg-gray-200 hidden sm:block ml-2"></div>
+                <!-- Removed tagline as per Saudia style -->
+            </div>
+            <div class="flex items-center gap-3">
+                <!-- Language & Country Selector -->
+                <button
+                    class="flex items-center gap-2 text-xs font-bold text-text-muted hover:text-primary transition-colors group">
+                    <img src="https://flagcdn.com/w40/sa.png" alt="Saudi Arabia"
+                        class="w-5 h-auto rounded-sm shadow-sm group-hover:shadow-md transition-all">
+                    <span class="hidden sm:inline">Saudi Arabia <span class="text-gray-300 mx-1">|</span> EN</span>
+                </button>
+                <div class="h-4 w-px bg-gray-200 hidden sm:block"></div>
+
+                <button class="text-xs font-bold text-text-muted hover:text-primary transition-colors">SAR</button>
+                <button
+                    class="p-2 rounded-full hover:bg-primary-light text-text-muted hover:text-primary transition-all duration-300 hover:scale-105">
+                    <span class="material-icons-round text-xl">person_outline</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Row 2: Context Bar -->
+        <div class="bg-gradient-to-b from-gray-50 to-white border-t border-gray-100 relative z-30">
+            <div class="container mx-auto px-4 lg:px-6">
+                <div class="flex flex-col lg:flex-row gap-0 lg:gap-6">
+
+                    <!-- Search Context -->
+                    <div
+                        class="py-2.5 flex items-center justify-between lg:justify-start gap-4 lg:border-r-2 lg:border-gray-100 lg:pr-6 lg:w-auto border-b lg:border-b-0 border-gray-100">
+                        <div class="flex items-center gap-3 text-sm text-text-main overflow-hidden">
+                            <div class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                                <span class="material-icons-round text-lg text-primary">search</span>
+                            </div>
+                            <div class="flex flex-col leading-tight">
+                                <span class="font-bold text-secondary text-base truncate">London - Kuala Lumpur</span>
+                                <span class="text-text-muted text-[10px] mt-0.5 font-medium">15-20 Jan • 2
+                                    Passengers</span>
+                            </div>
+                        </div>
+                        <button onclick="toggleSection('search-widget')"
+                            class="text-[10px] font-bold uppercase text-primary bg-white border border-primary/20 px-4 py-2 rounded-lg transition-all duration-300 whitespace-nowrap hover:bg-primary hover:text-white hover:border-primary shadow-sm hover:shadow-blue"
+                            id="btn-search-modify">
+                            Modify
+                        </button>
+                    </div>
+
+                    <!-- Flight Itinerary Summary -->
+                    <div onclick="toggleSection('flight-details')"
+                        class="py-2.5 flex items-center justify-between gap-4 cursor-pointer group flex-grow hover:bg-white transition-all duration-300 rounded-lg px-2 -mx-2">
+                        <div class="flex flex-row items-center gap-4 lg:gap-8 text-xs w-full">
+                            <!-- Outbound -->
+                            <div class="flex items-center gap-3 text-text-main">
+                                <img src="./assets/saudia_icon.png"
+                                    class="w-8 h-8 rounded-lg object-contain bg-primary/5 p-1" alt="Saudia">
+                                <div class="flex items-center gap-2">
+                                    <span class="font-bold text-secondary text-base">08:00</span>
+                                    <span class="text-gray-400 text-sm">→</span>
+                                    <span class="font-bold text-secondary text-base">09:05</span>
+                                    <span
+                                        class="text-[10px] text-text-muted bg-gray-100 px-2 py-0.5 rounded font-semibold hidden sm:inline-block">PG
+                                        123</span>
+                                </div>
+                            </div>
+                            <div class="hidden lg:block w-px h-6 bg-gray-200"></div>
+                            <!-- Return -->
+                            <div class="flex items-center gap-3 text-text-main">
+                                <img src="./assets/saudia_icon.png"
+                                    class="w-8 h-8 rounded-lg object-contain bg-primary/5 p-1" alt="Saudia">
+                                <div class="flex items-center gap-2">
+                                    <span class="font-bold text-secondary text-base">14:00</span>
+                                    <span class="text-gray-400 text-sm">→</span>
+                                    <span class="font-bold text-secondary text-base">15:05</span>
+                                    <span
+                                        class="text-[10px] text-text-muted bg-gray-100 px-2 py-0.5 rounded font-semibold hidden sm:inline-block">PG
+                                        124</span>
+                                </div>
+                            </div>
+                        </div>
+                        <span id="chevron-flight-details"
+                            class="material-icons-round text-gray-400 text-xl group-hover:text-primary transition-all duration-300">expand_more</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- EXPANDABLE 1: Full Search Widget -->
+        <div id="search-widget"
+            class="hidden bg-white border-b border-gray-100 shadow-refined-lg absolute left-0 right-0 z-20 top-full expand-section">
+            <div class="container mx-auto px-4 lg:px-6 py-3 bg-white">
+                <div class="flex flex-col lg:flex-row gap-2 lg:items-center">
+
+                    <!-- Mobile Close Button -->
+                    <div class="flex justify-end lg:hidden mb-1">
+                        <button onclick="toggleSection('search-widget')"
+                            class="text-gray-400 hover:text-primary hover:bg-gray-100 rounded-full p-1 transition-all duration-300">
+                            <span class="material-icons-round text-lg">close</span>
+                        </button>
+                    </div>
+
+                    <form class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3 flex-grow">
+                        <div
+                            class="h-14 bg-gray-50 px-4 flex flex-col justify-center rounded-xl border border-gray-100 hover:border-primary/30 transition-all duration-300 focus-within:border-primary focus-within:bg-white group">
+                            <label
+                                class="block text-xs uppercase text-text-muted font-bold tracking-wide leading-none mb-1 group-focus-within:text-primary">From</label>
+                            <input type="text" value="London (LHR)"
+                                class="w-full bg-transparent border-none p-0 text-base font-bold text-secondary focus:ring-0 leading-tight">
+                        </div>
+                        <div
+                            class="h-14 bg-gray-50 px-4 flex flex-col justify-center rounded-xl border border-gray-100 hover:border-primary/30 transition-all duration-300 focus-within:border-primary focus-within:bg-white group">
+                            <label
+                                class="block text-xs uppercase text-text-muted font-bold tracking-wide leading-none mb-1 group-focus-within:text-primary">To</label>
+                            <input type="text" value="Kuala Lumpur (KUL)"
+                                class="w-full bg-transparent border-none p-0 text-base font-bold text-secondary focus:ring-0 leading-tight">
+                        </div>
+                        <div
+                            class="h-14 bg-gray-50 px-4 flex flex-col justify-center rounded-xl border border-gray-100 hover:border-primary/30 transition-all duration-300 focus-within:border-primary focus-within:bg-white group">
+                            <label
+                                class="block text-xs uppercase text-text-muted font-bold tracking-wide leading-none mb-1 group-focus-within:text-primary">Dates</label>
+                            <input type="text" value="15 Jan - 20 Jan"
+                                class="w-full bg-transparent border-none p-0 text-base font-bold text-secondary focus:ring-0 leading-tight">
+                        </div>
+                        <div
+                            class="h-14 bg-gray-50 px-4 flex flex-col justify-center rounded-xl border border-gray-100 hover:border-primary/30 transition-all duration-300 focus-within:border-primary focus-within:bg-white group">
+                            <label
+                                class="block text-xs uppercase text-text-muted font-bold tracking-wide leading-none mb-1 group-focus-within:text-primary">Guests</label>
+                            <select
+                                class="w-full bg-transparent border-none p-0 text-base font-bold text-secondary focus:ring-0 leading-tight">
+                                <option>2 Adults, 1 Room</option>
+                            </select>
+                        </div>
+                        <button type="button" onclick="toggleSection('search-widget')"
+                            class="bg-primary text-white font-bold uppercase text-sm tracking-wider rounded-xl shadow-blue hover:bg-primary-hover hover:shadow-blue-lg transition-all duration-300 h-14 hover:-translate-y-0.5">
+                            Update
+                        </button>
+                    </form>
+
+                    <!-- Desktop Close Button (Static) -->
+                    <button onclick="toggleSection('search-widget')"
+                        class="hidden lg:flex text-gray-400 hover:text-primary hover:bg-gray-100 rounded-full p-1 transition-all duration-300 flex-shrink-0">
+                        <span class="material-icons-round text-lg">close</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- EXPANDABLE 2: Flight Details -->
+        <div id="flight-details"
+            class="hidden bg-white border-b-2 border-gray-100 shadow-refined-lg absolute left-0 right-0 z-20 top-full expand-section">
+            <div class="container mx-auto px-6 lg:px-8 py-6 bg-white">
+                <div class="flex justify-between items-center mb-5">
+                    <h3 class="text-sm font-bold uppercase tracking-widest text-text-muted">Flight Itinerary</h3>
+                    <button onclick="toggleSection('flight-details')"
+                        class="text-gray-400 hover:text-primary hover:bg-primary-light rounded-full p-1 transition-all duration-300">
+                        <span class="material-icons-round text-2xl">close</span>
+                    </button>
+                </div>
+                <div class="grid md:grid-cols-2 gap-5">
+                    <div
+                        class="border-2 border-gray-100 rounded-2xl p-5 bg-gradient-to-br from-primary/5 to-white hover:shadow-refined transition-all duration-300">
+                        <div class="text-xs font-bold text-primary uppercase mb-3 tracking-wide">Outbound • 1h 05m</div>
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="text-2xl font-bold text-secondary">08:00 <span
+                                    class="text-base font-normal text-text-muted">LHR</span></div>
+                            <div
+                                class="h-0.5 flex-grow bg-gradient-to-r from-primary via-gray-300 to-primary mx-5 relative">
+                                <span class="absolute right-0 -top-1.5 w-3 h-3 rounded-full bg-primary"></span>
+                            </div>
+                            <div class="text-2xl font-bold text-secondary">09:05 <span
+                                    class="text-base font-normal text-text-muted">KUL</span></div>
+                        </div>
+                        <div class="text-sm text-text-muted flex items-center gap-2 font-medium">
+                            <img src="./assets/saudia_icon.png" class="w-5 h-5 object-contain" alt="Saudia"> Saudia SV
+                            123
+                            • Economy
+                        </div>
+                    </div>
+                    <div
+                        class="border-2 border-gray-100 rounded-2xl p-5 bg-gradient-to-br from-primary/5 to-white hover:shadow-refined transition-all duration-300">
+                        <div class="text-xs font-bold text-primary uppercase mb-3 tracking-wide">Return • 1h 05m</div>
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="text-2xl font-bold text-secondary">14:00 <span
+                                    class="text-base font-normal text-text-muted">KUL</span></div>
+                            <div
+                                class="h-0.5 flex-grow bg-gradient-to-r from-primary via-gray-300 to-primary mx-5 relative">
+                                <span class="absolute right-0 -top-1.5 w-3 h-3 rounded-full bg-primary"></span>
+                            </div>
+                            <div class="text-2xl font-bold text-secondary">15:05 <span
+                                    class="text-base font-normal text-text-muted">LHR</span></div>
+                        </div>
+                        <div class="text-sm text-text-muted flex items-center gap-2 font-medium">
+                            <img src="./assets/saudia_icon.png" class="w-5 h-5 object-contain" alt="Saudia"> Saudia SV
+                            124
+                            • Economy
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 lg:px-6 py-5">
+
+        <!-- Header & Tools Row -->
+        <div class="mb-5 flex flex-col lg:flex-row lg:items-end justify-between gap-4 pb-2">
+
+            <!-- Left: Title & Count -->
+            <div class="flex flex-col">
+                <h1 class="font-display text-2xl lg:text-3xl font-normal text-secondary tracking-tight mb-1">
+                    Stays in <span class="text-primary italic">Kuala Lumpur</span>
+                </h1>
+                <p class="text-xs text-text-muted font-medium">32 results found • Flight + Hotel Package</p>
+            </div>
+
+            <!-- Right: Tools -->
+            <div class="flex flex-col sm:flex-row gap-2.5 w-full lg:w-auto items-stretch sm:items-center">
+                <!-- Search Input -->
+                <div class="relative flex-grow sm:flex-grow-0 sm:w-60 group">
+                    <span
+                        class="absolute left-3 top-1/2 -translate-y-1/2 material-icons-round text-text-muted text-lg group-focus-within:text-primary transition-colors">search</span>
+                    <input id="search-input" type="text" placeholder="Search hotels..." onkeyup="handleFilterChange()"
+                        class="w-full pl-10 pr-3 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium focus:ring-0 focus:border-primary focus:shadow-blue transition-all">
+                </div>
+
+                <!-- Buttons -->
+                <div class="flex gap-2">
+                    <button onclick="toggleFilters()"
+                        class="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 text-secondary rounded-lg text-xs font-bold uppercase tracking-wide hover:bg-gray-50 hover:border-primary hover:text-primary transition-all duration-300 shadow-sm hover:shadow-refined">
+                        <span class="material-icons-round text-base">tune</span> Filters
+                    </button>
+
+                    <button
+                        class="flex items-center gap-2 px-5 py-2 bg-white border border-primary text-primary rounded-lg text-xs font-bold uppercase tracking-wide hover:bg-primary hover:text-white transition-all duration-300 whitespace-nowrap shadow-sm hover:shadow-blue">
+                        <span class="material-icons-round text-base">map</span> Map
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Saudia Picks Carousel -->
+        <section class="mb-4 relative">
+            <div class="flex items-center justify-between mb-5 px-1">
+                <div class="flex items-center gap-4">
+                    <div class="w-1 h-8 accent-bar rounded-full"></div>
+                    <h2 class="font-display text-2xl font-normal text-secondary italic">Saudia Picks</h2>
+                </div>
+                <!-- Navigation Arrows -->
+                <div class="hidden md:flex gap-3">
+                    <button onclick="scrollRecs('left')"
+                        class="w-10 h-10 flex items-center justify-center rounded-xl border-2 border-gray-200 bg-white hover:border-primary hover:bg-primary hover:text-white text-secondary transition-all duration-300 shadow-sm">
+                        <span class="material-icons-round text-lg">arrow_back</span>
+                    </button>
+                    <button onclick="scrollRecs('right')"
+                        class="w-10 h-10 flex items-center justify-center rounded-xl border-2 border-gray-200 bg-white hover:border-primary hover:bg-primary hover:text-white text-secondary transition-all duration-300 shadow-sm">
+                        <span class="material-icons-round text-lg">arrow_forward</span>
+                    </button>
+                </div>
+            </div>
+
+            <div id="rec-container"
+                class="flex overflow-x-auto snap-x snap-mandatory gap-6 hide-scrollbar -mx-4 px-4 lg:mx-0 lg:px-0 pb-2 items-start">
+                <!-- Rec Cards Injected Here -->
+            </div>
+        </section>
+
+        <!-- Main Results List -->
+        <div class="border-t border-gray-100 pt-4 mt-2">
+            <div class="flex justify-between items-end mb-3">
+                <h2 class="text-sm font-bold uppercase tracking-widest text-text-muted">All Properties</h2>
+                <div class="flex items-center gap-3">
+                    <span class="text-xs text-text-muted font-bold uppercase tracking-wide hidden sm:block">Sort
+                        by:</span>
+                    <div class="relative">
+                        <select id="sort-criteria" onchange="handleSortChange()"
+                            class="appearance-none bg-none bg-white border border-gray-200 text-secondary text-xs font-bold rounded-lg pl-3 pr-8 py-2 focus:ring-0 focus:border-primary shadow-sm hover:border-primary transition-all cursor-pointer">
+                            <option value="recommended">Recommended</option>
+                            <option value="price">Price</option>
+                            <option value="rating">Guest Rating</option>
+                            <option value="stars">Star Rating</option>
+                        </select>
+                        <span
+                            class="absolute right-2 top-1/2 -translate-y-1/2 material-icons-round text-primary text-base pointer-events-none">expand_more</span>
+                    </div>
+                    <button id="sort-direction-btn" onclick="toggleSortDirection()"
+                        class="w-8 h-8 flex items-center justify-center bg-white border border-gray-200 rounded-lg hover:border-primary hover:text-primary text-text-muted transition-all shadow-sm"
+                        title="Toggle Sort Direction">
+                        <span id="sort-direction-icon" class="material-icons-round text-lg">arrow_downward</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- List Container -->
+            <div id="results-list" class="flex flex-col space-y-4">
+                <!-- List Items Injected Here -->
+            </div>
+        </div>
+
+        <div class="mt-12 mb-8 text-center">
+            <button
+                class="w-full md:w-auto px-16 py-4 border-2 border-gray-300 rounded-xl text-sm font-bold uppercase tracking-widest hover:border-primary hover:text-primary hover:bg-primary/5 transition-all duration-300 text-secondary bg-white shadow-sm hover:shadow-refined">
+                Load More Results
+            </button>
+        </div>
+
+    </main>
+
+    <!-- Filter Drawer -->
+    <div id="filter-overlay" onclick="toggleFilters()"
+        class="fixed inset-0 bg-black/20 backdrop-blur-sm z-[60] hidden transition-opacity duration-300 opacity-0">
+    </div>
+
+    <aside id="filter-drawer"
+        class="fixed inset-y-0 right-0 z-[70] w-full sm:w-96 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col">
+        <div class="p-4 border-b border-gray-100 flex justify-between items-center bg-white sticky top-0 z-10">
+            <h3 class="font-display text-lg font-bold text-secondary">Filters</h3>
+            <button onclick="toggleFilters()"
+                class="w-7 h-7 rounded-full bg-gray-50 flex items-center justify-center text-text-muted hover:text-primary transition-colors hover:bg-primary/10">
+                <span class="material-icons-round text-lg">close</span>
+            </button>
+        </div>
+
+        <div class="flex-grow overflow-y-auto p-4 space-y-4 scroll-smooth">
+            <!-- Budget Slider -->
+            <div class="animate-slide-down" style="animation-delay: 0.1s">
+                <h4 class="font-bold text-sm text-black mb-1.5 uppercase tracking-wider">
+                    Budget (price per night)
+                </h4>
+                <div class="range-slider-container">
+                    <div class="range-slider-track"></div>
+                    <div id="price-progress" class="range-slider-progress" style="left: 0%; width: 100%;"></div>
+                    <input type="range" id="filter-price-min" min="0" max="15000" step="100" value="0"
+                        class="range-input" oninput="updateDualSlider('price')">
+                    <input type="range" id="filter-price-max" min="0" max="15000" step="100" value="15000"
+                        class="range-input" oninput="updateDualSlider('price')">
+                </div>
+                <div class="flex justify-between mt-1.5 text-xs font-bold text-secondary">
+                    <span id="price-label-min">SAR 0</span>
+                    <span id="price-label-max">SAR 75,000</span>
+                </div>
+            </div>
+
+            <!-- Star Rating Slider -->
+            <div class="animate-slide-down" style="animation-delay: 0.2s">
+                <h4 class="font-bold text-sm text-black mb-1.5 uppercase tracking-wider">Star Rating</h4>
+                <div class="range-slider-container">
+                    <div class="range-slider-track"></div>
+                    <div id="star-progress" class="range-slider-progress" style="left: 0%; width: 100%;"></div>
+                    <input type="range" id="filter-star-min" min="1" max="5" step="1" value="1" class="range-input"
+                        oninput="updateDualSlider('star')">
+                    <input type="range" id="filter-star-max" min="1" max="5" step="1" value="5" class="range-input"
+                        oninput="updateDualSlider('star')">
+                </div>
+                <div class="flex justify-between mt-1.5 text-xs font-bold text-secondary">
+                    <span id="star-label-min" class="flex items-center gap-1">1 <i
+                            class="material-icons-round text-sm text-amber">star</i></span>
+                    <span id="star-label-max" class="flex items-center gap-1">5 <i
+                            class="material-icons-round text-sm text-amber">star</i></span>
+                </div>
+            </div>
+
+            <!-- Guest Rating Slider -->
+            <div class="animate-slide-down" style="animation-delay: 0.3s">
+                <h4 class="font-bold text-sm text-black mb-1.5 uppercase tracking-wider">Guest Rating</h4>
+                <div class="range-slider-container">
+                    <div class="range-slider-track"></div>
+                    <div id="rating-progress" class="range-slider-progress" style="left: 0%; width: 100%;"></div>
+                    <input type="range" id="filter-rating-min" min="0" max="10" step="0.5" value="0" class="range-input"
+                        oninput="updateDualSlider('rating')">
+                    <input type="range" id="filter-rating-max" min="0" max="10" step="0.5" value="10"
+                        class="range-input" oninput="updateDualSlider('rating')">
+                </div>
+                <div class="flex justify-between mt-1.5 text-xs font-bold text-secondary">
+                    <span id="rating-label-min">0</span>
+                    <span id="rating-label-max">10</span>
+                </div>
+            </div>
+
+            <!-- Chains Filter -->
+            <div class="animate-slide-down" style="animation-delay: 0.4s">
+                <h4 class="font-bold text-sm text-black mb-1.5 uppercase tracking-wider">Chains</h4>
+                <div class="relative mb-2">
+                    <span
+                        class="absolute left-3 top-1/2 -translate-y-1/2 material-icons-round text-text-muted text-lg">search</span>
+                    <input type="text" placeholder="Search by chain name"
+                        class="w-full pl-9 pr-3 py-1.5 bg-gray-50 border border-gray-200 rounded-lg text-xs font-medium focus:ring-0 focus:border-primary transition-all">
+                </div>
+                <div class="space-y-1.5 max-h-40 overflow-y-auto pr-2">
+                    <label class="flex items-center justify-between group cursor-pointer">
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox"
+                                class="form-checkbox w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+                            <span
+                                class="text-xs font-medium text-text-main group-hover:text-primary transition-colors">Accor</span>
+                        </div>
+                        <span class="text-[10px] text-text-muted">(1 hotels)</span>
+                    </label>
+                    <label class="flex items-center justify-between group cursor-pointer">
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox"
+                                class="form-checkbox w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+                            <span
+                                class="text-xs font-medium text-text-main group-hover:text-primary transition-colors">Ascott</span>
+                        </div>
+                        <span class="text-[10px] text-text-muted">(1 hotels)</span>
+                    </label>
+                    <label class="flex items-center justify-between group cursor-pointer">
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox"
+                                class="form-checkbox w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+                            <span
+                                class="text-xs font-medium text-text-main group-hover:text-primary transition-colors">Hotel
+                                Grand Continental</span>
+                        </div>
+                        <span class="text-[10px] text-text-muted">(1 hotels)</span>
+                    </label>
+                    <label class="flex items-center justify-between group cursor-pointer">
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox"
+                                class="form-checkbox w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+                            <span
+                                class="text-xs font-medium text-text-main group-hover:text-primary transition-colors">Independent</span>
+                        </div>
+                        <span class="text-[10px] text-text-muted">(73 hotels)</span>
+                    </label>
+                    <label class="flex items-center justify-between group cursor-pointer">
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox"
+                                class="form-checkbox w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+                            <span
+                                class="text-xs font-medium text-text-main group-hover:text-primary transition-colors">Marriott</span>
+                        </div>
+                        <span class="text-[10px] text-text-muted">(1 hotels)</span>
+                    </label>
+                    <button class="text-xs font-bold text-primary mt-2 flex items-center gap-1 hover:underline">
+                        Show 3 results <span class="material-icons-round text-sm">expand_more</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Experience Filter -->
+            <div class="animate-slide-down" style="animation-delay: 0.5s">
+                <h4 class="font-bold text-sm text-black mb-1.5 uppercase tracking-wider">Experience</h4>
+                <div class="relative mb-2">
+                    <span
+                        class="absolute left-3 top-1/2 -translate-y-1/2 material-icons-round text-text-muted text-lg">search</span>
+                    <input type="text" placeholder="Search by theme name"
+                        class="w-full pl-9 pr-3 py-1.5 bg-gray-50 border border-gray-200 rounded-lg text-xs font-medium focus:ring-0 focus:border-primary transition-all">
+                </div>
+                <div class="space-y-1.5 max-h-40 overflow-y-auto pr-2">
+                    <label class="flex items-center gap-2 group cursor-pointer">
+                        <input type="checkbox"
+                            class="form-checkbox w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+                        <span
+                            class="text-xs font-medium text-text-main group-hover:text-primary transition-colors">Natural</span>
+                    </label>
+                    <label class="flex items-center gap-2 group cursor-pointer">
+                        <input type="checkbox"
+                            class="form-checkbox w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+                        <span
+                            class="text-xs font-medium text-text-main group-hover:text-primary transition-colors">Adventure
+                            sport</span>
+                    </label>
+                    <label class="flex items-center gap-2 group cursor-pointer">
+                        <input type="checkbox"
+                            class="form-checkbox w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+                        <span
+                            class="text-xs font-medium text-text-main group-hover:text-primary transition-colors">Pet-friendly
+                            property</span>
+                    </label>
+                    <label class="flex items-center gap-2 group cursor-pointer">
+                        <input type="checkbox"
+                            class="form-checkbox w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+                        <span
+                            class="text-xs font-medium text-text-main group-hover:text-primary transition-colors">City</span>
+                    </label>
+                    <label class="flex items-center gap-2 group cursor-pointer">
+                        <input type="checkbox"
+                            class="form-checkbox w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+                        <span
+                            class="text-xs font-medium text-text-main group-hover:text-primary transition-colors">Business
+                            property</span>
+                    </label>
+                    <label class="flex items-center gap-2 group cursor-pointer">
+                        <input type="checkbox"
+                            class="form-checkbox w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+                        <span
+                            class="text-xs font-medium text-text-main group-hover:text-primary transition-colors">Business</span>
+                    </label>
+                    <label class="flex items-center gap-2 group cursor-pointer">
+                        <input type="checkbox"
+                            class="form-checkbox w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+                        <span
+                            class="text-xs font-medium text-text-main group-hover:text-primary transition-colors">Beach
+                            property</span>
+                    </label>
+                    <label class="flex items-center gap-2 group cursor-pointer">
+                        <input type="checkbox"
+                            class="form-checkbox w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+                        <span
+                            class="text-xs font-medium text-text-main group-hover:text-primary transition-colors">Luxury
+                            property</span>
+                    </label>
+                    <label class="flex items-center gap-2 group cursor-pointer">
+                        <input type="checkbox"
+                            class="form-checkbox w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+                        <span
+                            class="text-xs font-medium text-text-main group-hover:text-primary transition-colors">Adventure
+                            sport property</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Actions -->
+        <div class="p-6 border-t border-gray-100 bg-white shadow-[0_-5px_20px_rgba(0,0,0,0.05)] flex gap-4 z-10">
+            <button onclick="resetFilters()"
+                class="flex-1 py-3.5 text-sm font-bold text-text-muted hover:text-black hover:bg-gray-50 rounded-xl transition-all border border-transparent hover:border-gray-200">Reset
+                All</button>
+            <button onclick="applyFilters()"
+                class="flex-[2] py-3.5 bg-primary text-white rounded-xl text-sm font-bold shadow-blue hover:shadow-blue-lg transition-all hover:-translate-y-0.5 flex items-center justify-center gap-2">
+                Show Results
+            </button>
+        </div>
+    </aside>
+
+    <script>
+        // 1. Saudia Picks (Carousel)
+        const picksHotels = [
+            {
+                "name": "DoubleTree by Hilton Putrajaya Lakeside",
+                "location": "No 2 Jalan 5/5, Presint 5, Putrajaya, Putrajaya, 62200, MY",
+                "stars": 5.0,
+                "rating": 4.2,
+                "ratingText": "Excellent",
+                "price": 6660,
+                "oldPrice": 7655,
+                "images": [
+                    "https://i.travelapi.com/lodging/3000000/2220000/2219900/2219839/b6316cf4_z.jpg",
+                    "https://i.travelapi.com/lodging/3000000/2220000/2219900/2219839/b6316cf4_b.jpg",
+                    "https://i.travelapi.com/lodging/3000000/2220000/2219900/2219839/b6316cf4_t.jpg"
+                ],
+                "recBadge": "Recommended",
+                "categoryType": {
+                    "name": "Luxury",
+                    "icon": "diamond"
+                }
+            },
+            {
+                "name": "EQ Kuala Lumpur",
+                "location": "Equatorial Plaza, Jalan Sultan Ismail, Kuala Lumpur, 50250, MY",
+                "stars": 5.0,
+                "rating": 4.7,
+                "ratingText": "Excellent",
+                "price": 13210,
+                "oldPrice": 15190,
+                "images": [
+                    "https://i.travelapi.com/lodging/35000000/35000000/34993200/34993183/40053aff_edited_8cc2_z.jpg",
+                    "https://i.travelapi.com/lodging/35000000/35000000/34993200/34993183/40053aff_edited_8cc2_b.jpg",
+                    "https://i.travelapi.com/lodging/35000000/35000000/34993200/34993183/40053aff_edited_8cc2_t.jpg"
+                ],
+                "recBadge": "Recommended",
+                "categoryType": {
+                    "name": "Luxury",
+                    "icon": "diamond"
+                }
+            },
+            {
+                "name": "PARKROYAL Serviced Suites Kuala Lumpur",
+                "location": "No. 1, Jalan Nagasari, Off Jalan Raja Chulan, Kuala Lumpur, 50200, MY",
+                "stars": 5.0,
+                "rating": 4.4,
+                "ratingText": "Excellent",
+                "price": 7855,
+                "oldPrice": 9035,
+                "images": [
+                    "https://i.travelapi.com/lodging/4000000/3910000/3900400/3900350/17c0b8e4_z.jpg",
+                    "https://i.travelapi.com/lodging/4000000/3910000/3900400/3900350/17c0b8e4_b.jpg",
+                    "https://i.travelapi.com/lodging/4000000/3910000/3900400/3900350/17c0b8e4_t.jpg"
+                ],
+                "recBadge": "Recommended",
+                "categoryType": {
+                    "name": "Luxury",
+                    "icon": "diamond"
+                }
+            },
+            {
+                "name": "THE FACE Suites Hotel",
+                "location": "1020, Jalan Sultan Ismail, Kuala Lumpur, 50250, MY",
+                "stars": 5.0,
+                "rating": 4.4,
+                "ratingText": "Excellent",
+                "price": 6625,
+                "oldPrice": 7615,
+                "images": [
+                    "https://i.travelapi.com/lodging/14000000/13300000/13297600/13297574/0be017a7_z.jpg",
+                    "https://i.travelapi.com/lodging/14000000/13300000/13297600/13297574/0be017a7_b.jpg",
+                    "https://i.travelapi.com/lodging/14000000/13300000/13297600/13297574/0be017a7_t.jpg"
+                ],
+                "recBadge": null,
+                "categoryType": {
+                    "name": "Luxury",
+                    "icon": "diamond"
+                }
+            },
+            {
+                "name": "Hilton Kuala Lumpur",
+                "location": "3 Jalan Stesen Sentral, Kuala Lumpur, 50470, MY",
+                "stars": 5.0,
+                "rating": 4.6,
+                "ratingText": "Excellent",
+                "price": 10700,
+                "oldPrice": 12305,
+                "images": [
+                    "https://i.travelapi.com/lodging/1000000/910000/901900/901881/w3840h2761x0y3-260795e3_z.jpg",
+                    "https://i.travelapi.com/lodging/1000000/910000/901900/901881/w3840h2761x0y3-260795e3_b.jpg",
+                    "https://i.travelapi.com/lodging/1000000/910000/901900/901881/w3840h2761x0y3-260795e3_t.jpg"
+                ],
+                "recBadge": null,
+                "categoryType": {
+                    "name": "Luxury",
+                    "icon": "diamond"
+                }
+            }
+        ];
+
+        // 2. Main List (Vertical) - Completely different hotels
+        const mainListHotels = [
+            {
+                "name": "DoubleTree by Hilton Putrajaya Lakeside",
+                "location": "No 2 Jalan 5/5, Presint 5, Putrajaya, Putrajaya, 62200, MY",
+                "stars": 5.0,
+                "rating": 4.2,
+                "ratingText": "Excellent",
+                "price": 6660,
+                "oldPrice": 7655,
+                "images": [
+                    "https://i.travelapi.com/lodging/3000000/2220000/2219900/2219839/b6316cf4_z.jpg",
+                    "https://i.travelapi.com/lodging/3000000/2220000/2219900/2219839/b6316cf4_b.jpg",
+                    "https://i.travelapi.com/lodging/3000000/2220000/2219900/2219839/b6316cf4_t.jpg"
+                ],
+                "recBadge": "Recommended",
+                "categoryType": {
+                    "name": "Luxury",
+                    "icon": "diamond"
+                }
+            },
+            {
+                "name": "EQ Kuala Lumpur",
+                "location": "Equatorial Plaza, Jalan Sultan Ismail, Kuala Lumpur, 50250, MY",
+                "stars": 5.0,
+                "rating": 4.7,
+                "ratingText": "Excellent",
+                "price": 13210,
+                "oldPrice": 15190,
+                "images": [
+                    "https://i.travelapi.com/lodging/35000000/35000000/34993200/34993183/40053aff_edited_8cc2_z.jpg",
+                    "https://i.travelapi.com/lodging/35000000/35000000/34993200/34993183/40053aff_edited_8cc2_b.jpg",
+                    "https://i.travelapi.com/lodging/35000000/35000000/34993200/34993183/40053aff_edited_8cc2_t.jpg"
+                ],
+                "recBadge": "Recommended",
+                "categoryType": {
+                    "name": "Luxury",
+                    "icon": "diamond"
+                }
+            },
+            {
+                "name": "PARKROYAL Serviced Suites Kuala Lumpur",
+                "location": "No. 1, Jalan Nagasari, Off Jalan Raja Chulan, Kuala Lumpur, 50200, MY",
+                "stars": 5.0,
+                "rating": 4.4,
+                "ratingText": "Excellent",
+                "price": 7855,
+                "oldPrice": 9035,
+                "images": [
+                    "https://i.travelapi.com/lodging/4000000/3910000/3900400/3900350/17c0b8e4_z.jpg",
+                    "https://i.travelapi.com/lodging/4000000/3910000/3900400/3900350/17c0b8e4_b.jpg",
+                    "https://i.travelapi.com/lodging/4000000/3910000/3900400/3900350/17c0b8e4_t.jpg"
+                ],
+                "recBadge": "Recommended",
+                "categoryType": {
+                    "name": "Luxury",
+                    "icon": "diamond"
+                }
+            },
+            {
+                "name": "THE FACE Suites Hotel",
+                "location": "1020, Jalan Sultan Ismail, Kuala Lumpur, 50250, MY",
+                "stars": 5.0,
+                "rating": 4.4,
+                "ratingText": "Excellent",
+                "price": 6625,
+                "oldPrice": 7615,
+                "images": [
+                    "https://i.travelapi.com/lodging/14000000/13300000/13297600/13297574/0be017a7_z.jpg",
+                    "https://i.travelapi.com/lodging/14000000/13300000/13297600/13297574/0be017a7_b.jpg",
+                    "https://i.travelapi.com/lodging/14000000/13300000/13297600/13297574/0be017a7_t.jpg"
+                ],
+                "recBadge": null,
+                "categoryType": {
+                    "name": "Luxury",
+                    "icon": "diamond"
+                }
+            },
+            {
+                "name": "Hilton Kuala Lumpur",
+                "location": "3 Jalan Stesen Sentral, Kuala Lumpur, 50470, MY",
+                "stars": 5.0,
+                "rating": 4.6,
+                "ratingText": "Excellent",
+                "price": 10700,
+                "oldPrice": 12305,
+                "images": [
+                    "https://i.travelapi.com/lodging/1000000/910000/901900/901881/w3840h2761x0y3-260795e3_z.jpg",
+                    "https://i.travelapi.com/lodging/1000000/910000/901900/901881/w3840h2761x0y3-260795e3_b.jpg",
+                    "https://i.travelapi.com/lodging/1000000/910000/901900/901881/w3840h2761x0y3-260795e3_t.jpg"
+                ],
+                "recBadge": null,
+                "categoryType": {
+                    "name": "Luxury",
+                    "icon": "diamond"
+                }
+            },
+            {
+                "name": "Seri Pacific Hotel Kuala Lumpur",
+                "location": "Jalan Putra, Kuala Lumpur, 50350, MY",
+                "stars": 5.0,
+                "rating": 4.2,
+                "ratingText": "Excellent",
+                "price": 5415,
+                "oldPrice": 6225,
+                "images": [
+                    "https://i.travelapi.com/lodging/1000000/10000/3900/3856/4d01ebf7_z.jpg",
+                    "https://i.travelapi.com/lodging/1000000/10000/3900/3856/4d01ebf7_b.jpg",
+                    "https://i.travelapi.com/lodging/1000000/10000/3900/3856/4d01ebf7_t.jpg"
+                ],
+                "recBadge": null,
+                "categoryType": {
+                    "name": "Luxury",
+                    "icon": "diamond"
+                }
+            },
+            {
+                "name": "Travelodge Kuala Lumpur City Centre",
+                "location": "No 7, Jalan Hang Kasturi, Kuala Lumpur, 50050, MY",
+                "stars": 3.5,
+                "rating": 3.9,
+                "ratingText": "Excellent",
+                "price": 2850,
+                "oldPrice": 3275,
+                "images": [
+                    "https://i.travelapi.com/lodging/6000000/5150000/5141300/5141276/95decd35_z.jpg",
+                    "https://i.travelapi.com/lodging/6000000/5150000/5141300/5141276/95decd35_b.jpg",
+                    "https://i.travelapi.com/lodging/6000000/5150000/5141300/5141276/95decd35_t.jpg"
+                ],
+                "recBadge": null,
+                "categoryType": {
+                    "name": "Luxury",
+                    "icon": "diamond"
+                }
+            },
+            {
+                "name": "Renaissance Kuala Lumpur Hotel & Convention Centre",
+                "location": "Corner Of Jalan Sultan Ismail, And Jalan Ampang, Kuala Lumpur, 50450, MY",
+                "stars": 4.5,
+                "rating": 4.2,
+                "ratingText": "Excellent",
+                "price": 10330,
+                "oldPrice": 11880,
+                "images": [
+                    "https://i.travelapi.com/lodging/1000000/50000/46100/46098/72caf937_z.jpg",
+                    "https://i.travelapi.com/lodging/1000000/50000/46100/46098/72caf937_b.jpg",
+                    "https://i.travelapi.com/lodging/1000000/50000/46100/46098/72caf937_t.jpg"
+                ],
+                "recBadge": null,
+                "categoryType": {
+                    "name": "Luxury",
+                    "icon": "diamond"
+                }
+            },
+            {
+                "name": "ANSA Kuala Lumpur",
+                "location": "101 Jalan Bukit Bintang, Kuala Lumpur, 55100, MY",
+                "stars": 4.0,
+                "rating": 3.9,
+                "ratingText": "Excellent",
+                "price": 6525,
+                "oldPrice": 7505,
+                "images": [
+                    "https://i.travelapi.com/lodging/3000000/2550000/2541000/2540993/a26f04f3_z.jpg",
+                    "https://i.travelapi.com/lodging/3000000/2550000/2541000/2540993/a26f04f3_b.jpg",
+                    "https://i.travelapi.com/lodging/3000000/2550000/2541000/2540993/a26f04f3_t.jpg"
+                ],
+                "recBadge": null,
+                "categoryType": {
+                    "name": "Luxury",
+                    "icon": "diamond"
+                }
+            },
+            {
+                "name": "Furama Bukit Bintang",
+                "location": "136 Jalan Changkat Thambi Dollah, Kuala Lumpur, 55100, MY",
+                "stars": 4.0,
+                "rating": 3.8,
+                "ratingText": "Excellent",
+                "price": 4030,
+                "oldPrice": 4635,
+                "images": [
+                    "https://i.travelapi.com/lodging/5000000/4480000/4473000/4472910/6ff37791_z.jpg",
+                    "https://i.travelapi.com/lodging/5000000/4480000/4473000/4472910/6ff37791_b.jpg",
+                    "https://i.travelapi.com/lodging/5000000/4480000/4473000/4472910/6ff37791_t.jpg"
+                ],
+                "recBadge": null,
+                "categoryType": {
+                    "name": "Luxury",
+                    "icon": "diamond"
+                }
+            },
+            {
+                "name": "Sunway Resort Hotel",
+                "location": "Persiaran Lagoon, Bandar Sunway, Petaling Jaya, Selangor, 47500, MY",
+                "stars": 4.5,
+                "rating": 4.3,
+                "ratingText": "Excellent",
+                "price": 14050,
+                "oldPrice": 16155,
+                "images": [
+                    "https://i.travelapi.com/lodging/1000000/70000/68400/68314/199fedf5_z.jpg",
+                    "https://i.travelapi.com/lodging/1000000/70000/68400/68314/199fedf5_b.jpg",
+                    "https://i.travelapi.com/lodging/1000000/70000/68400/68314/199fedf5_t.jpg"
+                ],
+                "recBadge": null,
+                "categoryType": {
+                    "name": "Luxury",
+                    "icon": "diamond"
+                }
+            },
+            {
+                "name": "Berjaya Times Square Hotel, Kuala Lumpur",
+                "location": "No 1 Jalan Imbi, Kuala Lumpur, 55100, MY",
+                "stars": 4.5,
+                "rating": 3.7,
+                "ratingText": "Excellent",
+                "price": 5630,
+                "oldPrice": 6475,
+                "images": [
+                    "https://i.travelapi.com/lodging/2000000/1060000/1050500/1050442/f39eac84_z.jpg",
+                    "https://i.travelapi.com/lodging/2000000/1060000/1050500/1050442/f39eac84_b.jpg",
+                    "https://i.travelapi.com/lodging/2000000/1060000/1050500/1050442/f39eac84_t.jpg"
+                ],
+                "recBadge": null,
+                "categoryType": {
+                    "name": "Luxury",
+                    "icon": "diamond"
+                }
+            },
+            {
+                "name": "Sunway Putra Hotel Kuala Lumpur",
+                "location": "100 Jalan Putra, Kuala Lumpur, 50350, MY",
+                "stars": 5.0,
+                "rating": 4.2,
+                "ratingText": "Excellent",
+                "price": 5215,
+                "oldPrice": 6000,
+                "images": [
+                    "https://i.travelapi.com/lodging/1000000/910000/905300/905209/9feb266a_z.jpg",
+                    "https://i.travelapi.com/lodging/1000000/910000/905300/905209/9feb266a_b.jpg",
+                    "https://i.travelapi.com/lodging/1000000/910000/905300/905209/9feb266a_t.jpg"
+                ],
+                "recBadge": null,
+                "categoryType": {
+                    "name": "Luxury",
+                    "icon": "diamond"
+                }
+            },
+            {
+                "name": "Impiana KLCC Hotel",
+                "location": "13 Jalan Pinang, Kuala Lumpur, 50450, MY",
+                "stars": 4.5,
+                "rating": 4.1,
+                "ratingText": "Excellent",
+                "price": 7005,
+                "oldPrice": 8060,
+                "images": [
+                    "https://i.travelapi.com/lodging/2000000/1490000/1486200/1486134/42aed1cf_z.jpg",
+                    "https://i.travelapi.com/lodging/2000000/1490000/1486200/1486134/42aed1cf_b.jpg",
+                    "https://i.travelapi.com/lodging/2000000/1490000/1486200/1486134/42aed1cf_t.jpg"
+                ],
+                "recBadge": null,
+                "categoryType": {
+                    "name": "Luxury",
+                    "icon": "diamond"
+                }
+            },
+            {
+                "name": "Hotel Maya Kuala Lumpur City Center",
+                "location": "138, Jalan Ampang, Kuala Lumpur, 50450, MY",
+                "stars": 5.0,
+                "rating": 3.8,
+                "ratingText": "Excellent",
+                "price": 6585,
+                "oldPrice": 7570,
+                "images": [
+                    "https://i.travelapi.com/lodging/1000000/430000/426200/426172/6fa96777_z.jpg",
+                    "https://i.travelapi.com/lodging/1000000/430000/426200/426172/6fa96777_b.jpg",
+                    "https://i.travelapi.com/lodging/1000000/430000/426200/426172/6fa96777_t.jpg"
+                ],
+                "recBadge": null,
+                "categoryType": {
+                    "name": "Luxury",
+                    "icon": "diamond"
+                }
+            },
+            {
+                "name": "Sheraton Imperial Kuala Lumpur Hotel",
+                "location": "Jalan Sultan Ismail, Kuala Lumpur, 50250, MY",
+                "stars": 5.0,
+                "rating": 4.2,
+                "ratingText": "Excellent",
+                "price": 7770,
+                "oldPrice": 8940,
+                "images": [
+                    "https://i.travelapi.com/lodging/1000000/70000/68200/68173/37fc07e6_z.jpg",
+                    "https://i.travelapi.com/lodging/1000000/70000/68200/68173/37fc07e6_b.jpg",
+                    "https://i.travelapi.com/lodging/1000000/70000/68200/68173/37fc07e6_t.jpg"
+                ],
+                "recBadge": null,
+                "categoryType": {
+                    "name": "Luxury",
+                    "icon": "diamond"
+                }
+            },
+            {
+                "name": "Melia Kuala Lumpur",
+                "location": "16 Jalan Imbi, Kuala Lumpur, 55100, MY",
+                "stars": 4.0,
+                "rating": 4.2,
+                "ratingText": "Excellent",
+                "price": 5885,
+                "oldPrice": 6770,
+                "images": [
+                    "https://i.travelapi.com/lodging/1000000/30000/21200/21112/d1c17b45_z.jpg",
+                    "https://i.travelapi.com/lodging/1000000/30000/21200/21112/d1c17b45_b.jpg",
+                    "https://i.travelapi.com/lodging/1000000/30000/21200/21112/d1c17b45_t.jpg"
+                ],
+                "recBadge": null,
+                "categoryType": {
+                    "name": "Luxury",
+                    "icon": "diamond"
+                }
+            },
+            {
+                "name": "Royale Chulan Kuala Lumpur",
+                "location": "No. 5 Jalan Conlay, Kuala Lumpur City Centre, Kuala Lumpur, 50450, MY",
+                "stars": 5.0,
+                "rating": 4.2,
+                "ratingText": "Excellent",
+                "price": 7805,
+                "oldPrice": 8975,
+                "images": [
+                    "https://i.travelapi.com/lodging/4000000/3010000/3005200/3005109/968835dd_z.jpg",
+                    "https://i.travelapi.com/lodging/4000000/3010000/3005200/3005109/968835dd_b.jpg",
+                    "https://i.travelapi.com/lodging/4000000/3010000/3005200/3005109/968835dd_t.jpg"
+                ],
+                "recBadge": null,
+                "categoryType": {
+                    "name": "Luxury",
+                    "icon": "diamond"
+                }
+            },
+            {
+                "name": "Dorsett Kuala Lumpur",
+                "location": "172 Jln Imbi, Kuala Lumpur, 55100, MY",
+                "stars": 5.0,
+                "rating": 4.0,
+                "ratingText": "Excellent",
+                "price": 7440,
+                "oldPrice": 8555,
+                "images": [
+                    "https://i.travelapi.com/lodging/1000000/530000/528700/528647/503dbf6a_z.jpg",
+                    "https://i.travelapi.com/lodging/1000000/530000/528700/528647/503dbf6a_b.jpg",
+                    "https://i.travelapi.com/lodging/1000000/530000/528700/528647/503dbf6a_t.jpg"
+                ],
+                "recBadge": null,
+                "categoryType": {
+                    "name": "Luxury",
+                    "icon": "diamond"
+                }
+            },
+            {
+                "name": "Pullman Kuala Lumpur City Centre Hotel & Residences",
+                "location": "No. 4 Jalan Conlay, Kuala Lumpur, 50450, MY",
+                "stars": 5.0,
+                "rating": 4.2,
+                "ratingText": "Excellent",
+                "price": 8875,
+                "oldPrice": 10205,
+                "images": [
+                    "https://i.travelapi.com/lodging/1000000/900000/899900/899847/d597ff25_z.jpg",
+                    "https://i.travelapi.com/lodging/1000000/900000/899900/899847/d597ff25_b.jpg",
+                    "https://i.travelapi.com/lodging/1000000/900000/899900/899847/d597ff25_t.jpg"
+                ],
+                "recBadge": null,
+                "categoryType": {
+                    "name": "Luxury",
+                    "icon": "diamond"
+                }
+            }
+        ];
+
+        // Populate Picks (Carousel)
+        const recContainer = document.getElementById('rec-container');
+        picksHotels.forEach((hotel, index) => {
+            const starsHtml = Array(hotel.stars).fill('<span class="material-icons-round star-gold text-base">star</span>').join('');
+            recContainer.innerHTML += `
+            <div class="snap-center shrink-0 w-[260px] lg:w-[280px] group cursor-pointer bg-white rounded-xl overflow-hidden shadow-refined hover:shadow-refined-xl card-hover">
+
+                <!-- Image -->
+                <div class="aspect-[16/10] relative bg-gray-100 image-zoom-container">
+                    <div id="rec-slider-${index}" class="h-full w-full flex overflow-x-auto snap-x snap-mandatory hide-scrollbar scroll-smooth absolute inset-0">
+                        ${hotel.images.map(img => `<img src="${img}" class="w-full h-full object-cover shrink-0 snap-center image-zoom" />`).join('')}
+                    </div>
+                    <div class="absolute inset-y-0 flex items-center justify-between w-full px-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
+                        <button onclick="scrollSlider('rec-slider-${index}', 'left')" class="pointer-events-auto w-7 h-7 flex items-center justify-center rounded-full bg-white/95 hover:bg-white text-primary shadow-refined backdrop-blur-sm transition-all duration-300 hover:scale-110">
+                            <span class="material-icons-round text-base">chevron_left</span>
+                        </button>
+                        <button onclick="scrollSlider('rec-slider-${index}', 'right')" class="pointer-events-auto w-7 h-7 flex items-center justify-center rounded-full bg-white/95 hover:bg-white text-primary shadow-refined backdrop-blur-sm transition-all duration-300 hover:scale-110">
+                            <span class="material-icons-round text-base">chevron_right</span>
+                        </button>
+                    </div>
+
+                    ${hotel.recBadge ? `<div class="absolute top-3 left-3 badge-premium text-white px-2.5 py-1 rounded text-[10px] font-bold uppercase tracking-wider shadow-refined-lg z-10">${hotel.recBadge}</div>` : ''}
+                </div>
+
+                <div class="p-3.5 flex flex-col">
+                    <div class="flex items-center gap-2 mb-2">
+                        <div class="flex gap-0">${starsHtml}</div>
+                        <span class="text-[10px] font-bold text-white bg-[#059669] px-2 py-0.5 rounded shadow-sm">${hotel.rating} ${hotel.ratingText}</span>
+                    </div>
+                    <h3 class="font-bold text-base text-black group-hover:text-primary transition-colors duration-300 mb-1 leading-tight line-clamp-1" title="${hotel.name}">${hotel.name}</h3>
+                    <p class="text-xs text-text-muted mb-3 flex items-center gap-1">
+                        <span class="material-icons-round text-sm text-amber">location_on</span> ${hotel.location}
+                    </p>
+
+                    <!-- Category Type -->
+                    <div class="mt-1 pt-3 border-t border-gray-50">
+                        ${hotel.categoryType ? `
+                        <div class="flex items-center gap-1 text-xs text-text-muted font-medium">
+                            <span class="material-icons-round text-success text-sm">${hotel.categoryType.icon}</span> ${hotel.categoryType.name}
+                        </div>
+                        ` : ''}
+                    </div>
+
+                    <div class="pt-4 flex items-end justify-between border-t border-gray-50 mt-3">
+                        <div>
+                            ${hotel.oldPrice ? `<div class="text-[10px] text-text-muted line-through mb-0.5">SAR ${hotel.oldPrice.toLocaleString()}</div>` : ''}
+                            <div class="text-lg font-bold text-primary leading-none">SAR ${hotel.price.toLocaleString()}</div>
+                            <div class="text-[10px] text-text-muted mt-0.5 font-medium">per person</div>
+                        </div>
+                        <button class="bg-primary text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-primary-hover transition-all duration-300 shadow-blue hover:shadow-blue-lg uppercase tracking-wide hover:-translate-y-0.5">
+                            View
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+        });
+
+        // --- State ---
+        let currentSort = {
+            criteria: 'recommended',
+            direction: 'desc'
+        };
+
+        let currentFilters = {
+            searchQuery: '',
+            minPrice: 0,
+            maxPrice: 15000,
+            stars: { min: 1, max: 5 },
+            rating: { min: 0, max: 10 }
+        };
+
+        // Render Main List Function
+        function renderMainList() {
+            const listContainer = document.getElementById('results-list');
+            listContainer.innerHTML = '';
+
+            // 1. Filter Data First
+            let filteredHotels = mainListHotels.filter(hotel => {
+                // Name Search
+                if (currentFilters.searchQuery && !hotel.name.toLowerCase().includes(currentFilters.searchQuery.toLowerCase())) {
+                    return false;
+                }
+                // Price
+                if (currentFilters.minPrice !== null && hotel.price < currentFilters.minPrice) return false;
+                if (currentFilters.maxPrice !== null && hotel.price > currentFilters.maxPrice) return false;
+
+                // Stars Range
+                if (currentFilters.stars) {
+                    if (hotel.stars < currentFilters.stars.min || hotel.stars > currentFilters.stars.max) return false;
+                }
+
+                // Rating Range
+                if (currentFilters.rating) {
+                    if (hotel.rating < currentFilters.rating.min || hotel.rating > currentFilters.rating.max) return false;
+                }
+
+                return true;
+            });
+
+            // 2. Sort Data
+            let sortedHotels = [...filteredHotels];
+
+            if (currentSort.criteria !== 'recommended') {
+                sortedHotels.sort((a, b) => {
+                    let valA = a[currentSort.criteria];
+                    let valB = b[currentSort.criteria];
+
+                    if (valA < valB) return currentSort.direction === 'asc' ? -1 : 1;
+                    if (valA > valB) return currentSort.direction === 'asc' ? 1 : -1;
+                    return 0;
+                });
+            } else {
+                // If recommended, maintain original order of filtered list, but allow reverse
+                if (currentSort.direction === 'asc') {
+                    sortedHotels.reverse();
+                }
+            }
+
+            // 2. Render
+            sortedHotels.forEach((hotel, index) => {
+                const sliderId = `list-slider-${index}`;
+                const starsHtml = Array(hotel.stars).fill('<span class="material-icons-round star-gold text-base">star</span>').join('');
+
+                const html = `
+        <div class="bg-white rounded-xl border border-gray-100 overflow-hidden shadow-refined hover:shadow-refined-lg card-hover group">
+            <div class="flex flex-col lg:flex-row h-full">
+
+                <!-- Image Carousel -->
+                <div class="relative w-full lg:w-[280px] lg:min-w-[280px] lg:max-w-[280px] aspect-[16/10] shrink-0 bg-gray-100 self-start image-zoom-container">
+                    <div id="${sliderId}" class="h-full w-full flex overflow-x-auto snap-x snap-mandatory hide-scrollbar scroll-smooth absolute inset-0">
+                        ${hotel.images.map(img => `<img src="${img}" class="w-full h-full object-cover shrink-0 snap-center image-zoom" />`).join('')}
+                    </div>
+                    <div class="absolute inset-y-0 flex items-center justify-between w-full px-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10 image-zoom-container">
+                        <button onclick="scrollSlider('${sliderId}', 'left')" class="pointer-events-auto w-7 h-7 flex items-center justify-center rounded-full bg-white/95 hover:bg-white text-primary shadow-refined backdrop-blur-sm transition-all duration-300 hover:scale-110">
+                            <span class="material-icons-round text-base">chevron_left</span>
+                        </button>
+                        <button onclick="scrollSlider('${sliderId}', 'right')" class="pointer-events-auto w-7 h-7 flex items-center justify-center rounded-full bg-white/95 hover:bg-white text-primary shadow-refined backdrop-blur-sm transition-all duration-300 hover:scale-110">
+                            <span class="material-icons-round text-base">chevron_right</span>
+                        </button>
+                    </div>
+                    ${hotel.recBadge ? `<div class="absolute top-3 left-3 badge-premium text-white px-2.5 py-1 rounded text-[10px] font-bold uppercase tracking-wider shadow-refined-lg z-10">${hotel.recBadge}</div>` : ''}
+                </div>
+
+                <!-- Content -->
+                <div class="flex-grow p-4 lg:p-5 flex flex-col lg:flex-row gap-5">
+                    <div class="flex-grow flex flex-col justify-center">
+                        <div class="flex items-center gap-3 mb-2">
+                            <div class="flex gap-0">${starsHtml}</div>
+                            <span class="text-[10px] font-bold text-white bg-[#059669] px-2 py-0.5 rounded shadow-sm">${hotel.rating} ${hotel.ratingText}</span>
+                        </div>
+                        <h3 class="text-base font-bold text-black leading-tight mb-2 cursor-pointer hover:text-primary transition-colors duration-300">${hotel.name}</h3>
+                        <p class="text-xs text-text-muted mb-4 flex items-center gap-1">
+                            <span class="material-icons-round text-sm text-amber">location_on</span> ${hotel.location}
+                        </p>
+
+                        <!-- Category Type -->
+                        <div class="mt-1 pt-4 border-t border-gray-50">
+                            <div class="flex flex-wrap gap-4 items-center">
+                                ${hotel.categoryType ? `
+                                <div class="flex items-center gap-1.5 text-xs text-text-muted font-medium">
+                                    <span class="material-icons-round text-success text-base">${hotel.categoryType.icon}</span> ${hotel.categoryType.name}
+                                </div>
+                                ` : ''}
+                                <div class="flex items-center gap-1.5 text-xs text-primary font-bold">
+                                    <span class="material-icons-round text-base">verified</span> Flight & Hotel Package
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Price & CTA -->
+                    <div class="flex lg:flex-col justify-between lg:justify-center items-center lg:items-end lg:border-l lg:border-gray-50 lg:pl-6 lg:w-48 pt-4 lg:pt-0 border-t lg:border-t-0 border-gray-50 mt-2 lg:mt-0 shrink-0">
+                        <div class="text-left lg:text-right">
+                            ${hotel.oldPrice ? `<div class="text-xs text-text-muted line-through mb-0.5">SAR ${hotel.oldPrice.toLocaleString()}</div>` : ''}
+                            <div class="text-lg font-bold text-primary leading-none mb-0.5">SAR ${hotel.price.toLocaleString()}</div>
+                            <div class="text-[10px] text-text-muted mb-2 font-medium">per person</div>
+                            <div class="text-xs text-success font-semibold flex items-center gap-1 justify-end">
+                                <span class="material-icons-round text-sm">check_circle</span> Free Cancellation
+                            </div>
+                        </div>
+                        <button class="px-4 py-2 bg-primary text-white rounded-lg text-xs font-bold uppercase tracking-wide hover:bg-primary-hover hover:shadow-blue-lg transition-all duration-300 lg:mt-3 shadow-blue w-auto lg:w-full hover:-translate-y-0.5">
+                            View Deal
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>`;
+                listContainer.insertAdjacentHTML('beforeend', html);
+            });
+        }
+
+        // --- Sort Logic Handlers ---
+        function handleSortChange() {
+            const val = document.getElementById('sort-criteria').value;
+            currentSort.criteria = val;
+
+            // Intelligent Default Direction
+            if (val === 'price') {
+                currentSort.direction = 'asc'; // Low -> High
+            } else {
+                currentSort.direction = 'desc'; // High -> Low (Best -> Worst)
+            }
+            updateDirectionIcon();
+            renderMainList();
+        }
+
+        function toggleSortDirection() {
+            currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+            updateDirectionIcon();
+            renderMainList();
+        }
+
+        function updateDirectionIcon() {
+            const btn = document.getElementById('sort-direction-icon');
+            btn.textContent = currentSort.direction === 'asc' ? 'arrow_upward' : 'arrow_downward';
+        }
+
+        // --- Filter Logic ---
+
+        function toggleFilters() {
+            const drawer = document.getElementById('filter-drawer');
+            const overlay = document.getElementById('filter-overlay');
+            const isOpen = !drawer.classList.contains('translate-x-full');
+
+            if (isOpen) {
+                // Close
+                drawer.classList.add('translate-x-full');
+                overlay.classList.remove('opacity-100');
+                setTimeout(() => {
+                    overlay.classList.add('hidden');
+                }, 300);
+            } else {
+                // Open
+                overlay.classList.remove('hidden');
+                // Force repaint 
+                void overlay.offsetWidth;
+                overlay.classList.add('opacity-100');
+                drawer.classList.remove('translate-x-full');
+            }
+        }
+
+        function handleFilterChange() {
+            // Live Search (Name)
+            currentFilters.searchQuery = document.getElementById('search-input').value;
+            renderMainList();
+        }
+
+        function applyFilters() {
+            // Get Values from Drawer sliders
+            const minPrice = parseFloat(document.getElementById('filter-price-min').value);
+            const maxPrice = parseFloat(document.getElementById('filter-price-max').value);
+
+            const minStar = parseFloat(document.getElementById('filter-star-min').value);
+            const maxStar = parseFloat(document.getElementById('filter-star-max').value);
+
+            const minRating = parseFloat(document.getElementById('filter-rating-min').value);
+            const maxRating = parseFloat(document.getElementById('filter-rating-max').value);
+
+            // Update State
+            currentFilters.minPrice = minPrice;
+            currentFilters.maxPrice = maxPrice;
+            currentFilters.stars = { min: minStar, max: maxStar };
+            currentFilters.rating = { min: minRating, max: maxRating };
+
+            // Render & Close
+            renderMainList();
+            toggleFilters();
+        }
+
+        function resetFilters() {
+            // Reset Inputs (Set to default extremes)
+            const defaults = {
+                price: { min: 0, max: 15000 },
+                star: { min: 1, max: 5 },
+                rating: { min: 0, max: 10 }
+            };
+
+            document.getElementById('filter-price-min').value = defaults.price.min;
+            document.getElementById('filter-price-max').value = defaults.price.max;
+            updateDualSlider('price');
+
+            document.getElementById('filter-star-min').value = defaults.star.min;
+            document.getElementById('filter-star-max').value = defaults.star.max;
+            updateDualSlider('star');
+
+            document.getElementById('filter-rating-min').value = defaults.rating.min;
+            document.getElementById('filter-rating-max').value = defaults.rating.max;
+            updateDualSlider('rating');
+
+            // Reset Search Input too? No, keep it.
+
+            // Update State
+            currentFilters.minPrice = defaults.price.min;
+            currentFilters.maxPrice = defaults.price.max;
+            currentFilters.stars = { min: defaults.star.min, max: defaults.star.max };
+            currentFilters.rating = { min: defaults.rating.min, max: defaults.rating.max };
+
+            renderMainList();
+        }
+
+        // --- Dual Slider Logic ---
+        function updateDualSlider(groupId) {
+            const range1 = document.getElementById(`filter-${groupId}-min`);
+            const range2 = document.getElementById(`filter-${groupId}-max`);
+            const progress = document.getElementById(`${groupId}-progress`);
+            const labelMin = document.getElementById(`${groupId}-label-min`);
+            const labelMax = document.getElementById(`${groupId}-label-max`);
+
+            let val1 = parseFloat(range1.value);
+            let val2 = parseFloat(range2.value);
+
+            // Prevent crossing
+            if (val1 > val2) {
+                if (document.activeElement === range1) {
+                    range1.value = val2;
+                    val1 = val2;
+                } else {
+                    range2.value = val1;
+                    val2 = val1;
+                }
+            }
+
+            const min = parseFloat(range1.min);
+            const max = parseFloat(range1.max);
+
+            // Calculate percents
+            const percent1 = ((val1 - min) / (max - min)) * 100;
+            const percent2 = ((val2 - min) / (max - min)) * 100;
+
+            progress.style.left = percent1 + "%";
+            progress.style.width = (percent2 - percent1) + "%";
+
+            // Update labels
+            if (groupId === 'star') {
+                labelMin.innerHTML = val1 + ' <i class="material-icons-round text-sm text-amber">star</i>';
+                labelMax.innerHTML = val2 + ' <i class="material-icons-round text-sm text-amber">star</i>';
+            } else if (groupId === 'rating') {
+                labelMin.textContent = val1;
+                labelMax.textContent = val2;
+            } else if (groupId === 'price') {
+                labelMin.textContent = 'SAR ' + val1.toLocaleString();
+                labelMax.textContent = 'SAR ' + val2.toLocaleString();
+            }
+        }
+
+        // Init Sliders on Load
+        document.addEventListener('DOMContentLoaded', () => {
+            // Defer slightly to ensure elements exist if script is in body
+            setTimeout(() => {
+                updateDualSlider('price');
+                updateDualSlider('star');
+                updateDualSlider('rating');
+            }, 0);
+        });
+
+        function updateDirectionIcon() {
+            const btn = document.getElementById('sort-direction-icon');
+            btn.textContent = currentSort.direction === 'asc' ? 'arrow_upward' : 'arrow_downward';
+        }
+
+        // Initial Render
+        renderMainList();
+
+        function scrollRecs(direction) {
+            const container = document.getElementById('rec-container');
+            const scrollAmount = 360;
+            if (direction === 'left') {
+                container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+            } else {
+                container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+            }
+        }
+
+        function scrollSlider(id, direction) {
+            const container = document.getElementById(id);
+            container.scrollBy({ left: direction === 'left' ? -container.clientWidth : container.clientWidth, behavior: 'smooth' });
+        }
+
+        function toggleSection(id) {
+            const section = document.getElementById(id);
+            const otherId = id === 'search-widget' ? 'flight-details' : 'search-widget';
+            const otherSection = document.getElementById(otherId);
+            const flightChevron = document.getElementById('chevron-flight-details');
+
+            if (!otherSection.classList.contains('hidden')) {
+                otherSection.classList.add('hidden');
+                if (otherId === 'flight-details') flightChevron.style.transform = 'rotate(0deg)';
+            }
+
+            section.classList.toggle('hidden');
+
+            if (id === 'flight-details') {
+                flightChevron.style.transform = section.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Saudia Holidays - Passenger Details</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+        rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#006C35", // Saudia Green
+                        secondary: "#006C35", // Saudia Green
+                        "primary-hover": "#005a2b",
+                        "primary-light": "#E8F0FE",
+                        "text-main": "#1A1A1A",
+                        "text-muted": "#555555",
+                        "bg-surface": "#F9F9F9",
+                        success: "#059669",
+                        amber: "#B09255",
+                        gold: "#B09255",
+                    },
+                    fontFamily: {
+                        display: ["Outfit", "sans-serif"],
+                        sans: ["Outfit", "sans-serif"],
+                    },
+                    fontSize: {
+                        'xs': '0.8125rem',
+                        'sm': '0.9375rem',
+                        'base': '1rem',
+                        'lg': '1.125rem',
+                        'xl': '1.25rem',
+                        '2xl': '1.5rem',
+                        '3xl': '1.875rem',
+                        '4xl': '2.25rem',
+                    },
+                    boxShadow: {
+                        'refined': '0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 10px 20px -5px rgba(0, 0, 0, 0.08)',
+                        'refined-lg': '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 20px 30px -10px rgba(0, 0, 0, 0.12)',
+                        'blue': '0 4px 14px 0 rgba(0, 108, 53, 0.15)',
+                    },
+                    animation: {
+                        'slide-down': 'slideDown 0.3s ease-out',
+                    },
+                    keyframes: {
+                        slideDown: {
+                            '0%': { opacity: '0', transform: 'translateY(-10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                    }
+                },
+            },
+        };
+    </script>
+    <style>
+        .material-icons-round,
+        .material-symbols-outlined {
+            vertical-align: middle;
+        }
+
+        /* Compact components */
+        .card-compact {
+            padding: 1.25rem;
+        }
+
+        .tailfin-icon {
+            width: 18px;
+            height: 18px;
+            background-color: #006C35;
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 30% 100%, 0 70%);
+            border-radius: 2px;
+            display: inline-block;
+            flex-shrink: 0;
+        }
+
+        .tailfin-icon.return {
+            transform: scaleX(-1);
+        }
+
+        /* Checkbox style override */
+        input[type="checkbox"]:checked {
+            background-color: #006C35;
+            border-color: #006C35;
+        }
+
+        /* Smooth expand animation */
+        .expand-section {
+            animation: slideDown 0.3s ease-out;
+        }
+
+        [x-cloak] {
+            display: none !important;
+        }
+    </style>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+
+<body class="bg-bg-surface font-sans text-text-main antialiased pb-32 text-base">
+
+    <!-- Sticky Header Container -->
+    <nav class="sticky top-0 z-50 bg-white border-b-2 border-gray-100 shadow-refined relative">
+
+        <!-- Row 1: Brand & Profile -->
+        <div class="container mx-auto px-4 lg:px-6 h-14 flex justify-between items-center bg-white relative z-30">
+            <div class="flex items-center gap-4">
+                <img src="./assets/saudia_logo.png" alt="Saudia" class="h-[100px] object-contain relative z-50">
+                <div class="h-6 w-px bg-gray-200 hidden sm:block ml-2"></div>
+            </div>
+            <div class="flex items-center gap-3">
+                <!-- Language & Country Selector -->
+                <button
+                    class="flex items-center gap-2 text-xs font-bold text-text-muted hover:text-primary transition-colors group">
+                    <img src="https://flagcdn.com/w40/sa.png" alt="Saudi Arabia"
+                        class="w-5 h-auto rounded-sm shadow-sm group-hover:shadow-md transition-all">
+                    <span class="hidden sm:inline">Saudi Arabia <span class="text-gray-300 mx-1">|</span> EN</span>
+                </button>
+                <div class="h-4 w-px bg-gray-200 hidden sm:block"></div>
+
+                <button class="text-xs font-bold text-text-muted hover:text-primary transition-colors">SAR</button>
+                <button
+                    class="p-2 rounded-full hover:bg-primary-light text-text-muted hover:text-primary transition-all duration-300 hover:scale-105">
+                    <span class="material-icons-round text-xl">person_outline</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Row 2: Context Bar REMOVED -->
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div class="mb-5">
+            <h1 class="text-2xl font-bold text-secondary tracking-tight">Passenger Details</h1>
+            <p class="text-xs text-text-muted font-medium mt-1">Please enter details for all passengers. Names must
+                match government-issued
+                photo ID exactly.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+            <!-- Left Column: Forms -->
+            <div class="lg:col-span-2 space-y-6">
+
+                <!-- Login Banner -->
+                <div
+                    class="bg-white rounded-xl border border-primary/20 p-5 shadow-refined flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div class="flex items-center gap-4">
+                        <img src="./assets/SaudiaAlfursan_logo_new.png" alt="Al Fursan" class="h-12 object-contain">
+                        <div>
+                            <h2 class="font-bold text-lg text-secondary">Login for faster booking and to
+                                earn points</h2>
+                            <p class="text-sm text-text-muted"></p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3 w-full md:w-auto">
+                        <button
+                            class="flex-1 md:flex-none bg-primary text-white px-6 py-2 rounded-lg text-xs font-bold uppercase tracking-wide hover:bg-primary-hover transition shadow-md">Log
+                            in</button>
+                        <button
+                            class="flex-1 md:flex-none border border-primary text-primary px-6 py-2 rounded-lg text-xs font-bold uppercase tracking-wide hover:bg-primary/5 transition">Guest</button>
+                    </div>
+                </div>
+
+                <!-- Booker Details -->
+                <div class="bg-white rounded-xl border border-gray-100 shadow-refined p-6 md:p-8">
+                    <div class="flex items-center mb-6 border-b border-gray-100 pb-4">
+                        <div
+                            class="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-sm mr-3">
+                            <span class="material-icons-round text-sm">person</span>
+                        </div>
+                        <h2 class="text-lg font-bold text-secondary uppercase tracking-wide">Booker Details</h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-bold uppercase text-text-muted mb-1.5"
+                                for="booker-title">Title</label>
+                            <select
+                                class="w-full bg-gray-50 border border-gray-200 rounded-lg text-sm font-medium focus:ring-1 focus:ring-primary focus:border-primary focus:bg-white shadow-sm h-11 transition-all"
+                                id="booker-title">
+                                <option>Mr</option>
+                                <option>Mrs</option>
+                                <option>Ms</option>
+                                <option>Miss</option>
+                            </select>
+                        </div>
+                        <div class="md:col-span-5">
+                            <label class="block text-xs font-bold uppercase text-text-muted mb-1.5"
+                                for="booker-first-name">First & Middle Name(s)</label>
+                            <input
+                                class="w-full bg-gray-50 border border-gray-200 rounded-lg text-sm font-medium focus:ring-1 focus:ring-primary focus:border-primary focus:bg-white shadow-sm h-11 transition-all px-3"
+                                id="booker-first-name" placeholder="e.g. John Michael" type="text" />
+                        </div>
+                        <div class="md:col-span-5">
+                            <label class="block text-xs font-bold uppercase text-text-muted mb-1.5"
+                                for="booker-last-name">Last Name</label>
+                            <input
+                                class="w-full bg-gray-50 border border-gray-200 rounded-lg text-sm font-medium focus:ring-1 focus:ring-primary focus:border-primary focus:bg-white shadow-sm h-11 transition-all px-3"
+                                id="booker-last-name" placeholder="e.g. Smith" type="text" />
+                        </div>
+
+                        <div class="md:col-span-6">
+                            <label class="block text-xs font-bold uppercase text-text-muted mb-1.5"
+                                for="booker-email">Email
+                                Address</label>
+                            <input
+                                class="w-full bg-gray-50 border border-gray-200 rounded-lg text-sm font-medium focus:ring-1 focus:ring-primary focus:border-primary focus:bg-white shadow-sm h-11 transition-all px-3"
+                                id="booker-email" placeholder="you@example.com" type="email" />
+                            <div class="mt-2 flex items-center gap-2">
+                                <input id="offers" name="offers" type="checkbox"
+                                    class="focus:ring-primary h-3.5 w-3.5 text-primary border-gray-300 rounded cursor-pointer" />
+                                <label for="offers"
+                                    class="text-[11px] font-medium text-text-muted cursor-pointer hover:text-primary transition-colors">I'd
+                                    like to receive exclusive offers and promotions. See our <a href="#"
+                                        class="underline hover:text-secondary">Privacy Policy</a>.</label>
+                            </div>
+                        </div>
+                        <div class="md:col-span-6">
+                            <label class="block text-xs font-bold uppercase text-text-muted mb-1.5"
+                                for="booker-phone">Phone
+                                Number</label>
+                            <input
+                                class="w-full bg-gray-50 border border-gray-200 rounded-lg text-sm font-medium focus:ring-1 focus:ring-primary focus:border-primary focus:bg-white shadow-sm h-11 transition-all px-3"
+                                id="booker-phone" placeholder="+7 701 123 4567" type="tel" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Passenger 1 -->
+                <div class="bg-white rounded-xl border border-gray-100 shadow-refined p-6 md:p-8">
+                    <div class="flex items-center justify-between mb-6 border-b border-gray-100 pb-4">
+                        <div class="flex items-center">
+                            <div
+                                class="w-8 h-8 rounded-full bg-secondary text-white flex items-center justify-center font-bold text-sm mr-3">
+                                1</div>
+                            <h2 class="text-lg font-bold text-secondary uppercase tracking-wide">Passenger 1 (Adult)
+                            </h2>
+                        </div>
+                        <button onclick="copyFromBooker()"
+                            class="text-xs font-bold text-primary hover:text-primary-hover flex items-center gap-1 transition-colors bg-primary-light px-3 py-1.5 rounded-lg">
+                            <span class="material-icons-round text-sm">content_copy</span>
+                            SAME AS BOOKER
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-bold uppercase text-text-muted mb-1.5"
+                                for="pax-1-title">Title</label>
+                            <select
+                                class="w-full bg-gray-50 border border-gray-200 rounded-lg text-sm font-medium focus:ring-1 focus:ring-primary focus:border-primary focus:bg-white shadow-sm h-11 transition-all"
+                                id="pax-1-title">
+                                <option>Mr</option>
+                                <option>Mrs</option>
+                                <option>Ms</option>
+                                <option>Miss</option>
+                            </select>
+                        </div>
+                        <div class="md:col-span-5">
+                            <label class="block text-xs font-bold uppercase text-text-muted mb-1.5"
+                                for="pax-1-first-name">First & Middle Name(s)</label>
+                            <input
+                                class="w-full bg-gray-50 border border-gray-200 rounded-lg text-sm font-medium focus:ring-1 focus:ring-primary focus:border-primary focus:bg-white shadow-sm h-11 transition-all px-3"
+                                id="pax-1-first-name" placeholder="e.g. John Michael" type="text" />
+                        </div>
+                        <div class="md:col-span-5">
+                            <label class="block text-xs font-bold uppercase text-text-muted mb-1.5"
+                                for="pax-1-last-name">Last Name</label>
+                            <input
+                                class="w-full bg-gray-50 border border-gray-200 rounded-lg text-sm font-medium focus:ring-1 focus:ring-primary focus:border-primary focus:bg-white shadow-sm h-11 transition-all px-3"
+                                id="pax-1-last-name" placeholder="e.g. Smith" type="text" />
+                        </div>
+
+                        <div class="md:col-span-6">
+                            <label class="block text-xs font-bold uppercase text-text-muted mb-1.5" for="pax-1-dob">Date
+                                of
+                                Birth</label>
+                            <input
+                                class="w-full bg-gray-50 border border-gray-200 rounded-lg text-sm font-medium focus:ring-1 focus:ring-primary focus:border-primary focus:bg-white shadow-sm h-11 transition-all px-3"
+                                id="pax-1-dob" type="date" />
+                        </div>
+                        <div class="md:col-span-6">
+                            <label class="block text-xs font-bold uppercase text-text-muted mb-1.5"
+                                for="pax-1-nationality">Nationality</label>
+                            <select
+                                class="w-full bg-gray-50 border border-gray-200 rounded-lg text-sm font-medium focus:ring-1 focus:ring-primary focus:border-primary focus:bg-white shadow-sm h-11 transition-all"
+                                id="pax-1-nationality">
+                                <option>Kazakhstan</option>
+                                <option>United Kingdom</option>
+                                <option>United States</option>
+                                <option>Malaysia</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Passenger 2 -->
+                <div class="bg-white rounded-xl border border-gray-100 shadow-refined p-6 md:p-8">
+                    <div class="flex items-center mb-6 border-b border-gray-100 pb-4">
+                        <div
+                            class="w-8 h-8 rounded-full bg-secondary text-white flex items-center justify-center font-bold text-sm mr-3">
+                            2</div>
+                        <h2 class="text-lg font-bold text-secondary uppercase tracking-wide">Passenger 2 (Adult)</h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-bold uppercase text-text-muted mb-1.5"
+                                for="pax-2-title">Title</label>
+                            <select
+                                class="w-full bg-gray-50 border border-gray-200 rounded-lg text-sm font-medium focus:ring-1 focus:ring-primary focus:border-primary focus:bg-white shadow-sm h-11 transition-all"
+                                id="pax-2-title">
+                                <option>Mr</option>
+                                <option>Mrs</option>
+                                <option>Ms</option>
+                                <option>Miss</option>
+                            </select>
+                        </div>
+                        <div class="md:col-span-5">
+                            <label class="block text-xs font-bold uppercase text-text-muted mb-1.5"
+                                for="pax-2-first-name">First & Middle Name(s)</label>
+                            <input
+                                class="w-full bg-gray-50 border border-gray-200 rounded-lg text-sm font-medium focus:ring-1 focus:ring-primary focus:border-primary focus:bg-white shadow-sm h-11 transition-all px-3"
+                                id="pax-2-first-name" placeholder="e.g. Jane" type="text" />
+                        </div>
+                        <div class="md:col-span-5">
+                            <label class="block text-xs font-bold uppercase text-text-muted mb-1.5"
+                                for="pax-2-last-name">Last Name</label>
+                            <input
+                                class="w-full bg-gray-50 border border-gray-200 rounded-lg text-sm font-medium focus:ring-1 focus:ring-primary focus:border-primary focus:bg-white shadow-sm h-11 transition-all px-3"
+                                id="pax-2-last-name" placeholder="e.g. Doe" type="text" />
+                        </div>
+
+                        <div class="md:col-span-6">
+                            <label class="block text-xs font-bold uppercase text-text-muted mb-1.5" for="pax-2-dob">Date
+                                of
+                                Birth</label>
+                            <input
+                                class="w-full bg-gray-50 border border-gray-200 rounded-lg text-sm font-medium focus:ring-1 focus:ring-primary focus:border-primary focus:bg-white shadow-sm h-11 transition-all px-3"
+                                id="pax-2-dob" type="date" />
+                        </div>
+                        <div class="md:col-span-6">
+                            <label class="block text-xs font-bold uppercase text-text-muted mb-1.5"
+                                for="pax-2-nationality">Nationality</label>
+                            <select
+                                class="w-full bg-gray-50 border border-gray-200 rounded-lg text-sm font-medium focus:ring-1 focus:ring-primary focus:border-primary focus:bg-white shadow-sm h-11 transition-all"
+                                id="pax-2-nationality">
+                                <option>Kazakhstan</option>
+                                <option>United Kingdom</option>
+                                <option>United States</option>
+                                <option>Malaysia</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-1" x-data="{ expanded: false }">
+                <!-- Desktop Sidebar Card (Always visible on desktop) -->
+                <div class="hidden lg:block space-y-5">
+                    <div class="bg-white rounded-2xl shadow-float border border-gray-200 p-4 sticky top-20">
+                        <h3 class="font-bold text-base mb-3 text-secondary">Your package summary</h3>
+
+                        <!-- FLIGHTS (First) -->
+                        <div class="space-y-3">
+                            <div class="flex items-center gap-2.5">
+                                <span class="material-icons-round text-gray-400 text-xl">flight_takeoff</span>
+                                <div class="flex-grow flex items-center justify-between text-xs">
+                                    <span class="font-bold text-secondary">KUL <span class="text-gray-400">→</span>
+                                        MLE</span>
+                                    <span class="text-text-muted">10:10 - 11:35</span>
+                                    <div
+                                        class="font-medium bg-gray-50 px-1.5 py-0.5 rounded text-xs text-text-muted flex items-center">
+                                        <img src="./assets/saudia_icon.png" class="h-3 w-3 object-contain mr-1"
+                                            alt="Saudia">
+                                        SV 123
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2.5">
+                                <span class="material-icons-round text-gray-400 text-xl">flight_land</span>
+                                <div class="flex-grow flex items-center justify-between text-xs">
+                                    <span class="font-bold text-secondary">MLE <span class="text-gray-400">→</span>
+                                        KUL</span>
+                                    <span class="text-text-muted">12:35 - 20:15</span>
+                                    <div
+                                        class="font-medium bg-gray-50 px-1.5 py-0.5 rounded text-xs text-text-muted flex items-center">
+                                        <img src="./assets/saudia_icon.png" class="h-3 w-3 object-contain mr-1"
+                                            alt="Saudia">
+                                        SV 124
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="border-t border-gray-100 my-4"></div>
+
+                        <!-- HOTEL (Second) -->
+                        <div class="flex gap-3">
+                            <img alt="EQ Kuala Lumpur" class="w-12 h-12 object-cover rounded-lg flex-shrink-0"
+                                src="https://images.unsplash.com/photo-1590490360182-c87299690d6e?auto=format&fit=crop&q=80&w=1000" />
+                            <div>
+                                <h4 class="font-bold text-sm text-secondary leading-tight">EQ Kuala Lumpur
+                                </h4>
+                                <p class="text-xs text-text-muted mt-0.5">4 nights, 2 adults</p>
+                                <p class="text-xs text-text-muted">Premier King Room KL Tower View</p>
+                                <p class="text-xs text-text-muted">Breakfast Included</p>
+                            </div>
+                        </div>
+                        <div class="border-t border-gray-100 my-4"></div>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-text-muted">2 travellers</span>
+                                <span class="text-secondary font-medium">SAR 7,010.00</span>
+                            </div>
+                            <div class="flex justify-between text-success">
+                                <span>Discount</span>
+                                <span>-SAR 2,140.00</span>
+                            </div>
+                        </div>
+                        <div class="border-t border-gray-100 my-4"></div>
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-base text-secondary">Total</span>
+                            <div class="text-right">
+                                <p class="font-bold text-xl text-secondary">SAR 4,870.00</p>
+                                <p class="text-xs text-text-muted">SAR 2,435 per person</p>
+                            </div>
+                        </div>
+                        <p class="text-xs text-text-muted mt-1 text-right">Includes taxes and fees</p>
+                        <button
+                            class="bg-primary text-white w-full py-3 rounded-lg font-bold text-sm mt-5 hover:bg-primary-hover shadow-subtle uppercase tracking-wide transition-all transform active:scale-[0.98]">Continue
+                            Booking</button>
+                        <p class="text-xs text-text-muted mt-2 text-center">Price held for <span
+                                class="font-bold text-secondary">18:32</span></p>
+                        <div class="mt-5 text-xs text-text-main">
+                            <div class="flex items-center text-success">
+                                <span class="material-icons-round mr-1 text-sm">check_circle</span>
+                                <span class="font-semibold">ATOL protected</span>
+                                <span class="material-icons-round text-xs ml-1" title="Info">info_outline</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mobile Sticky Footer (Visible < lg) -->
+                <div class="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white shadow-refined-xl transition-transform duration-300"
+                    :class="expanded ? 'h-full flex flex-col' : 'h-auto border-t border-gray-200'" x-cloak>
+
+                    <!-- Collapsed Header -->
+                    <div class="flex justify-between items-center p-4 bg-white relative z-20 w-full"
+                        @click="expanded = !expanded" :class="expanded ? 'border-b border-gray-100' : ''">
+                        <div class="flex flex-col">
+                            <span class="text-xs text-text-muted" x-show="!expanded">Total for 2 travellers</span>
+                            <div class="flex items-center gap-2">
+                                <span class="font-bold text-xl text-secondary">SAR 4,870.00</span>
+                                <span class="material-icons-round text-primary transition-transform duration-300"
+                                    :class="expanded ? 'rotate-180' : ''">expand_less</span>
+                            </div>
+                        </div>
+                        <button
+                            class="bg-primary text-white px-6 py-2.5 rounded-lg font-bold text-sm uppercase tracking-wide hover:bg-primary-hover shadow-subtle"
+                            x-show="!expanded" @click.stop="window.location.href='#'">Continue</button>
+                        <button class="text-gray-400 p-2" x-show="expanded" @click.stop="expanded = false"><span
+                                class="material-icons-round">close</span></button>
+                    </div>
+
+                    <!-- Expanded Content -->
+                    <div class="flex-grow overflow-y-auto bg-gray-50/50 p-4" x-show="expanded">
+                        <!-- SAME CONTENT AS DESKTOP BUT UNWRAPPED or styled for mobile -->
+                        <div class="bg-white rounded-xl border border-gray-100 p-4 shadow-sm mb-20">
+                            <!-- FLIGHTS (First) -->
+                            <div class="space-y-3">
+                                <div class="flex items-center gap-2.5">
+                                    <span class="material-icons-round text-gray-400 text-xl">flight_takeoff</span>
+                                    <div class="flex-grow flex items-center justify-between text-xs">
+                                        <span class="font-bold text-secondary">KUL <span class="text-gray-400">→</span>
+                                            MLE</span>
+                                        <span class="text-text-muted">10:10 - 11:35</span>
+                                        <div
+                                            class="font-medium bg-gray-50 px-1.5 py-0.5 rounded text-[10px] text-text-muted flex items-center">
+                                            <img src="./assets/saudia_icon.png" class="h-3 w-3 object-contain mr-1"
+                                                alt="Saudia">
+                                            SV 123
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-2.5">
+                                    <span class="material-icons-round text-gray-400 text-xl">flight_land</span>
+                                    <div class="flex-grow flex items-center justify-between text-xs">
+                                        <span class="font-bold text-secondary">MLE <span class="text-gray-400">→</span>
+                                            KUL</span>
+                                        <span class="text-text-muted">12:35 - 20:15</span>
+                                        <div
+                                            class="font-medium bg-gray-50 px-1.5 py-0.5 rounded text-[10px] text-text-muted flex items-center">
+                                            <img src="./assets/saudia_icon.png" class="h-3 w-3 object-contain mr-1"
+                                                alt="Saudia">
+                                            SV 124
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="border-t border-gray-100 my-4"></div>
+
+                            <!-- HOTEL (Second) -->
+                            <div class="flex gap-3">
+                                <img alt="EQ Kuala Lumpur" class="w-12 h-12 object-cover rounded-lg flex-shrink-0"
+                                    src="https://images.unsplash.com/photo-1590490360182-c87299690d6e?auto=format&fit=crop&q=80&w=1000" />
+                                <div>
+                                    <h4 class="font-bold text-sm text-secondary leading-tight">EQ Kuala Lumpur
+                                    </h4>
+                                    <p class="text-xs text-text-muted mt-0.5">4 nights, 2 adults</p>
+                                    <p class="text-xs text-text-muted">Premier King Room KL Tower View</p>
+                                    <p class="text-xs text-text-muted">Breakfast Included</p>
+                                </div>
+                            </div>
+                            <div class="border-t border-gray-100 my-4"></div>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-text-muted">2 travellers</span>
+                                    <span class="text-secondary font-medium">SAR 7,010.00</span>
+                                </div>
+                                <div class="flex justify-between text-success">
+                                    <span>Discount</span>
+                                    <span>-SAR 2,140.00</span>
+                                </div>
+                            </div>
+                            <div class="border-t border-gray-100 my-4"></div>
+                            <div class="flex justify-between items-center">
+                                <span class="font-bold text-base text-secondary">Total</span>
+                                <div class="text-right">
+                                    <p class="font-bold text-xl text-secondary">SAR 4,870.00</p>
+                                    <p class="text-xs text-text-muted">SAR 2,435 per person</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Mobile Floating Action Button (Within Expanded) -->
+                    <div class="p-4 bg-white border-t border-gray-100 absolute bottom-0 left-0 right-0"
+                        x-show="expanded">
+                        <button
+                            class="bg-primary text-white w-full py-3.5 rounded-lg font-bold text-sm uppercase tracking-wide hover:bg-primary-hover shadow-subtle">Continue
+                            Booking</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+    <footer class="bg-white border-t border-gray-200 py-6 mt-auto">
+        <div class="container mx-auto px-4 text-center text-text-muted text-xs">
+            &copy; 2026 Saudia Holidays. All rights reserved.
+        </div>
+    </footer>
+    <script>
+        function toggleSection(id) {
+            const section = document.getElementById(id);
+            const otherId = id === 'search-widget' ? 'flight-details' : 'search-widget';
+            const otherSection = document.getElementById(otherId);
+            const flightChevron = document.getElementById('chevron-flight-details');
+
+            if (!otherSection.classList.contains('hidden')) {
+                otherSection.classList.add('hidden');
+                if (otherId === 'flight-details') flightChevron.style.transform = 'rotate(0deg)';
+            }
+
+            section.classList.toggle('hidden');
+
+            if (id === 'flight-details') {
+                flightChevron.style.transform = section.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+            }
+        }
+
+        function copyFromBooker() {
+            const title = document.getElementById('booker-title').value;
+            const firstName = document.getElementById('booker-first-name').value;
+            const lastName = document.getElementById('booker-last-name').value;
+
+            document.getElementById('pax-1-title').value = title;
+            document.getElementById('pax-1-first-name').value = firstName;
+            document.getElementById('pax-1-last-name').value = lastName;
+
+            // Highlight the fields momentarily to show they were copied
+            ['pax-1-title', 'pax-1-first-name', 'pax-1-last-name'].forEach(id => {
+                const el = document.getElementById(id);
+                el.classList.add('ring-2', 'ring-primary/20', 'bg-primary/5');
+                setTimeout(() => {
+                    el.classList.remove('ring-2', 'ring-primary/20', 'bg-primary/5');
+                }, 1000);
+            });
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Saudia Holidays - Shopping Basket</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+        rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#006C35", // Saudia Green
+                        secondary: "#006C35", // Saudia Green (as per guideline)
+                        "primary-hover": "#005a2b",
+                        "primary-light": "#E8F0FE",
+                        "text-main": "#1A1A1A",
+                        "text-muted": "#555555",
+                        "bg-surface": "#F9F9F9",
+                        success: "#059669",
+                        amber: "#B09255",
+                        gold: "#B09255",
+                    },
+                    fontFamily: {
+                        display: ["Outfit", "sans-serif"],
+                        sans: ["Outfit", "sans-serif"],
+                    },
+                    fontSize: {
+                        'xs': '0.8125rem',
+                        'sm': '0.9375rem',
+                        'base': '1rem',
+                        'lg': '1.125rem',
+                        'xl': '1.25rem',
+                        '2xl': '1.5rem',
+                        '3xl': '1.875rem',
+                        '4xl': '2.25rem',
+                    },
+                    boxShadow: {
+                        'refined': '0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 10px 20px -5px rgba(0, 0, 0, 0.08)',
+                        'refined-lg': '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 20px 30px -10px rgba(0, 0, 0, 0.12)',
+                        'blue': '0 4px 14px 0 rgba(0, 108, 53, 0.15)', // Adjusted to green shadow
+                    },
+                    animation: {
+                        'slide-down': 'slideDown 0.3s ease-out',
+                    },
+                    keyframes: {
+                        slideDown: {
+                            '0%': { opacity: '0', transform: 'translateY(-10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                    }
+                },
+            },
+        };
+    </script>
+    <style>
+        .material-icons-round,
+        .material-symbols-outlined {
+            vertical-align: middle;
+        }
+
+        /* Compact components */
+        .card-compact {
+            padding: 1.25rem;
+        }
+
+        .tailfin-icon {
+            width: 18px;
+            height: 18px;
+            background-color: #006C35;
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 30% 100%, 0 70%);
+            border-radius: 2px;
+            display: inline-block;
+            flex-shrink: 0;
+        }
+
+        /* Checkbox style override */
+        input[type="checkbox"]:checked {
+            background-color: #006C35;
+            border-color: #006C35;
+        }
+
+        /* Smooth expand animation */
+        .expand-section {
+            animation: slideDown 0.3s ease-out;
+        }
+    </style>
+</head>
+
+<body class="bg-bg-surface font-sans text-text-main antialiased pb-12 text-base">
+
+    <!-- Sticky Header Container (Identical to all pages) -->
+    <nav class="sticky top-0 z-50 bg-white border-b-2 border-gray-100 shadow-refined relative">
+
+        <!-- Row 1: Brand & Profile -->
+        <div class="container mx-auto px-4 lg:px-6 h-14 flex justify-between items-center bg-white relative z-30">
+            <div class="flex items-center gap-4">
+                <img src="./assets/saudia_logo.png" alt="Saudia" class="h-[100px] object-contain relative z-50">
+                <div class="h-6 w-px bg-gray-200 hidden sm:block ml-2"></div>
+            </div>
+            <div class="flex items-center gap-3">
+                <!-- Language & Country Selector -->
+                <button
+                    class="flex items-center gap-2 text-xs font-bold text-text-muted hover:text-primary transition-colors group">
+                    <img src="https://flagcdn.com/w40/sa.png" alt="Saudi Arabia"
+                        class="w-5 h-auto rounded-sm shadow-sm group-hover:shadow-md transition-all">
+                    <span class="hidden sm:inline">Saudi Arabia <span class="text-gray-300 mx-1">|</span> EN</span>
+                </button>
+                <div class="h-4 w-px bg-gray-200 hidden sm:block"></div>
+
+                <button class="text-xs font-bold text-text-muted hover:text-primary transition-colors">SAR</button>
+                <button
+                    class="p-2 rounded-full hover:bg-primary-light text-text-muted hover:text-primary transition-all duration-300 hover:scale-105">
+                    <span class="material-icons-round text-xl">person_outline</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Row 2: Context Bar -->
+        <div class="bg-gradient-to-b from-gray-50 to-white border-t border-gray-100 relative z-30">
+            <div class="container mx-auto px-4 lg:px-6">
+                <div class="flex flex-col lg:flex-row gap-0 lg:gap-6">
+
+                    <!-- Search Context -->
+                    <div
+                        class="py-2.5 flex items-center justify-between lg:justify-start gap-4 lg:border-r-2 lg:border-gray-100 lg:pr-6 lg:w-auto border-b lg:border-b-0 border-gray-100">
+                        <div class="flex items-center gap-3 text-sm text-text-main overflow-hidden">
+                            <div class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                                <span class="material-icons-round text-lg text-primary">search</span>
+                            </div>
+                            <div class="flex flex-col leading-tight">
+                                <span class="font-bold text-secondary text-base truncate">London - Kuala Lumpur</span>
+                                <span class="text-text-muted text-[10px] mt-0.5 font-medium">15-20 Jan • 2
+                                    Passengers</span>
+                            </div>
+                        </div>
+                        <button onclick="toggleSection('search-widget')"
+                            class="text-[10px] font-bold uppercase text-primary bg-white border border-primary/20 px-4 py-2 rounded-lg transition-all duration-300 whitespace-nowrap hover:bg-primary hover:text-white hover:border-primary shadow-sm hover:shadow-blue"
+                            id="btn-search-modify">
+                            Modify
+                        </button>
+                    </div>
+
+                    <!-- Flight Itinerary Summary -->
+                    <div onclick="toggleSection('flight-details')"
+                        class="py-2.5 flex items-center justify-between gap-4 cursor-pointer group flex-grow hover:bg-white transition-all duration-300 rounded-lg px-2 -mx-2">
+                        <div class="flex flex-row items-center gap-4 lg:gap-8 text-xs w-full">
+                            <!-- Outbound -->
+                            <div class="flex items-center gap-3 text-text-main">
+                                <img src="./assets/saudia_icon.png"
+                                    class="w-8 h-8 rounded-lg object-contain bg-primary/5 p-1" alt="Saudia">
+                                <div class="flex items-center gap-2">
+                                    <span class="font-bold text-secondary text-base">08:00</span>
+                                    <span class="text-gray-400 text-sm">→</span>
+                                    <span class="font-bold text-secondary text-base">09:05</span>
+                                    <span
+                                        class="text-[10px] text-text-muted bg-gray-100 px-2 py-0.5 rounded font-semibold hidden sm:inline-block">SV
+                                        123</span>
+                                </div>
+                            </div>
+                            <div class="hidden lg:block w-px h-6 bg-gray-200"></div>
+                            <!-- Return -->
+                            <div class="flex items-center gap-3 text-text-main">
+                                <img src="./assets/saudia_icon.png"
+                                    class="w-8 h-8 rounded-lg object-contain bg-primary/5 p-1" alt="Saudia">
+                                <div class="flex items-center gap-2">
+                                    <span class="font-bold text-secondary text-base">14:00</span>
+                                    <span class="text-gray-400 text-sm">→</span>
+                                    <span class="font-bold text-secondary text-base">15:05</span>
+                                    <span
+                                        class="text-[10px] text-text-muted bg-gray-100 px-2 py-0.5 rounded font-semibold hidden sm:inline-block">SV
+                                        124</span>
+                                </div>
+                            </div>
+                        </div>
+                        <span id="chevron-flight-details"
+                            class="material-icons-round text-gray-400 text-xl group-hover:text-primary transition-all duration-300">expand_more</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- EXPANDABLE 1: Full Search Widget -->
+        <div id="search-widget"
+            class="hidden bg-white border-b border-gray-100 shadow-refined-lg absolute left-0 right-0 z-20 top-full expand-section">
+            <div class="container mx-auto px-4 lg:px-6 py-3 bg-white">
+                <div class="flex flex-col lg:flex-row gap-2 lg:items-center">
+
+                    <!-- Mobile Close Button -->
+                    <div class="flex justify-end lg:hidden mb-1">
+                        <button onclick="toggleSection('search-widget')"
+                            class="text-gray-400 hover:text-primary hover:bg-gray-100 rounded-full p-1 transition-all duration-300">
+                            <span class="material-icons-round text-lg">close</span>
+                        </button>
+                    </div>
+
+                    <form class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3 flex-grow">
+                        <div
+                            class="h-14 bg-gray-50 px-4 flex flex-col justify-center rounded-xl border border-gray-100 hover:border-primary/30 transition-all duration-300 focus-within:border-primary focus-within:bg-white group">
+                            <label
+                                class="block text-xs uppercase text-text-muted font-bold tracking-wide leading-none mb-1 group-focus-within:text-primary">From</label>
+                            <input type="text" value="London (LHR)"
+                                class="w-full bg-transparent border-none p-0 text-base font-bold text-secondary focus:ring-0 leading-tight">
+                        </div>
+                        <div
+                            class="h-14 bg-gray-50 px-4 flex flex-col justify-center rounded-xl border border-gray-100 hover:border-primary/30 transition-all duration-300 focus-within:border-primary focus-within:bg-white group">
+                            <label
+                                class="block text-xs uppercase text-text-muted font-bold tracking-wide leading-none mb-1 group-focus-within:text-primary">To</label>
+                            <input type="text" value="Kuala Lumpur (KUL)"
+                                class="w-full bg-transparent border-none p-0 text-base font-bold text-secondary focus:ring-0 leading-tight">
+                        </div>
+                        <div
+                            class="h-14 bg-gray-50 px-4 flex flex-col justify-center rounded-xl border border-gray-100 hover:border-primary/30 transition-all duration-300 focus-within:border-primary focus-within:bg-white group">
+                            <label
+                                class="block text-xs uppercase text-text-muted font-bold tracking-wide leading-none mb-1 group-focus-within:text-primary">Dates</label>
+                            <input type="text" value="15 Jan - 20 Jan"
+                                class="w-full bg-transparent border-none p-0 text-base font-bold text-secondary focus:ring-0 leading-tight">
+                        </div>
+                        <div
+                            class="h-14 bg-gray-50 px-4 flex flex-col justify-center rounded-xl border border-gray-100 hover:border-primary/30 transition-all duration-300 focus-within:border-primary focus-within:bg-white group">
+                            <label
+                                class="block text-xs uppercase text-text-muted font-bold tracking-wide leading-none mb-1 group-focus-within:text-primary">Guests</label>
+                            <select
+                                class="w-full bg-transparent border-none p-0 text-base font-bold text-secondary focus:ring-0 leading-tight">
+                                <option>2 Adults, 1 Room</option>
+                            </select>
+                        </div>
+                        <button type="button" onclick="toggleSection('search-widget')"
+                            class="bg-primary text-white font-bold uppercase text-sm tracking-wider rounded-xl shadow-blue hover:bg-primary-hover hover:shadow-blue-lg transition-all duration-300 h-14 hover:-translate-y-0.5">
+                            Update
+                        </button>
+                    </form>
+
+                    <!-- Desktop Close Button (Static) -->
+                    <button onclick="toggleSection('search-widget')"
+                        class="hidden lg:flex text-gray-400 hover:text-primary hover:bg-gray-100 rounded-full p-1 transition-all duration-300 flex-shrink-0">
+                        <span class="material-icons-round text-lg">close</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- EXPANDABLE 2: Flight Details -->
+        <div id="flight-details"
+            class="hidden bg-white border-b-2 border-gray-100 shadow-refined-lg absolute left-0 right-0 z-20 top-full expand-section">
+            <div class="container mx-auto px-6 lg:px-8 py-6 bg-white">
+                <div class="flex justify-between items-center mb-5">
+                    <h3 class="text-sm font-bold uppercase tracking-widest text-text-muted">Flight Itinerary</h3>
+                    <button onclick="toggleSection('flight-details')"
+                        class="text-gray-400 hover:text-primary hover:bg-primary-light rounded-full p-1 transition-all duration-300">
+                        <span class="material-icons-round text-2xl">close</span>
+                    </button>
+                </div>
+                <div class="grid md:grid-cols-2 gap-5">
+                    <div
+                        class="border-2 border-gray-100 rounded-2xl p-5 bg-gradient-to-br from-primary/5 to-white hover:shadow-refined transition-all duration-300">
+                        <div class="text-xs font-bold text-primary uppercase mb-3 tracking-wide">Outbound • 1h 05m</div>
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="text-2xl font-bold text-secondary">08:00 <span
+                                    class="text-base font-normal text-text-muted">LHR</span></div>
+                            <div
+                                class="h-0.5 flex-grow bg-gradient-to-r from-primary via-gray-300 to-primary mx-5 relative">
+                                <span class="absolute right-0 -top-1.5 w-3 h-3 rounded-full bg-primary"></span>
+                            </div>
+                            <div class="text-2xl font-bold text-secondary">09:05 <span
+                                    class="text-base font-normal text-text-muted">KUL</span></div>
+                        </div>
+                        <div class="text-sm text-text-muted flex items-center gap-2 font-medium">
+                            <img src="./assets/saudia_icon.png" class="w-5 h-5 object-contain" alt="Saudia"> Saudia SV
+                            123
+                            • Economy
+                        </div>
+                    </div>
+                    <div
+                        class="border-2 border-gray-100 rounded-2xl p-5 bg-gradient-to-br from-primary/5 to-white hover:shadow-refined transition-all duration-300">
+                        <div class="text-xs font-bold text-primary uppercase mb-3 tracking-wide">Return • 1h 05m</div>
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="text-2xl font-bold text-secondary">14:00 <span
+                                    class="text-base font-normal text-text-muted">KUL</span></div>
+                            <div
+                                class="h-0.5 flex-grow bg-gradient-to-r from-primary via-gray-300 to-primary mx-5 relative">
+                                <span class="absolute right-0 -top-1.5 w-3 h-3 rounded-full bg-primary"></span>
+                            </div>
+                            <div class="text-2xl font-bold text-secondary">15:05 <span
+                                    class="text-base font-normal text-text-muted">LHR</span></div>
+                        </div>
+                        <div class="text-sm text-text-muted flex items-center gap-2 font-medium">
+                            <img src="./assets/saudia_icon.png" class="w-5 h-5 object-contain" alt="Saudia"> Saudia SV
+                            124
+                            • Economy
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div class="mb-5">
+            <h1 class="text-2xl font-bold text-secondary tracking-tight">Your Holiday</h1>
+            <p class="text-xs text-text-muted font-medium mt-1">Review your items below. Complete your booking before
+                the timer runs out!</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+            <!-- Left Column: Items -->
+            <div class="lg:col-span-2 space-y-4">
+
+                <!-- OUTBOUND FLIGHT -->
+                <div
+                    class="bg-white rounded-xl shadow-refined border border-gray-100 overflow-hidden card-compact group hover:border-primary/30 transition-all">
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 mr-4">
+                            <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center p-2">
+                                <!-- Smaller icon box -->
+                                <span class="material-icons-round text-primary text-2xl">flight_takeoff</span>
+                            </div>
+                            <div class="h-16 w-px bg-gray-100 mx-auto mt-2"></div>
+                        </div>
+                        <div class="flex-grow">
+                            <div class="flex justify-between items-center mb-1">
+                                <h2 class="text-lg font-bold text-secondary">Outbound Flight</h2>
+                                <button
+                                    class="text-xs font-bold uppercase text-primary hover:bg-primary/5 px-2 py-1 rounded transition-colors">Edit</button>
+                            </div>
+                            <p class="text-xs text-text-muted font-medium mb-3">Wed 23 Oct 2024 • 2 travellers</p>
+
+                            <div class="space-y-3 bg-gray-50 rounded-lg p-3 border border-gray-100/50">
+                                <div class="flex items-center text-sm">
+                                    <img src="./assets/saudia_icon.png" class="w-5 h-5 object-contain" alt="Saudia">
+                                    <div class="ml-3 flex-grow">
+                                        <div class="flex justify-between">
+                                            <p class="font-bold text-text-main text-xs">London (LHR) to Kuala Lumpur
+                                                (KUL)
+                                            </p>
+                                        </div>
+                                        <p class="text-text-muted text-[11px] mt-0.5">08:00 - 09:05 • Saudia
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-3 pl-2 flex items-center text-xs text-text-muted">
+                                <span class="material-symbols-outlined text-primary mr-2 text-lg">directions_car</span>
+                                <div>
+                                    <p class="font-bold text-text-main text-xs">Airport transfer included</p>
+                                    <p class="text-[10px]">Private car transfer to hotel</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HOTEL -->
+                <div
+                    class="bg-white rounded-xl shadow-refined border border-gray-100 overflow-hidden card-compact group hover:border-primary/30 transition-all">
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 mr-4">
+                            <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                                <span class="material-icons-round text-primary text-xl">hotel</span>
+                            </div>
+                        </div>
+                        <div class="flex-grow">
+                            <div class="flex justify-between items-center mb-1">
+                                <h2 class="text-lg font-bold text-secondary">EQ Kuala Lumpur</h2>
+                                <button
+                                    class="text-xs font-bold uppercase text-primary hover:bg-primary/5 px-2 py-1 rounded transition-colors">Change
+                                    room</button>
+                            </div>
+                            <p class="text-xs text-text-muted font-medium mb-3">4 nights • Oct 23 - Oct 27 2024</p>
+
+                            <div class="bg-gray-50 rounded-lg p-3 border border-gray-100/50">
+                                <div class="flex flex-col sm:flex-row gap-4">
+                                    <img alt="Room" class="w-full sm:w-32 h-20 object-cover rounded-lg shadow-sm"
+                                        src="https://images.unsplash.com/photo-1590490360182-c87299690d6e?auto=format&fit=crop&q=80&w=1000" />
+                                    <div>
+                                        <h3 class="font-bold text-text-main text-sm">Premier King Room KL Tower View
+                                        </h3>
+                                        <ul class="mt-1 space-y-1">
+                                            <li class="flex items-center text-[11px] text-text-muted"><span
+                                                    class="material-icons-round text-success text-[14px] mr-1">check</span>
+                                                Breakfast included</li>
+                                            <li class="flex items-center text-[11px] text-text-muted"><span
+                                                    class="material-icons-round text-success text-[14px] mr-1">check</span>
+                                                Free cancellation</li>
+                                            <li class="flex items-center text-[11px] text-text-muted"><span
+                                                    class="material-icons-round text-success text-[14px] mr-1">check</span>
+                                                Airport transfer included</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RECS -->
+                <div class="py-2">
+                    <div class="flex items-center mb-3">
+                        <span class="material-icons-round text-primary mr-2 text-lg">local_activity</span>
+                        <h3 class="text-base font-bold text-secondary">Recommended for you</h3>
+                    </div>
+                    <div
+                        class="bg-white rounded-xl border border-gray-100 p-3 flex gap-4 hover:shadow-refined transition-all">
+                        <img alt="Tour" class="w-24 h-24 object-cover rounded-lg bg-gray-100"
+                            src="https://images.unsplash.com/photo-1596422846543-75c6fc197f07?auto=format&fit=crop&q=80&w=1000" />
+                        <div class="flex-grow flex flex-col justify-between">
+                            <div>
+                                <h4 class="font-bold text-text-main text-sm">Kuala Lumpur City Tour</h4>
+                                <p class="text-[11px] text-text-muted mt-1 leading-normal line-clamp-2">Discover the
+                                    best of KL with a half-day tour to iconic landmarks.</p>
+                            </div>
+                            <div class="flex items-center justify-between mt-2">
+                                <div><span class="font-bold text-primary text-sm">SAR 225</span> <span
+                                        class="text-[10px] text-text-muted">pp</span></div>
+                                <button
+                                    class="bg-primary/10 text-primary hover:bg-primary hover:text-white px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wide transition-all">Add</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RETURN FLIGHT -->
+                <div
+                    class="bg-white rounded-xl shadow-refined border border-gray-100 overflow-hidden card-compact group hover:border-primary/30 transition-all">
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 mr-4">
+                            <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center p-2">
+                                <span class="material-icons-round text-primary text-2xl">flight_land</span>
+                            </div>
+                            <div class="h-8 w-px bg-gray-100 mx-auto mt-2"></div>
+                        </div>
+                        <div class="flex-grow">
+                            <div class="flex justify-between items-center mb-1">
+                                <h2 class="text-lg font-bold text-secondary">Return Flight</h2>
+                                <button
+                                    class="text-xs font-bold uppercase text-primary hover:bg-primary/5 px-2 py-1 rounded transition-colors">Edit</button>
+                            </div>
+                            <p class="text-xs text-text-muted font-medium mb-3">Sun 27 Oct 2024 • 2 travellers</p>
+
+                            <div class="space-y-3 bg-gray-50 rounded-lg p-3 border border-gray-100/50">
+                                <div class="flex items-center text-sm">
+                                    <img src="./assets/saudia_icon.png" class="w-5 h-5 object-contain" alt="Saudia">
+                                    <div class="ml-3">
+                                        <p class="font-bold text-text-main text-xs">Kuala Lumpur (KUL) to London (LHR)
+                                        </p>
+                                        <p class="text-text-muted text-[11px] mt-0.5">14:00 - 15:05 • Saudia
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-3 pl-2 flex items-center text-xs text-text-muted">
+                                <span class="material-symbols-outlined text-primary mr-2 text-lg">directions_car</span>
+                                <div>
+                                    <p class="font-bold text-text-main text-xs">Airport transfer included</p>
+                                    <p class="text-[10px]">Private car transfer to airport</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ADD MORE GRID -->
+                <div class="mt-6">
+                    <h2 class="text-lg font-bold text-secondary mb-3">Add more to your trip</h2>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        <!-- Add Item Card -->
+                        <div
+                            class="bg-white p-3 rounded-xl border border-gray-100 hover:border-primary/30 hover:shadow-refined transition-all text-center group cursor-pointer">
+                            <div
+                                class="w-8 h-8 rounded-full bg-primary/5 text-primary flex items-center justify-center mx-auto mb-2 group-hover:bg-primary group-hover:text-white transition-colors">
+                                <span class="material-icons-round text-lg">hotel</span>
+                            </div>
+                            <h3 class="font-bold text-secondary text-xs">Hotel</h3>
+                            <p class="text-[10px] text-text-muted mb-2">Add another stay</p>
+                            <span class="text-[10px] font-bold text-primary uppercase group-hover:underline">Add</span>
+                        </div>
+                        <!-- Add Item Card -->
+                        <div
+                            class="bg-white p-3 rounded-xl border border-gray-100 hover:border-primary/30 hover:shadow-refined transition-all text-center group cursor-pointer">
+                            <div
+                                class="w-8 h-8 rounded-full bg-primary/5 text-primary flex items-center justify-center mx-auto mb-2 group-hover:bg-primary group-hover:text-white transition-colors">
+                                <span class="material-icons-round text-lg">directions_car</span>
+                            </div>
+                            <h3 class="font-bold text-secondary text-xs">Car Rental</h3>
+                            <p class="text-[10px] text-text-muted mb-2">Rent a vehicle</p>
+                            <span class="text-[10px] font-bold text-primary uppercase group-hover:underline">Add</span>
+                        </div>
+                        <!-- Add Item Card -->
+                        <div
+                            class="bg-white p-3 rounded-xl border border-gray-100 hover:border-primary/30 hover:shadow-refined transition-all text-center group cursor-pointer">
+                            <div
+                                class="w-8 h-8 rounded-full bg-primary/5 text-primary flex items-center justify-center mx-auto mb-2 group-hover:bg-primary group-hover:text-white transition-colors">
+                                <span class="material-icons-round text-lg">transfer_within_a_station</span>
+                            </div>
+                            <h3 class="font-bold text-secondary text-xs">Transfer</h3>
+                            <p class="text-[10px] text-text-muted mb-2">Airport pickup</p>
+                            <span class="text-[10px] font-bold text-primary uppercase group-hover:underline">Add</span>
+                        </div>
+                        <!-- Add Item Card -->
+                        <div
+                            class="bg-white p-3 rounded-xl border border-gray-100 hover:border-primary/30 hover:shadow-refined transition-all text-center group cursor-pointer">
+                            <div
+                                class="w-8 h-8 rounded-full bg-primary/5 text-primary flex items-center justify-center mx-auto mb-2 group-hover:bg-primary group-hover:text-white transition-colors">
+                                <span class="material-icons-round text-lg">local_activity</span>
+                            </div>
+                            <h3 class="font-bold text-secondary text-xs">Tours</h3>
+                            <p class="text-[10px] text-text-muted mb-2">Explore local</p>
+                            <span class="text-[10px] font-bold text-primary uppercase group-hover:underline">Add</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Right Column: Price Summary -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-2xl shadow-float border border-gray-200 p-5 sticky top-20">
+                    <h3 class="font-bold text-lg mb-3 text-secondary">Price Summary</h3>
+
+                    <!-- Price Breakdown -->
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-text-muted">Package price (2 adults)</span>
+                            <span class="text-secondary font-medium">SAR 7,010.00</span>
+                        </div>
+                        <div class="flex justify-between text-success">
+                            <span>Package discount</span>
+                            <span>-SAR 2,140.00</span>
+                        </div>
+                        <div class="flex justify-between items-center text-text-muted pt-1">
+                            <span>Taxes & Fees</span>
+                            <span>Included</span>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-gray-100 my-4"></div>
+
+                    <!-- Total -->
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-lg text-secondary">Total</span>
+                        <div class="text-right">
+                            <p class="font-bold text-2xl text-secondary">SAR 4,870.00</p>
+                            <p class="text-xs text-text-muted">SAR 2,435 per person</p>
+                        </div>
+                    </div>
+                    <p class="text-xs text-text-muted mt-1 text-right">Includes taxes and fees</p>
+
+                    <button
+                        class="bg-primary text-white w-full py-3 rounded-lg font-bold text-sm mt-5 hover:bg-primary-hover shadow-subtle uppercase tracking-wide transition-all transform active:scale-[0.98]">
+                        Continue to Book
+                    </button>
+
+                    <p class="text-xs text-text-muted mt-2 text-center">Price held for <span
+                            class="font-bold text-secondary">18:32</span></p>
+
+                    <div class="mt-5 text-xs text-text-main">
+                        <div class="flex items-center text-success">
+                            <span class="material-icons-round mr-1 text-sm">check_circle</span>
+                            <span class="font-semibold">ATOL protected</span>
+                            <span class="material-icons-round text-xs ml-1"
+                                title="Some of the flights and flight-inclusive holidays on this website are financially protected by the ATOL scheme.">info_outline</span>
+                        </div>
+                        <p class="flex items-start text-gray-400 mt-2">
+                            <span class="material-icons-round text-xs mr-1">lock</span>
+                            <span>Your data is secure. We use 256-bit encryption.</span>
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </main>
+    <footer class="bg-white border-t border-gray-200 py-6 mt-auto">
+        <div class="container mx-auto px-4 text-center text-text-muted text-xs">
+            &copy; 2026 Saudia Holidays. All rights reserved.
+        </div>
+    </footer>
+    <script>
+        function toggleSection(id) {
+            const section = document.getElementById(id);
+            const otherId = id === 'search-widget' ? 'flight-details' : 'search-widget';
+            const otherSection = document.getElementById(otherId);
+            const flightChevron = document.getElementById('chevron-flight-details');
+
+            if (!otherSection.classList.contains('hidden')) {
+                otherSection.classList.add('hidden');
+                if (otherId === 'flight-details') flightChevron.style.transform = 'rotate(0deg)';
+            }
+
+            section.classList.toggle('hidden');
+
+            if (id === 'flight-details') {
+                flightChevron.style.transform = section.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+            }
+        }
+    </script>
+</body>
+
+</html>

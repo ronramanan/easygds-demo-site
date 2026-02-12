@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Saudia Holidays - Payment</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#006C35", // Saudia Green
+                        secondary: "#006C35", // Saudia Green
+                        "primary-hover": "#005a2b",
+                        "primary-light": "#E8F0FE",
+                        "text-main": "#1A1A1A",
+                        "text-muted": "#555555",
+                        "bg-surface": "#F9F9F9",
+                        success: "#059669",
+                        amber: "#B09255",
+                        gold: "#B09255",
+                    },
+                    fontFamily: {
+                        sans: ["Outfit", "sans-serif"],
+                        display: ["Outfit", "sans-serif"],
+                    },
+                    fontSize: {
+                        'xs': '0.92rem',
+                        'sm': '1.0rem',
+                        'base': '1.125rem',
+                        'lg': '1.25rem',
+                        'xl': '1.5rem',
+                        '2xl': '1.75rem',
+                        '3xl': '2.25rem',
+                        '4xl': '2.5rem',
+                    },
+                    boxShadow: {
+                        'subtle': '0 2px 10px -5px rgba(0, 108, 53, 0.15)',
+                        'float': '0 5px 15px -5px rgba(0, 0, 0, 0.08)',
+                        'refined': '0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 10px 20px -5px rgba(0, 0, 0, 0.08)',
+                        'blue': '0 4px 14px 0 rgba(0, 108, 53, 0.15)',
+                        'refined-lg': '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 20px 30px -10px rgba(0, 0, 0, 0.12)',
+                    },
+                    animation: {
+                        'slide-down': 'slideDown 0.3s ease-out',
+                    },
+                    keyframes: {
+                        slideDown: {
+                            '0%': { opacity: '0', transform: 'translateY(-10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                    }
+                },
+            },
+        };
+    </script>
+    <style>
+        .material-icons-round {
+            vertical-align: middle;
+        }
+
+        .tailfin-icon {
+            width: 20px;
+            height: 20px;
+            background-color: #006C35;
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 30% 100%, 0 70%);
+            border-radius: 2px;
+            display: inline-block;
+            flex-shrink: 0;
+        }
+
+        .tailfin-icon.return {
+            transform: scaleX(-1);
+        }
+
+        /* Custom Range Slider */
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            background: #006C35;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 4px solid #fff;
+            box-shadow: 0 0 0 1px #ddd;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            background: #006C35;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 4px solid #fff;
+            box-shadow: 0 0 0 1px #ddd;
+        }
+
+        /* Smooth expand animation */
+        .expand-section {
+            animation: slideDown 0.3s ease-out;
+        }
+
+        [x-cloak] {
+            display: none !important;
+        }
+    </style>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+
+<body class="bg-bg-surface font-sans text-text-main antialiased pb-32 text-base">
+    <div class="flex flex-col min-h-screen">
+
+        <!-- Sticky Header Container -->
+        <nav class="sticky top-0 z-50 bg-white border-b-2 border-gray-100 shadow-refined relative">
+
+            <!-- Row 1: Brand & Profile -->
+            <div class="container mx-auto px-4 lg:px-6 h-14 flex justify-between items-center bg-white relative z-30">
+                <div class="flex items-center gap-4">
+                    <img src="./assets/saudia_logo.png" alt="Saudia" class="h-[100px] object-contain relative z-50">
+                    <div class="h-6 w-px bg-gray-200 hidden sm:block ml-2"></div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <!-- Language & Country Selector -->
+                    <button
+                        class="flex items-center gap-2 text-xs font-bold text-text-muted hover:text-primary transition-colors group">
+                        <img src="https://flagcdn.com/w40/sa.png" alt="Saudi Arabia"
+                            class="w-5 h-auto rounded-sm shadow-sm group-hover:shadow-md transition-all">
+                        <span class="hidden sm:inline">Saudi Arabia <span class="text-gray-300 mx-1">|</span> EN</span>
+                    </button>
+                    <div class="h-4 w-px bg-gray-200 hidden sm:block"></div>
+
+                    <button class="text-xs font-bold text-text-muted hover:text-primary transition-colors">SAR</button>
+                    <button
+                        class="p-2 rounded-full hover:bg-primary-light text-text-muted hover:text-primary transition-all duration-300 hover:scale-105">
+                        <span class="material-icons-round text-xl">person_outline</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Row 2: Context Bar REMOVED -->
+        </nav>
+
+        <main class="container mx-auto px-4 lg:px-6 py-5 flex-grow">
+            <!-- Page Title -->
+            <div class="mb-5">
+                <h1 class="text-2xl font-bold text-secondary tracking-tight">Secure Payment</h1>
+                <p class="text-text-muted mt-1 text-xs">Choose your preferred payment method to complete your booking.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Left Column: Payment Options -->
+                <div class="lg:col-span-2 space-y-4">
+
+                    <!-- Login / Guest Section -->
+                    <div
+                        class="bg-white rounded-xl shadow-refined border border-gray-100 p-5 flex flex-col md:flex-row items-center justify-between gap-5">
+                        <div class="flex items-center gap-4">
+                            <div class="w-auto h-12 flex items-center justify-center flex-shrink-0">
+                                <img src="./assets/SaudiaAlfursan_logo_new.png" class="h-full w-auto object-contain"
+                                    alt="Al Fursan">
+                            </div>
+                            <div>
+                                <h2 class="font-bold text-base text-secondary">Log in to your account</h2>
+                                <p class="text-xs text-text-muted">Earn and redeem points on your booking.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2 w-full md:w-auto">
+                            <button
+                                class="flex-1 md:flex-none bg-primary text-white px-5 py-2 rounded-lg font-bold text-xs uppercase tracking-wide hover:bg-primary-hover transition shadow-subtle">Log
+                                in</button>
+                            <button
+                                class="flex-1 md:flex-none border border-gray-200 text-secondary px-5 py-2 rounded-lg font-bold text-xs uppercase tracking-wide hover:bg-gray-50 transition">Guest</button>
+                        </div>
+                    </div>
+
+                    <!-- Pay with Points Section -->
+                    <div class="bg-white rounded-xl shadow-refined border border-gray-100 overflow-hidden">
+                        <div class="p-5 border-b border-gray-100">
+                            <h2 class="text-lg font-bold text-secondary flex items-center gap-2">
+                                <img src="./assets/SaudiaAlfursan_logo_new.png" class="h-6 w-auto object-contain"
+                                    alt="Al Fursan">
+                                Pay with Points
+                            </h2>
+                            <p class="text-xs text-text-muted mt-0.5">You have <span
+                                    class="font-bold text-primary">15,000
+                                    Points</span> available.</p>
+                        </div>
+                        <div class="p-5">
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="text-[10px] font-bold uppercase tracking-wide text-text-muted">Pay by
+                                    Points</span>
+                                <span class="text-[10px] font-bold uppercase tracking-wide text-text-muted">Pay by
+                                    Card</span>
+                            </div>
+
+                            <div class="relative py-1">
+                                <input
+                                    class="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary"
+                                    id="miles-slider" max="100" min="0" type="range" value="25" />
+                            </div>
+
+                            <div
+                                class="flex justify-between items-center mt-5 bg-gray-50 p-4 rounded-xl border border-gray-100">
+                                <div class="text-center">
+                                    <p class="font-bold text-lg text-primary">SAR 1,217.50</p>
+                                    <p class="text-[10px] text-text-muted font-medium uppercase tracking-wide">5,000
+                                        Points
+                                    </p>
+                                </div>
+                                <div class="h-8 w-px bg-gray-300"></div>
+                                <div class="text-center">
+                                    <p class="font-bold text-lg text-secondary">SAR 3,652.50</p>
+                                    <p class="text-[10px] text-text-muted font-medium uppercase tracking-wide">Card
+                                        payment
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payment Method Section -->
+                    <div class="bg-white rounded-xl shadow-refined border border-gray-100 overflow-hidden">
+                        <div class="p-5 border-b border-gray-100">
+                            <h2 class="text-lg font-bold text-secondary flex items-center gap-2">
+                                <span class="material-icons-round text-primary text-lg">payment</span>
+                                Payment Method
+                            </h2>
+                        </div>
+
+                        <!-- Tabs -->
+                        <div class="flex border-b border-gray-200">
+                            <button
+                                class="flex-1 py-3 text-center border-b-2 border-primary text-primary font-bold text-xs uppercase tracking-wide bg-primary/5">Credit/Debit
+                                Card</button>
+                            <button
+                                class="flex-1 py-3 text-center text-text-muted hover:bg-gray-50 font-medium text-xs uppercase tracking-wide transition-colors">PayPal</button>
+                            <button
+                                class="flex-1 py-3 text-center text-text-muted hover:bg-gray-50 font-medium text-xs uppercase tracking-wide transition-colors">E-Wallets</button>
+                        </div>
+
+                        <div class="p-5 md:p-6">
+                            <div class="space-y-5">
+                                <div>
+                                    <label class="block text-[10px] font-bold uppercase text-text-muted mb-1.5"
+                                        for="card-number">Card Number</label>
+                                    <div class="relative">
+                                        <input
+                                            class="w-full bg-gray-50 border border-gray-200 rounded-lg shadow-sm pl-4 pr-12 py-2.5 text-secondary font-medium text-sm focus:ring-1 focus:ring-primary focus:border-primary focus:bg-white transition-all"
+                                            id="card-number" placeholder="0000 0000 0000 0000" type="text" />
+                                        <div
+                                            class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none gap-1">
+                                            <img alt="Visa" class="h-4"
+                                                src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" />
+                                            <img alt="Mastercard" class="h-4"
+                                                src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-[10px] font-bold uppercase text-text-muted mb-1.5"
+                                        for="card-name">Name on Card</label>
+                                    <input
+                                        class="w-full bg-gray-50 border border-gray-200 rounded-lg shadow-sm px-4 py-2.5 text-secondary font-medium text-sm focus:ring-1 focus:ring-primary focus:border-primary focus:bg-white transition-all"
+                                        id="card-name" placeholder="John M. Doe" type="text" />
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-5">
+                                    <div>
+                                        <label class="block text-[10px] font-bold uppercase text-text-muted mb-1.5"
+                                            for="expiry-date">Expiry Date</label>
+                                        <input
+                                            class="w-full bg-gray-50 border border-gray-200 rounded-lg shadow-sm px-4 py-2.5 text-secondary font-medium text-sm focus:ring-1 focus:ring-primary focus:border-primary focus:bg-white transition-all"
+                                            id="expiry-date" placeholder="MM / YY" type="text" />
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] font-bold uppercase text-text-muted mb-1.5"
+                                            for="cvv">CVV</label>
+                                        <div class="relative">
+                                            <input
+                                                class="w-full bg-gray-50 border border-gray-200 rounded-lg shadow-sm px-4 py-2.5 text-secondary font-medium text-sm focus:ring-1 focus:ring-primary focus:border-primary focus:bg-white transition-all"
+                                                id="cvv" placeholder="123" type="text" />
+                                            <span
+                                                class="material-icons-round absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-base cursor-help"
+                                                title="3 digits on the back of your card">help_outline</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-start pt-1">
+                                    <div class="flex items-center h-5">
+                                        <input class="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
+                                            id="save-card" name="save-card" type="checkbox" />
+                                    </div>
+                                    <div class="ml-2.5 text-xs">
+                                        <label class="font-medium text-secondary" for="save-card">Save this card for
+                                            future payments</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-1" x-data="{ expanded: false }">
+                    <!-- Desktop Sidebar Card (Always visible on desktop) -->
+                    <div class="hidden lg:block space-y-5">
+                        <div class="bg-white rounded-2xl shadow-float border border-gray-200 p-4 sticky top-20">
+                            <h3 class="font-bold text-base mb-3 text-secondary">Your package summary</h3>
+
+                            <!-- FLIGHTS (First) -->
+                            <div class="space-y-3">
+                                <div class="flex items-center gap-2.5">
+                                    <span class="material-icons-round text-gray-400 text-xl">flight_takeoff</span>
+                                    <div class="flex-grow flex items-center justify-between text-xs">
+                                        <span class="font-bold text-secondary">KUL <span class="text-gray-400">→</span>
+                                            MLE</span>
+                                        <span class="text-text-muted">10:10 - 11:35</span>
+                                        <div
+                                            class="font-medium bg-gray-50 px-1.5 py-0.5 rounded text-xs text-text-muted flex items-center">
+                                            <img src="./assets/saudia_icon.png" class="h-3 w-3 object-contain mr-1"
+                                                alt="Saudia">
+                                            SV 123
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-2.5">
+                                    <span class="material-icons-round text-gray-400 text-xl">flight_land</span>
+                                    <div class="flex-grow flex items-center justify-between text-xs">
+                                        <span class="font-bold text-secondary">MLE <span class="text-gray-400">→</span>
+                                            KUL</span>
+                                        <span class="text-text-muted">12:35 - 20:15</span>
+                                        <div
+                                            class="font-medium bg-gray-50 px-1.5 py-0.5 rounded text-xs text-text-muted flex items-center">
+                                            <img src="./assets/saudia_icon.png" class="h-3 w-3 object-contain mr-1"
+                                                alt="Saudia">
+                                            SV 124
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="border-t border-gray-100 my-4"></div>
+
+                            <!-- HOTEL (Second) -->
+                            <div class="flex gap-3">
+                                <img alt="EQ Kuala Lumpur" class="w-12 h-12 object-cover rounded-lg flex-shrink-0"
+                                    src="https://images.unsplash.com/photo-1590490360182-c87299690d6e?auto=format&fit=crop&q=80&w=1000" />
+                                <div>
+                                    <h4 class="font-bold text-sm text-secondary leading-tight">EQ Kuala Lumpur
+                                    </h4>
+                                    <p class="text-xs text-text-muted mt-0.5">4 nights, 2 adults</p>
+                                    <p class="text-xs text-text-muted">Premier King Room KL Tower View</p>
+                                    <p class="text-xs text-text-muted">Breakfast Included</p>
+                                </div>
+                            </div>
+                            <div class="border-t border-gray-100 my-4"></div>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-text-muted">2 travellers</span>
+                                    <span class="text-secondary font-medium">SAR 7,010.00</span>
+                                </div>
+                                <div class="flex justify-between text-success">
+                                    <span>Discount</span>
+                                    <span>-SAR 2,140.00</span>
+                                </div>
+                            </div>
+                            <div class="border-t border-gray-100 my-4"></div>
+                            <div class="flex justify-between items-center">
+                                <span class="font-bold text-base text-secondary">Total</span>
+                                <div class="text-right">
+                                    <p class="font-bold text-xl text-secondary">SAR 4,870.00</p>
+                                    <p class="text-xs text-text-muted">SAR 2,435 per person</p>
+                                </div>
+                            </div>
+                            <p class="text-xs text-text-muted mt-1 text-right">Includes taxes and fees</p>
+                            <button
+                                class="bg-primary text-white w-full py-3 rounded-lg font-bold text-sm mt-5 hover:bg-primary-hover shadow-subtle uppercase tracking-wide transition-all transform active:scale-[0.98]">Pay
+                                Now</button>
+                            <p class="text-xs text-text-muted mt-2 text-center">Price held for <span
+                                    class="font-bold text-secondary">18:32</span></p>
+                            <div class="mt-5 text-xs text-text-main">
+                                <div class="flex items-center text-success">
+                                    <span class="material-icons-round mr-1 text-sm">check_circle</span>
+                                    <span class="font-semibold">ATOL protected</span>
+                                    <span class="material-icons-round text-xs ml-1" title="Info">info_outline</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mobile Sticky Footer (Visible < lg) -->
+                    <div class="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white shadow-refined-xl transition-transform duration-300"
+                        :class="expanded ? 'h-full flex flex-col' : 'h-auto border-t border-gray-200'" x-cloak>
+
+                        <!-- Collapsed Header -->
+                        <div class="flex justify-between items-center p-4 bg-white relative z-20 w-full"
+                            @click="expanded = !expanded" :class="expanded ? 'border-b border-gray-100' : ''">
+                            <div class="flex flex-col">
+                                <span class="text-xs text-text-muted" x-show="!expanded">Total for 2 travellers</span>
+                                <div class="flex items-center gap-2">
+                                    <span class="font-bold text-xl text-secondary">SAR 4,870.00</span>
+                                    <span class="material-icons-round text-primary transition-transform duration-300"
+                                        :class="expanded ? 'rotate-180' : ''">expand_less</span>
+                                </div>
+                            </div>
+                            <button
+                                class="bg-primary text-white px-6 py-2.5 rounded-lg font-bold text-sm uppercase tracking-wide hover:bg-primary-hover shadow-subtle"
+                                x-show="!expanded" @click.stop="window.location.href='#'">Pay Now</button>
+                            <button class="text-gray-400 p-2" x-show="expanded" @click.stop="expanded = false"><span
+                                    class="material-icons-round">close</span></button>
+                        </div>
+
+                        <!-- Expanded Content -->
+                        <div class="flex-grow overflow-y-auto bg-gray-50/50 p-4" x-show="expanded">
+                            <!-- SAME CONTENT AS DESKTOP BUT UNWRAPPED or styled for mobile -->
+                            <div class="bg-white rounded-xl border border-gray-100 p-4 shadow-sm mb-20">
+                                <!-- FLIGHTS (First) -->
+                                <div class="space-y-3">
+                                    <div class="flex items-center gap-2.5">
+                                        <span class="material-icons-round text-gray-400 text-xl">flight_takeoff</span>
+                                        <div class="flex-grow flex items-center justify-between text-xs">
+                                            <span class="font-bold text-secondary">KUL <span
+                                                    class="text-gray-400">→</span> MLE</span>
+                                            <span class="text-text-muted">10:10 - 11:35</span>
+                                            <div
+                                                class="font-medium bg-gray-50 px-1.5 py-0.5 rounded text-[10px] text-text-muted flex items-center">
+                                                <img src="./assets/saudia_icon.png" class="h-3 w-3 object-contain mr-1"
+                                                    alt="Saudia">
+                                                SV 123
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-2.5">
+                                        <span class="material-icons-round text-gray-400 text-xl">flight_takeoff</span>
+                                        <div class="flex-grow flex items-center justify-between text-xs">
+                                            <span class="font-bold text-secondary">MLE <span
+                                                    class="text-gray-400">→</span> KUL</span>
+                                            <span class="text-text-muted">12:35 - 20:15</span>
+                                            <div
+                                                class="font-medium bg-gray-50 px-1.5 py-0.5 rounded text-[10px] text-text-muted flex items-center">
+                                                <img src="./assets/saudia_icon.png" class="h-3 w-3 object-contain mr-1"
+                                                    alt="Saudia">
+                                                SV 124
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="border-t border-gray-100 my-4"></div>
+
+                                <!-- HOTEL (Second) -->
+                                <div class="flex gap-3">
+                                    <img alt="EQ Kuala Lumpur" class="w-12 h-12 object-cover rounded-lg flex-shrink-0"
+                                        src="https://images.unsplash.com/photo-1590490360182-c87299690d6e?auto=format&fit=crop&q=80&w=1000" />
+                                    <div>
+                                        <h4 class="font-bold text-sm text-secondary leading-tight">EQ Kuala Lumpur
+                                        </h4>
+                                        <p class="text-[10px] text-text-muted mt-0.5">4 nights, 2 adults</p>
+                                        <p class="text-[10px] text-text-muted">Premier King Room KL Tower View</p>
+                                        <p class="text-[10px] text-text-muted">Breakfast Included</p>
+                                    </div>
+                                </div>
+                                <div class="border-t border-gray-100 my-4"></div>
+                                <div class="space-y-2 text-sm">
+                                    <div class="flex justify-between">
+                                        <span class="text-text-muted">2 travellers</span>
+                                        <span class="text-secondary font-medium">SAR 7,010.00</span>
+                                    </div>
+                                    <div class="flex justify-between text-success">
+                                        <span>Discount</span>
+                                        <span>-SAR 2,140.00</span>
+                                    </div>
+                                </div>
+                                <div class="border-t border-gray-100 my-4"></div>
+                                <div class="flex justify-between items-center">
+                                    <span class="font-bold text-base text-secondary">Total</span>
+                                    <div class="text-right">
+                                        <p class="font-bold text-xl text-secondary">SAR 4,870.00</p>
+                                        <p class="text-xs text-text-muted">SAR 2,435 per person</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Mobile Floating Action Button (Within Expanded) -->
+                        <div class="p-4 bg-white border-t border-gray-100 absolute bottom-0 left-0 right-0"
+                            x-show="expanded">
+                            <button
+                                class="bg-primary text-white w-full py-3.5 rounded-lg font-bold text-sm uppercase tracking-wide hover:bg-primary-hover shadow-subtle">Pay
+                                Now</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="bg-white border-t border-gray-200 py-6 mt-auto">
+            <div class="container mx-auto px-4 text-center text-text-muted text-xs">
+                &copy; 2026 Saudia Holidays. All rights reserved.
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        function toggleSection(id) {
+            const section = document.getElementById(id);
+            const otherId = id === 'search-widget' ? 'flight-details' : 'search-widget';
+            const otherSection = document.getElementById(otherId);
+            const flightChevron = document.getElementById('chevron-flight-details');
+
+            if (!otherSection.classList.contains('hidden')) {
+                otherSection.classList.add('hidden');
+                if (otherId === 'flight-details') flightChevron.style.transform = 'rotate(0deg)';
+            }
+
+            section.classList.toggle('hidden');
+
+            if (id === 'flight-details') {
+                flightChevron.style.transform = section.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+            }
+        }
+    </script>
+</body>
+
+</html>
