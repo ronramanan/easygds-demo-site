@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EasyGDS | Curated Travel Experiences</title>
     <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="tailwind-main.css" rel="stylesheet">
     <!-- Google Fonts: Raleway -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,44 +18,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
-    <script>
-        tailwind.config = {
-            theme: {
-                fontFamily: {
-                    sans: ['Raleway', 'sans-serif'],
-                    display: ['Raleway', 'sans-serif'],
-                },
-                extend: {
-                    colors: {
-                        brand: {
-                            primary: '#203C94',     // EasyGDS Blue
-                            secondary: '#1A3994',   // EasyGDS Dark Blue
-                            accent: '#4CAF50',      // EasyGDS Green/Success
-                            text: '#1A1A1A',        // Main Text
-                            muted: '#555555',       // Muted Text
-                            surface: '#F5F8FF',     // Light Background
-                            white: '#FFFFFF',
-                            gold: '#D4AF37',        // Kept for premium feel accents
-                        }
-                    },
-                    boxShadow: {
-                        'elegant': '0 4px 20px -5px rgba(32, 60, 148, 0.15)',
-                        'elegant-lg': '0 10px 30px -5px rgba(32, 60, 148, 0.2)',
-                        'elegant-xl': '0 20px 40px -5px rgba(32, 60, 148, 0.25)',
-                    },
-                    animation: {
-                        'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
-                    },
-                    keyframes: {
-                        fadeInUp: {
-                            '0%': { opacity: '0', transform: 'translateY(30px)' },
-                            '100%': { opacity: '1', transform: 'translateY(0)' },
-                        }
-                    }
-                }
-            }
-        }
-    </script>
+
 
     <link rel="stylesheet" href="styles.css">
 </head>
