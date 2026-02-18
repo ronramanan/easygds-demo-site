@@ -496,7 +496,7 @@ function getDefaultDates() {
     return { startStr: fmt(start), endStr: fmt(end) };
 }
 
-async function fetchLocations(query, type, countryCode) {
+async function fetchLocations(query, type, countryCode, placeId) {
     const url = new URL(`${API_BASE_URL}/places`, window.location.origin);
     url.searchParams.append("search_text", query);
     url.searchParams.append("language_code", "en-US");
@@ -510,6 +510,9 @@ async function fetchLocations(query, type, countryCode) {
     url.searchParams.append("types", typeParam);
     if (countryCode) {
         url.searchParams.append("country_code", countryCode);
+    }
+    if (placeId) {
+        url.searchParams.append("place_id", placeId);
     }
     url.searchParams.append("has_code", "false");
     url.searchParams.append("per_page", "20");
@@ -538,6 +541,7 @@ async function fetchLocations(query, type, countryCode) {
                 id: item.id,
                 city: item.location?.city_code || item.city,
                 country: item.country,
+                ancestors: item.ancestors || [],
                 icon: '✈️'
             }));
         } else {
@@ -550,6 +554,7 @@ async function fetchLocations(query, type, countryCode) {
                 id: p.id,
                 city: p.name,
                 country: p.location?.country_code,
+                ancestors: p.ancestors || [],
                 icon: p.type === 'airport' ? '✈️' : '📍'
             }));
             const props = (data.properties || []).map(p => ({
@@ -559,16 +564,29 @@ async function fetchLocations(query, type, countryCode) {
                 id: p.id,
                 city: p.city_name || p.city || p.location?.city_name || p.location?.city_code || p.location?.name || '',
                 country: p.country_code || p.location?.country_code || '',
+                ancestors: p.ancestors || p.places || [],
                 stars: p.star || 0,
                 icon: '🏨'
             }));
             results = [...places, ...props];
         }
+
+        // Client-side filtering: API seems to ignore country_code
+        if (countryCode) {
+            results = results.filter(r => r.country === countryCode);
+        }
+
         return results;
     } catch (e) {
         console.warn("API Error:", e);
         return [];
     }
+}
+
+function getPlaceIdFromAncestors(ancestors) {
+    if (!ancestors || !Array.isArray(ancestors)) return null;
+    const findId = (t) => ancestors.find(a => a.type === t)?.id;
+    return findId('country') || findId('city') || findId('multi_city_vicinity') || findId('province_state');
 }
 
 function setupAutocomplete(input) {
@@ -604,14 +622,16 @@ function setupAutocomplete(input) {
 
             // Dependent Logic for Transfer Dropoff
             let countryFilter = null;
+            let placeIdFilter = null;
             if (input.id === 'tr-dropoff') {
                 const pickupInput = document.getElementById('tr-pickup');
-                if (pickupInput && pickupInput.dataset.country) {
-                    countryFilter = pickupInput.dataset.country;
+                if (pickupInput) {
+                    if (pickupInput.dataset.country) countryFilter = pickupInput.dataset.country;
+                    if (pickupInput.dataset.placeIdFilter) placeIdFilter = pickupInput.dataset.placeIdFilter;
                 }
             }
 
-            const results = await fetchLocations(query, type, countryFilter);
+            const results = await fetchLocations(query, type, countryFilter, placeIdFilter);
 
             container.innerHTML = '';
             if (results.length === 0) {
@@ -666,6 +686,12 @@ function setupAutocomplete(input) {
                         input.dataset.rawType = res.rawType;
                         if (res.country) {
                             input.dataset.country = res.country; // Save country for dependent fields
+                        }
+                        const filterId = getPlaceIdFromAncestors(res.ancestors);
+                        if (filterId) {
+                            input.dataset.placeIdFilter = filterId;
+                        } else {
+                            delete input.dataset.placeIdFilter;
                         }
                         container.classList.add('hidden');
                     };
