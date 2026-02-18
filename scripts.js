@@ -962,6 +962,9 @@ function renderGroupedResults(container, sections, input) {
 function setupAutocomplete(input) {
     if (!input) return;
 
+    // Disable browser's native autocomplete to avoid overlapping our custom dropdown
+    input.setAttribute('autocomplete', 'off');
+
     // Find the .search-input-box parent for proper positioning
     const inputBox = input.closest('.search-input-box');
     if (!inputBox) return;
