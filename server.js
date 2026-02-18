@@ -44,10 +44,81 @@ const server = http.createServer((req, res) => {
             }
         };
 
+        // Remove compression headers to ensure we get plain text for filtering
+        delete options.headers['accept-encoding'];
+        delete options.headers['Accept-Encoding'];
+
+        const urlParams = new URL(req.url, `http://${req.headers.host}`).searchParams;
+        const countryFilter = urlParams.get('country_code');
+
         const proxyReq = https.request(options, (proxyRes) => {
-            // Forward status code and headers from upstream
-            res.writeHead(proxyRes.statusCode, proxyRes.headers);
-            proxyRes.pipe(res);
+            // Check if we need to filter
+            if (countryFilter && proxyRes.headers['content-type']?.includes('application/json')) {
+                let body = '';
+                proxyRes.on('data', (chunk) => {
+                    body += chunk;
+                });
+
+                proxyRes.on('end', () => {
+                    try {
+                        let data = JSON.parse(body);
+                        let modified = false;
+
+                        // Filter properties (hotels)
+                        if (data.properties && Array.isArray(data.properties)) {
+                            const originalCount = data.properties.length;
+                            data.properties = data.properties.filter(p => {
+                                const pCountry = p.location?.country_code || p.country_code || p.country;
+                                return pCountry === countryFilter;
+                            });
+                            if (data.properties.length !== originalCount) modified = true;
+                        }
+
+                        // Filter places (if present in object format)
+                        if (data.places && Array.isArray(data.places)) {
+                            const originalCount = data.places.length;
+                            data.places = data.places.filter(p => {
+                                const pCountry = p.location?.country_code || p.country_code || p.country;
+                                return pCountry === countryFilter;
+                            });
+                            if (data.places.length !== originalCount) modified = true;
+                        }
+
+                        // Also handle array response format if applicable
+                        if (Array.isArray(data)) {
+                            const originalCount = data.length;
+                            data = data.filter(p => {
+                                const pCountry = p.location?.country_code || p.country_code || p.country;
+                                return pCountry === countryFilter;
+                            });
+                            if (data.length !== originalCount) modified = true;
+                        }
+
+                        const newBody = JSON.stringify(data);
+
+                        // Copy headers but update content-length
+                        const newHeaders = { ...proxyRes.headers };
+                        newHeaders['content-length'] = Buffer.byteLength(newBody);
+
+                        // Remove content-encoding if it somehow slipped through
+                        delete newHeaders['content-encoding'];
+
+                        res.writeHead(proxyRes.statusCode, newHeaders);
+                        res.end(newBody);
+
+                    } catch (e) {
+                        console.error("Error creating filtered response:", e);
+                        // Fallback to original body if parsing fails
+                        res.writeHead(proxyRes.statusCode, proxyRes.headers);
+                        res.end(body);
+                    }
+                });
+
+            } else {
+                // Forward status code and headers from upstream
+                res.writeHead(proxyRes.statusCode, proxyRes.headers);
+                proxyRes.pipe(res);
+            }
         });
 
         proxyReq.on('error', (e) => {

@@ -496,11 +496,21 @@ function getDefaultDates() {
     return { startStr: fmt(start), endStr: fmt(end) };
 }
 
-async function fetchLocations(query, type) {
+async function fetchLocations(query, type, countryCode) {
     const url = new URL(`${API_BASE_URL}/places`, window.location.origin);
     url.searchParams.append("search_text", query);
     url.searchParams.append("language_code", "en-US");
-    url.searchParams.append("types", "country,airport,administrative_area_level_4,administrative_area_level_3");
+    // Dynamic types based on input data-type
+    let typeParam = "country,airport,administrative_area_level_4,administrative_area_level_3";
+    if (type === 'airport_code') {
+        typeParam = "airport"; // Strict filtering for flights/packages
+    } else if (type === 'hotel') {
+        typeParam = "hotel"; // Strict filtering for transfer dropoff (properties only)
+    }
+    url.searchParams.append("types", typeParam);
+    if (countryCode) {
+        url.searchParams.append("country_code", countryCode);
+    }
     url.searchParams.append("has_code", "false");
     url.searchParams.append("per_page", "20");
     url.searchParams.append("page", "1");
@@ -520,6 +530,7 @@ async function fetchLocations(query, type) {
         let results = [];
 
         if (Array.isArray(data)) {
+            // ... existing array handling ...
             results = data.map(item => ({
                 name: item.name,
                 code: item.code || item.id,
@@ -530,14 +541,16 @@ async function fetchLocations(query, type) {
                 icon: '✈️'
             }));
         } else {
+            // Object response
             const places = (data.places || []).map(p => ({
                 name: p.long_name || p.name,
-                code: p.id,
-                type: 'place_id',
+                code: p.code || p.id,
+                type: p.type === 'airport' ? 'airport_code' : 'place_id',
+                rawType: p.type,
                 id: p.id,
                 city: p.name,
                 country: p.location?.country_code,
-                icon: '📍'
+                icon: p.type === 'airport' ? '✈️' : '📍'
             }));
             const props = (data.properties || []).map(p => ({
                 name: p.name,
@@ -589,7 +602,16 @@ function setupAutocomplete(input) {
             container.innerHTML = '<div class="p-3 text-sm text-gray-400">Loading...</div>';
             container.classList.remove('hidden');
 
-            const results = await fetchLocations(query, type);
+            // Dependent Logic for Transfer Dropoff
+            let countryFilter = null;
+            if (input.id === 'tr-dropoff') {
+                const pickupInput = document.getElementById('tr-pickup');
+                if (pickupInput && pickupInput.dataset.country) {
+                    countryFilter = pickupInput.dataset.country;
+                }
+            }
+
+            const results = await fetchLocations(query, type, countryFilter);
 
             container.innerHTML = '';
             if (results.length === 0) {
@@ -641,6 +663,10 @@ function setupAutocomplete(input) {
                         input.dataset.code = res.code;
                         input.dataset.id = res.id;
                         input.dataset.selType = res.type;
+                        input.dataset.rawType = res.rawType;
+                        if (res.country) {
+                            input.dataset.country = res.country; // Save country for dependent fields
+                        }
                         container.classList.add('hidden');
                     };
                     container.appendChild(item);
@@ -667,6 +693,34 @@ function getCode(id, def) {
     return (el && el.dataset.code) ? el.dataset.code : def;
 }
 
+function validateInputs(ids) {
+    let isValid = true;
+    ids.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+
+        let val = el.value;
+        if (el.tagName === 'DIV' || el.tagName === 'SPAN') {
+            val = el.textContent ? el.textContent.trim() : '';
+        }
+
+        if (!val || val === '') {
+            isValid = false;
+            const box = el.closest('.search-input-box');
+            if (box) {
+                // Subtle red border
+                box.style.borderColor = '#ef4444';
+                // Remove on interaction
+                const clear = () => { box.style.borderColor = ''; };
+                el.addEventListener('input', clear, { once: true });
+                el.addEventListener('click', clear, { once: true });
+                box.addEventListener('click', clear, { once: true });
+            }
+        }
+    });
+    return isValid;
+}
+
 function go(paramsObj, customPath, newTab) {
     let base;
     if (customPath) {
@@ -674,16 +728,44 @@ function go(paramsObj, customPath, newTab) {
     } else {
         base = 'https://demo.apps.easygds.com/shopping/processes/' + (paramsObj.process || 'flight');
     }
+
+    // Explicit ordering to match working legacy URLs
+    const ordered = {};
+    const priorityKeys = ['process', 'place_type', 'place_id', 'currency_code', 'language_code', 'package_id', 'travelers', 'expectation'];
+
+    // Set global defaults immediately
     paramsObj.currency_code = window.APP_CURRENCY;
     paramsObj.language_code = window.APP_LANGUAGE;
-    paramsObj.session_id = SESSION_ID;
-    paramsObj.office_domain = 'demo.b2c.easygds.com';
-    paramsObj.scope_type = 'B2C';
-    paramsObj.disabled_currency = 'false';
-    paramsObj.search_id = Array.from(crypto.getRandomValues(new Uint8Array(16)))
-        .map(b => b.toString(16).padStart(2, '0')).join('');
 
-    const qs = new URLSearchParams(paramsObj).toString();
+    // 1. Priority Keys
+    priorityKeys.forEach(k => {
+        if (paramsObj[k] !== undefined && paramsObj[k] !== null) ordered[k] = paramsObj[k];
+    });
+
+    // 2. Remaining Keys (excluding blacklist and handled)
+    Object.keys(paramsObj).forEach(k => {
+        if (!priorityKeys.includes(k) &&
+            k !== 'disabled_currency' &&
+            k !== 'search_id' &&
+            k !== 'currency_code' && k !== 'language_code') {
+            ordered[k] = paramsObj[k];
+        }
+    });
+
+    // 3. Protocol Params (Hotel)
+    if (paramsObj.process === 'hotel' || !paramsObj.process) {
+        ordered.flight_campaign = '';
+        ordered.partner_id = '';
+        ordered.show_crew_booking = 'true';
+        ordered.is_crew_booking = 'false';
+    }
+
+    // 4. Session Params
+    ordered.session_id = SESSION_ID;
+    ordered.office_domain = 'demo.b2c.easygds.com';
+    ordered.scope_type = 'B2C';
+
+    const qs = new URLSearchParams(ordered).toString();
     console.log("Submitting to:", base + '?' + qs);
 
     if (newTab) {
@@ -815,8 +897,13 @@ document.addEventListener('DOMContentLoaded', () => {
             parts.push(`${state.adt} Adult${state.adt > 1 ? 's' : ''}`);
             if (state.chd > 0) parts.push(`${state.chd} Child${state.chd > 1 ? 'ren' : ''}`);
             if (state.inf > 0) parts.push(`${state.inf} Infant${state.inf > 1 ? 's' : ''}`);
-            if (els.display) els.display.textContent = parts.join(', ');
-            else if (els.trigger.querySelector('input')) els.trigger.querySelector('input').value = parts.join(', ');
+            const txt = parts.join(', ');
+            if (els.display) {
+                els.display.textContent = txt;
+                if (els.display.tagName === 'INPUT') els.display.value = txt;
+            } else if (els.trigger.querySelector('input')) {
+                els.trigger.querySelector('input').value = txt;
+            }
 
             if (state.chd > 0) {
                 els.chdAgesCont.classList.remove('hidden');
@@ -851,6 +938,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const flSearchBtn = document.getElementById('flight-search-btn');
     if (flSearchBtn) {
         flSearchBtn.onclick = () => {
+            if (!validateInputs(['fl-origin', 'fl-dest', 'fl-dates', 'fl-pax-display'])) return;
+
             const dates = document.getElementById('fl-dates').value.split(' to ');
             const def = getDefaultDates();
             const paxState = flightPax.getState();
@@ -1005,6 +1094,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     document.getElementById('pkg-search-btn').onclick = () => {
+        const isSep = document.getElementById('pkg-partial-hotel').checked;
+        const required = ['pkg-origin', 'pkg-dest', 'pkg-dates', 'pkg-traveler-summary'];
+        if (isSep) required.push('pkg-hotel-dates');
+
+        if (!validateInputs(required)) return;
+
         const dates = document.getElementById('pkg-dates').value.split(' to ');
         const def = getDefaultDates();
 
@@ -1021,7 +1116,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         const cabinVal = document.getElementById('pkg-cabin-val').textContent;
-        const isSep = document.getElementById('pkg-partial-hotel').checked;
+        // isSep already declared above
 
         go({
             process: 'bundle',
@@ -1134,11 +1229,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     document.getElementById('hotel-search-btn').onclick = () => {
-        const dates = document.getElementById('ht-dates').value.split(' to ');
-        const def = getDefaultDates();
+        const datesInput = document.getElementById('ht-dates');
         const destInput = document.getElementById('ht-dest');
+
+        // Validation using new highlight function
+        if (!validateInputs(['ht-dest', 'ht-dates', 'traveler-summary'])) return;
+
+        const dates = datesInput.value.split(' to ');
+        const def = getDefaultDates();
+
         const selType = destInput.dataset.selType || 'place_id';
-        const code = destInput.dataset.code || '2766';
+        const rawType = destInput.dataset.rawType;
+
+        // Use ID for standard places (non-airport/hotel)
+        const code = (selType === 'airport_code' || selType === 'hotel')
+            ? (destInput.dataset.code || '2766')
+            : (destInput.dataset.id || destInput.dataset.code || '2766');
 
         const travelersApi = [];
         htTravelerState.forEach((room, rIndex) => {
@@ -1161,10 +1267,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 }),
                 travelers: JSON.stringify(travelersApi)
             }, `products/hotel/${code}`);
+        } else if (selType === 'airport_code') {
+            go({
+                process: 'hotel',
+                place_type: 'airport',
+                place_id: destInput.dataset.id || code,
+                package_id: HOTEL_CONFIG_ID,
+                expectation: JSON.stringify({
+                    ht_des_code: code,
+                    ht_checkin_date: dates[0] || def.startStr,
+                    ht_checkout_date: dates[1] || def.endStr,
+                    ht_des_type: 'airport_code',
+                    is_separate: false
+                }),
+                travelers: JSON.stringify(travelersApi)
+            });
         } else {
             go({
                 process: 'hotel',
-                place_type: 'administrative_area_level_4',
+                place_type: rawType || 'administrative_area_level_4',
                 place_id: code,
                 package_id: HOTEL_CONFIG_ID,
                 expectation: JSON.stringify({
@@ -1226,6 +1347,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     document.getElementById('btn-search-transfer').onclick = () => {
+        if (!validateInputs(['tr-pickup', 'tr-dropoff', 'tr-date'])) return;
+
         const date = document.getElementById('tr-date').value || getDefaultDates().startStr;
         const time = document.getElementById('tr-time-val').textContent;
         const topInput = document.getElementById('tr-pickup');
@@ -1361,6 +1484,8 @@ document.addEventListener('DOMContentLoaded', () => {
     })();
 
     document.getElementById('tour-search-btn').onclick = () => {
+        if (!validateInputs(['tour-dest', 'tour-dates', 'tour-pax-display'])) return;
+
         const dates = document.getElementById('tour-dates').value.split(' to ');
         const destInput = document.getElementById('tour-dest');
         const desCode = destInput.dataset.id || destInput.dataset.code || '178312';
