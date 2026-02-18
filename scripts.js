@@ -2,7 +2,7 @@ window.APP_CURRENCY = 'USD'; // Default Currency
 window.APP_LANGUAGE = 'en-US'; // Default Language
 
 // Global definition to ensure it works regardless of load order or other script failures
-window.openExclusiveDeal = function (city, code) {
+window.openDealModal = function (city, code) {
     console.log("Opening Deal Modal (Exclusive) for:", city, code);
     const dealModal = document.getElementById('deal-modal');
     if (!dealModal) {
@@ -1372,6 +1372,12 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
 
+    // Mirror swap to the mobile-only swap button
+    const trSwapMobile = document.getElementById('btn-swap-transfer-mobile');
+    if (trSwapMobile && trSwap) {
+        trSwapMobile.onclick = trSwap.onclick;
+    }
+
     document.getElementById('btn-search-transfer').onclick = () => {
         if (!validateInputs(['tr-pickup', 'tr-dropoff', 'tr-date'])) return;
 
@@ -1651,6 +1657,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // --- Search Handler ---
         document.getElementById('modal-search-btn').onclick = () => {
+            if (!validateInputs(['modal-origin', 'modal-dates'])) return;
+
             const dates = document.getElementById('modal-dates').value.split(' to ');
             const def = getDefaultDates();
             const originCode = getCode('modal-origin', 'SIN');

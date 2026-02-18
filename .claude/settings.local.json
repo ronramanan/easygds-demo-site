@@ -2,7 +2,12 @@
   "permissions": {
     "allow": [
       "Bash(ls:*)",
-      "Bash(dir:*)"
+      "Bash(dir:*)",
+      "Bash(cmd /c \"dir c:\\\\Users\\\\Admin\\\\Sites\\\\easygds-demo-site /B 2>&1\")",
+      "Bash(cmd /c \"dir /B c:\\\\Users\\\\Admin\\\\Sites\\\\easygds-demo-site\")",
+      "mcp__plugin_playwright_playwright__browser_run_code",
+      "mcp__plugin_playwright_playwright__browser_take_screenshot",
+      "mcp__plugin_playwright_playwright__browser_navigate"
     ]
   },
   "outputStyle": "Structural Thinking"

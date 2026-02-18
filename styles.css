@@ -639,3 +639,116 @@ label:hover .pkg-checkbox-label {
 .custom-options {
     z-index: 200 !important;
 }
+
+/* ============================================================
+   MOBILE TOUCH & UX POLISH
+   ============================================================ */
+
+/* 1. Remove the blue flash on tap (iOS/Android) */
+a,
+button,
+[role="button"],
+.cursor-pointer,
+input,
+select,
+label {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* 2. Eliminate the 300 ms tap delay on interactive controls */
+a,
+button,
+[role="button"],
+.search-tab,
+.search-btn-primary,
+.counter-btn,
+.carousel-dot,
+.currency-item,
+.currency-item-mobile,
+.lang-item,
+.lang-item-mobile {
+    touch-action: manipulation;
+}
+
+/* 3. Mobile-menu touch targets – min 48 px tall */
+#currency-trigger-mobile,
+#lang-trigger-mobile {
+    min-height: 48px;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+}
+
+/* 4. Transfers mobile swap button */
+#btn-swap-transfer-mobile {
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* 5. On very small screens (≤ 380 px) shrink tab padding so all 5 tabs fit */
+@media (max-width: 380px) {
+    .search-tab {
+        padding-left: 0.625rem;
+        padding-right: 0.625rem;
+    }
+}
+
+/* 6. Traveler popovers: clamp width so they never overflow on narrow viewports */
+@media (max-width: 639px) {
+    .traveler-popover {
+        width: min(20rem, calc(100vw - 2rem)) !important;
+    }
+
+    /* Right-anchored popovers (flights / tours pax) — keep within viewport */
+    #fl-pax-menu,
+    #tour-pax-menu {
+        right: 0;
+        left: auto !important;
+        max-width: calc(100vw - 2rem);
+    }
+}
+
+/* 7. Hero on mobile: tighter vertical padding so the CTA stays visible */
+@media (max-width: 639px) {
+    .hero-slide .relative.z-10 {
+        padding-bottom: 5rem;
+    }
+}
+
+/* 8. Deal cards on mobile: let image breathe a little more */
+@media (max-width: 639px) {
+    #exclusive-deals .relative.h-48 {
+        height: 11rem;
+    }
+}
+
+/* 9. Newsletter subscribe button – always full width on mobile */
+@media (max-width: 639px) {
+    #newsletter-form-btn,
+    form .bg-brand-primary[type="button"] {
+        width: 100%;
+    }
+}
+
+/* 10. Sticky search bar: when collapsed on mobile hide the remaining margin */
+@media (max-width: 639px) {
+    #search-panel.is-sticky.is-collapsed {
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+    }
+}
+
+/* 11. Smooth momentum scroll inside popovers & dropdowns on iOS */
+.traveler-popover,
+.autocomplete-results,
+.custom-options,
+#rooms-container,
+#pkg-rooms-container,
+#modal-rooms-container {
+    -webkit-overflow-scrolling: touch;
+}
+
+/* 12. Prevent layout shift when modal opens (body scroll lock already handled by JS) */
+#deal-modal {
+    -webkit-overflow-scrolling: touch;
+}
