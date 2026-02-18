@@ -497,7 +497,7 @@ function getDefaultDates() {
 }
 
 async function fetchLocations(query, type, countryCode, placeId) {
-    const url = new URL(`${API_BASE_URL}/places`);
+    const url = new URL(`${API_BASE_URL}/places`, window.location.origin);
     url.searchParams.append("search_text", query);
     url.searchParams.append("language_code", "en-US");
     // Dynamic types based on input data-type
@@ -516,7 +516,7 @@ async function fetchLocations(query, type, countryCode, placeId) {
     }
     url.searchParams.append("has_code", "false");
     // More results for airport searches to accommodate multi-airport city grouping
-    url.searchParams.append("per_page", (type === 'airport_code' || type === 'any') ? "30" : "20");
+    url.searchParams.append("per_page", (type === 'airport_code' || type === 'any' || type === 'tour_region') ? "30" : "20");
     url.searchParams.append("page", "1");
 
     // Handle specific type logic for properties (hotels)
@@ -780,11 +780,17 @@ function groupTourResults(results, query) {
         });
     }
 
+    // Airports with city-grouping (reuse airport grouping logic)
     if (airports.length > 0) {
-        sections.push({
-            label: 'Airports',
-            items: airports.map(r => ({ ...r, indent: 0 }))
-        });
+        const airportSections = groupAirportResults(airports);
+        const allAirportItems = [];
+        for (const sec of airportSections) {
+            if (sec.label === 'Other Locations') continue;
+            allAirportItems.push(...sec.items);
+        }
+        if (allAirportItems.length > 0) {
+            sections.push({ label: 'Airports', items: allAirportItems });
+        }
     }
 
     if (other.length > 0) {
