@@ -696,23 +696,7 @@ function groupHotelDestResults(results, query) {
 
     const sections = [];
 
-    // Airports first — with city-grouping (reuse airport grouping logic)
-    if (airports.length > 0) {
-        const airportSections = groupAirportResults(airports, query);
-        // Flatten all airport items into a single Airports section
-        const allAirportItems = [];
-        for (const sec of airportSections) {
-            if (sec.label === 'Other Locations') continue; // skip non-airport leftovers
-            allAirportItems.push(...sec.items);
-        }
-        if (allAirportItems.length > 0) {
-            sections.push({
-                label: 'Airports',
-                items: allAirportItems
-            });
-        }
-    }
-
+    // Destinations first, then Airports, then Hotels
     if (destinations.length > 0) {
         // Sort destinations: exact/close matches first, then by type hierarchy, then by name
         const typeOrder = { 'country': 0, 'administrative_area_level_3': 1, 'administrative_area_level_4': 2 };
@@ -734,6 +718,22 @@ function groupHotelDestResults(results, query) {
             label: 'Destinations',
             items: destinations.map(r => ({ ...r, indent: 0 }))
         });
+    }
+
+    // Airports with city-grouping (reuse airport grouping logic)
+    if (airports.length > 0) {
+        const airportSections = groupAirportResults(airports, query);
+        const allAirportItems = [];
+        for (const sec of airportSections) {
+            if (sec.label === 'Other Locations') continue;
+            allAirportItems.push(...sec.items);
+        }
+        if (allAirportItems.length > 0) {
+            sections.push({
+                label: 'Airports',
+                items: allAirportItems
+            });
+        }
     }
 
     if (hotels.length > 0) {
