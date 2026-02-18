@@ -31,6 +31,9 @@ Thumbs.db
 .agent/
 .claude/
 .wrangler/
+.playwright-cli/
+.playwright-mcp/
+
 
 # Temporary Files & Backups
 temp_logic.js

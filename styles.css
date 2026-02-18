@@ -583,6 +583,7 @@ label:hover .pkg-checkbox-label {
     border-radius: 3px;
 }
 
+/* Legacy fallback for any remaining .p-2 items */
 .autocomplete-results .p-2 {
     padding: 0.75rem 1rem !important;
     transition: background-color 0.15s ease;
@@ -598,6 +599,120 @@ label:hover .pkg-checkbox-label {
     text-align: center;
 }
 
+/* ── Grouped Autocomplete Items ────────────────────────────────── */
+
+/* Section header (e.g., "Destinations", "Hotels", "Other Locations") */
+.ac-section-header {
+    padding: 0.3rem 0.75rem 0.2rem;
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #94A3B8;
+    background: #F8FAFC;
+    border-bottom: 1px solid #F1F5F9;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    user-select: none;
+}
+
+/* Divider between groups (when no label) */
+.ac-section-divider {
+    height: 1px;
+    background: #E2E8F0;
+    margin: 0;
+}
+
+/* Base autocomplete item */
+.ac-item {
+    padding: 0.35rem 0.75rem;
+    cursor: pointer;
+    font-size: 0.75rem;
+    color: #334155;
+    border-bottom: 1px solid rgba(241, 245, 249, 0.4);
+    transition: background-color 0.15s ease;
+    line-height: 1.35;
+}
+
+.ac-item:last-child {
+    border-bottom: 0;
+}
+
+.ac-item:hover {
+    background-color: #F5F8FF;
+}
+
+/* Items under a section header get slight indent */
+.ac-section-header + .ac-item,
+.ac-section-header + .ac-item ~ .ac-item {
+    padding-left: 1.25rem;
+}
+
+/* Reset indent for items after a new section header or divider */
+.ac-section-divider + .ac-item {
+    padding-left: 0.75rem;
+}
+
+/* Indented sub-items (individual airports under city group) */
+.ac-item-indented {
+    padding-left: 2.25rem;
+    background-color: rgba(248, 250, 254, 0.5);
+    font-size: 0.72rem;
+}
+
+.ac-item-indented:hover {
+    background-color: #EEF2FF;
+}
+
+/* City "All Airports" entry */
+.ac-item-city {
+    background-color: #F8FAFC;
+    border-left: 3px solid var(--color-brand-primary, #203C94);
+    padding-left: calc(0.75rem - 3px);
+}
+
+.ac-item-city:hover {
+    background-color: #EEF2FF;
+}
+
+/* Icon in result items */
+.ac-icon {
+    font-size: 0.85rem;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+    line-height: 1;
+}
+
+/* IATA code badge */
+.ac-code {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.0625rem 0.4rem;
+    border-radius: 0.25rem;
+    background: var(--color-brand-surface, #F5F8FF);
+    color: var(--color-brand-primary, #203C94);
+    font-size: 0.675rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+}
+
+/* Star rating */
+.ac-stars {
+    color: #EAB308;
+    font-size: 0.7rem;
+    letter-spacing: -0.02em;
+}
+
+/* Location subtitle */
+.ac-location {
+    font-size: 0.65rem;
+    color: #94A3B8;
+    margin-top: 0.05rem;
+    line-height: 1.25;
+}
+
 /* Ensure input box has relative positioning for dropdown */
 .search-input-box {
     position: relative !important;
@@ -610,6 +725,21 @@ label:hover .pkg-checkbox-label {
         max-width: calc(100vw - 2rem) !important;
         left: 50% !important;
         transform: translateX(-50%) !important;
+        max-height: 60vh !important;
+    }
+
+    .ac-item-indented {
+        padding-left: 1.75rem;
+    }
+
+    .ac-section-header {
+        font-size: 0.55rem;
+        padding: 0.25rem 0.625rem 0.15rem;
+    }
+
+    .ac-item {
+        padding: 0.3rem 0.625rem;
+        font-size: 0.7rem;
     }
 }
 

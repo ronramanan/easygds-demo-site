@@ -497,7 +497,7 @@ function getDefaultDates() {
 }
 
 async function fetchLocations(query, type, countryCode, placeId) {
-    const url = new URL(`${API_BASE_URL}/places`, window.location.origin);
+    const url = new URL(`${API_BASE_URL}/places`);
     url.searchParams.append("search_text", query);
     url.searchParams.append("language_code", "en-US");
     // Dynamic types based on input data-type
@@ -515,7 +515,8 @@ async function fetchLocations(query, type, countryCode, placeId) {
         url.searchParams.append("place_id", placeId);
     }
     url.searchParams.append("has_code", "false");
-    url.searchParams.append("per_page", "20");
+    // More results for airport searches to accommodate multi-airport city grouping
+    url.searchParams.append("per_page", (type === 'airport_code' || type === 'any') ? "30" : "20");
     url.searchParams.append("page", "1");
 
     // Handle specific type logic for properties (hotels)
@@ -553,6 +554,7 @@ async function fetchLocations(query, type, countryCode, placeId) {
                 rawType: p.type,
                 id: p.id,
                 city: p.name,
+                cityCode: p.location?.city_code || null,
                 country: p.location?.country_code,
                 ancestors: p.ancestors || [],
                 icon: p.type === 'airport' ? '✈️' : '📍'
@@ -587,6 +589,374 @@ function getPlaceIdFromAncestors(ancestors) {
     if (!ancestors || !Array.isArray(ancestors)) return null;
     const findId = (t) => ancestors.find(a => a.type === t)?.id;
     return findId('country') || findId('city') || findId('multi_city_vicinity') || findId('province_state');
+}
+
+// ─── Autocomplete Grouping & Sorting ───────────────────────────────────────
+
+function groupResults(results, fieldType, query) {
+    const q = (query || '').trim().toLowerCase();
+    if (fieldType === 'airport_code') {
+        return groupAirportResults(results, q);
+    } else if (fieldType === 'any') {
+        return groupHotelDestResults(results, q);
+    } else if (fieldType === 'hotel') {
+        return groupTransferHotelResults(results);
+    } else if (fieldType === 'tour_region') {
+        return groupTourResults(results, q);
+    }
+    // Default: single section, no headers
+    return [{ label: null, items: results.map(r => ({ ...r, indent: 0 })) }];
+}
+
+function groupAirportResults(results) {
+    const airports = results.filter(r => r.rawType === 'airport');
+    const other = results.filter(r => r.rawType !== 'airport');
+
+    // Group airports by cityCode (e.g. LON, PAR, NYC)
+    const cityGroups = new Map();
+    for (const airport of airports) {
+        const key = airport.cityCode || airport.code;
+        if (!cityGroups.has(key)) {
+            cityGroups.set(key, []);
+        }
+        cityGroups.get(key).push(airport);
+    }
+
+    const sections = [];
+
+    for (const [cityCode, group] of cityGroups) {
+        if (group.length > 1) {
+            // Multi-airport city: synthesize "All Airports" + indented individual airports
+            // Use the shortest name among the group as the city label (e.g. "London" from "London (LHR-Heathrow)")
+            const cityName = extractCityName(group[0].name);
+            const allAirportsEntry = {
+                name: `${cityName} — All Airports`,
+                code: cityCode,
+                type: 'airport_code',
+                rawType: 'multi_city_vicinity',
+                id: `all_${cityCode}`,
+                city: cityName,
+                cityCode: cityCode,
+                country: group[0].country,
+                ancestors: group[0].ancestors,
+                isAllAirports: true,
+                indent: 0,
+                icon: '✈️'
+            };
+
+            // Sort: major airports (LHR, LGW, JFK, CDG, ORY etc) first, then rest alphabetically
+            const majorAirports = ['LHR', 'LGW', 'JFK', 'EWR', 'CDG', 'ORY', 'DXB', 'DWC', 'SIN', 'NRT', 'HND', 'LAX', 'SFO', 'ORD', 'BKK', 'DMK', 'FCO', 'CIA', 'AMS', 'FRA', 'MUC', 'SYD', 'MEL', 'HKG'];
+            const sortedAirports = group.sort((a, b) => {
+                const aMajor = majorAirports.indexOf(a.code);
+                const bMajor = majorAirports.indexOf(b.code);
+                // Both major: sort by major list order
+                if (aMajor !== -1 && bMajor !== -1) return aMajor - bMajor;
+                // One major, one not: major first
+                if (aMajor !== -1) return -1;
+                if (bMajor !== -1) return 1;
+                // Neither major: alphabetical by code
+                return (a.code || '').localeCompare(b.code || '');
+            });
+            // Shorten names for grouped airports: strip the city name prefix since they're already grouped
+            const airportItems = sortedAirports.map(a => ({
+                ...a,
+                indent: 1,
+                shortName: extractAirportShortName(a.name, cityName)
+            }));
+
+            sections.push({
+                label: null,
+                items: [allAirportsEntry, ...airportItems]
+            });
+        } else {
+            // Single-airport city: flat, no grouping
+            sections.push({
+                label: null,
+                items: group.map(a => ({ ...a, indent: 0 }))
+            });
+        }
+    }
+
+    // Append any non-airport results at the end
+    if (other.length > 0) {
+        sections.push({
+            label: 'Other Locations',
+            items: other.map(r => ({ ...r, indent: 0 }))
+        });
+    }
+
+    return sections;
+}
+
+function groupHotelDestResults(results, query) {
+    // Separate destinations (places) from hotels (properties)
+    const destinations = results.filter(r => r.type === 'place_id');
+    const hotels = results.filter(r => r.type === 'hotel');
+    const airports = results.filter(r => r.type === 'airport_code');
+
+    const sections = [];
+
+    // Airports first — with city-grouping (reuse airport grouping logic)
+    if (airports.length > 0) {
+        const airportSections = groupAirportResults(airports, query);
+        // Flatten all airport items into a single Airports section
+        const allAirportItems = [];
+        for (const sec of airportSections) {
+            if (sec.label === 'Other Locations') continue; // skip non-airport leftovers
+            allAirportItems.push(...sec.items);
+        }
+        if (allAirportItems.length > 0) {
+            sections.push({
+                label: 'Airports',
+                items: allAirportItems
+            });
+        }
+    }
+
+    if (destinations.length > 0) {
+        // Sort destinations: exact/close matches first, then by type hierarchy, then by name
+        const typeOrder = { 'country': 0, 'administrative_area_level_3': 1, 'administrative_area_level_4': 2 };
+        destinations.sort((a, b) => {
+            // Boost: exact match first, then starts-with, then others
+            const aName = (a.city || a.name || '').toLowerCase();
+            const bName = (b.city || b.name || '').toLowerCase();
+            const aExact = aName === query ? 0 : (aName.startsWith(query) ? 1 : 2);
+            const bExact = bName === query ? 0 : (bName.startsWith(query) ? 1 : 2);
+            if (aExact !== bExact) return aExact - bExact;
+
+            // Then by type hierarchy
+            const aOrder = typeOrder[a.rawType] ?? 3;
+            const bOrder = typeOrder[b.rawType] ?? 3;
+            if (aOrder !== bOrder) return aOrder - bOrder;
+            return (a.name || '').localeCompare(b.name || '');
+        });
+        sections.push({
+            label: 'Destinations',
+            items: destinations.map(r => ({ ...r, indent: 0 }))
+        });
+    }
+
+    if (hotels.length > 0) {
+        // Sort hotels by star rating (desc), then by name
+        hotels.sort((a, b) => (b.stars || 0) - (a.stars || 0) || (a.name || '').localeCompare(b.name || ''));
+        sections.push({
+            label: 'Hotels',
+            items: hotels.map(r => ({ ...r, indent: 0 }))
+        });
+    }
+
+    if (sections.length === 0) {
+        return [{ label: null, items: results.map(r => ({ ...r, indent: 0 })) }];
+    }
+
+    return sections;
+}
+
+function groupTourResults(results, query) {
+    // Tours: separate destinations (countries, regions, cities) from any other types
+    const destinations = results.filter(r => r.type === 'place_id');
+    const airports = results.filter(r => r.type === 'airport_code');
+    const other = results.filter(r => r.type !== 'place_id' && r.type !== 'airport_code');
+
+    const sections = [];
+
+    if (destinations.length > 0) {
+        // Sort: countries first, then regions, then cities. Exact match boost.
+        const typeOrder = { 'country': 0, 'administrative_area_level_3': 1, 'administrative_area_level_4': 2 };
+        destinations.sort((a, b) => {
+            const aName = (a.city || a.name || '').toLowerCase();
+            const bName = (b.city || b.name || '').toLowerCase();
+            const aExact = aName === query ? 0 : (aName.startsWith(query) ? 1 : 2);
+            const bExact = bName === query ? 0 : (bName.startsWith(query) ? 1 : 2);
+            if (aExact !== bExact) return aExact - bExact;
+            const aOrder = typeOrder[a.rawType] ?? 3;
+            const bOrder = typeOrder[b.rawType] ?? 3;
+            if (aOrder !== bOrder) return aOrder - bOrder;
+            return (a.name || '').localeCompare(b.name || '');
+        });
+        sections.push({
+            label: 'Destinations',
+            items: destinations.map(r => ({ ...r, indent: 0 }))
+        });
+    }
+
+    if (airports.length > 0) {
+        sections.push({
+            label: 'Airports',
+            items: airports.map(r => ({ ...r, indent: 0 }))
+        });
+    }
+
+    if (other.length > 0) {
+        sections.push({
+            label: 'Other',
+            items: other.map(r => ({ ...r, indent: 0 }))
+        });
+    }
+
+    if (sections.length === 0) {
+        return [{ label: null, items: results.map(r => ({ ...r, indent: 0 })) }];
+    }
+
+    return sections;
+}
+
+function groupTransferHotelResults(results) {
+    // Transfer dropoff: all hotels, sort by star rating desc
+    const sorted = [...results].sort((a, b) => (b.stars || 0) - (a.stars || 0) || (a.name || '').localeCompare(b.name || ''));
+    if (sorted.length === 0) {
+        return [{ label: null, items: [] }];
+    }
+    return [{ label: 'Hotels', items: sorted.map(r => ({ ...r, indent: 0 })) }];
+}
+
+function extractCityName(airportLongName) {
+    // Extract city name from formats like "London, United Kingdom (LHR-Heathrow)" or "London (LHR-Heathrow)"
+    // Take everything before the first comma or opening paren
+    const match = airportLongName.match(/^([^,(]+)/);
+    return match ? match[1].trim() : airportLongName;
+}
+
+function extractAirportShortName(fullName, cityName) {
+    // Extract just the airport identifier from names like "London, United Kingdom (LHR-Heathrow)"
+    // Goal: "Heathrow" or "LHR-Heathrow" since city is already shown in the group header
+    const parenMatch = fullName.match(/\(([^)]+)\)/);
+    if (parenMatch) {
+        // e.g. "LHR-Heathrow" → "Heathrow"
+        const inner = parenMatch[1];
+        const dashIdx = inner.indexOf('-');
+        if (dashIdx !== -1) {
+            return inner.substring(dashIdx + 1).trim();
+        }
+        return inner;
+    }
+    // Fallback: strip the city name from the beginning
+    if (fullName.startsWith(cityName)) {
+        let shortened = fullName.substring(cityName.length).replace(/^[\s,]+/, '');
+        return shortened || fullName;
+    }
+    return fullName;
+}
+
+// ─── Grouped Autocomplete Rendering ────────────────────────────────────────
+
+function renderGroupedResults(container, sections, input) {
+    sections.forEach((section, sIdx) => {
+        // Section header
+        if (section.label) {
+            const header = document.createElement('div');
+            header.className = 'ac-section-header';
+            header.textContent = section.label;
+            container.appendChild(header);
+        } else if (sIdx > 0) {
+            // Divider between groups when no label
+            const sep = document.createElement('div');
+            sep.className = 'ac-section-divider';
+            container.appendChild(sep);
+        }
+
+        section.items.forEach(res => {
+            const item = document.createElement('div');
+
+            // Build CSS classes
+            let cls = 'ac-item';
+            if (res.indent > 0) cls += ' ac-item-indented';
+            if (res.isAllAirports) cls += ' ac-item-city';
+            item.className = cls;
+
+            let icon = res.icon || '📍';
+            if (!res.icon) {
+                if (res.type === 'airport_code') icon = '✈️';
+                if (res.type === 'hotel') icon = '🏨';
+                if (res.type === 'station') icon = '🚆';
+            }
+
+            // Determine display name and subtitle based on result type
+            let displayName = res.name;
+            let subtitle = '';
+
+            if (res.shortName && res.indent > 0) {
+                // Grouped airport: use shortened name (e.g. "Heathrow" instead of full long name)
+                displayName = res.shortName;
+                subtitle = '';  // No subtitle needed — city is in the group header
+            } else if (res.type === 'airport_code' && !res.isAllAirports) {
+                // Non-grouped airport: "City, Country" as primary, airport name as subtitle
+                // Strip parenthesized code from city name (e.g. "London, KY (LOZ-London-Corbin)" → "London, KY")
+                const cleanCity = (res.city || '').replace(/\s*\([^)]*\)\s*$/, '').trim();
+                let locParts = [];
+                if (cleanCity) locParts.push(cleanCity);
+                if (res.country) locParts.push(res.country);
+                displayName = locParts.join(', ') || res.name;
+                // Extract airport name from parentheses e.g. "(BKK-Suvarnabhumi)" → "Suvarnabhumi"
+                const airportName = extractAirportShortName(res.name, cleanCity);
+                subtitle = airportName && airportName !== displayName ? airportName : '';
+            } else if (res.type === 'place_id' && res.city) {
+                // For destinations: use short name as primary, long name as subtitle
+                displayName = res.city;
+                // Build subtitle from long name parts minus the short name
+                const longParts = (res.name || '').split(', ').filter(p => p !== res.city);
+                subtitle = longParts.length > 0 ? longParts.join(', ') : (res.country || '');
+            } else {
+                // For hotels/other: show location info
+                let locParts = [];
+                if (res.city && res.city !== res.name) locParts.push(res.city);
+                if (res.country) locParts.push(res.country);
+                subtitle = locParts.join(', ');
+            }
+
+            // Code badge (airports)
+            let codeDisplay = '';
+            if (res.code && res.type === 'airport_code') {
+                codeDisplay = `<span class="ac-code">${res.code}</span>`;
+            }
+
+            // Star rating (hotels)
+            let starsDisplay = '';
+            if (res.stars && res.stars > 0) {
+                const fullStars = Math.floor(res.stars);
+                const halfStar = res.stars % 1 >= 0.5;
+                starsDisplay = `<span class="ac-stars">${'★'.repeat(fullStars)}${halfStar ? '½' : ''}</span>`;
+            }
+
+            // Name styling
+            const nameClass = res.isAllAirports
+                ? 'font-semibold text-brand-primary'
+                : 'font-medium text-slate-800';
+
+            item.innerHTML = `
+                <div class="flex items-center gap-2">
+                    <span class="ac-icon">${icon}</span>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center flex-wrap gap-1">
+                            <span class="${nameClass} truncate">${displayName}</span>
+                            ${codeDisplay}
+                            ${starsDisplay}
+                        </div>
+                        ${subtitle ? `<div class="ac-location">${subtitle}</div>` : ''}
+                    </div>
+                </div>
+            `;
+
+            item.onclick = () => {
+                input.value = res.name;
+                input.dataset.code = res.code;
+                input.dataset.id = res.id;
+                input.dataset.selType = res.type;
+                input.dataset.rawType = res.rawType || '';
+                if (res.country) {
+                    input.dataset.country = res.country;
+                }
+                const filterId = getPlaceIdFromAncestors(res.ancestors);
+                if (filterId) {
+                    input.dataset.placeIdFilter = filterId;
+                } else {
+                    delete input.dataset.placeIdFilter;
+                }
+                container.classList.add('hidden');
+            };
+            container.appendChild(item);
+        });
+    });
 }
 
 function setupAutocomplete(input) {
@@ -637,66 +1007,8 @@ function setupAutocomplete(input) {
             if (results.length === 0) {
                 container.innerHTML = '<div class="p-3 text-sm text-gray-400">No results found</div>';
             } else {
-                results.forEach(res => {
-                    const item = document.createElement('div');
-                    item.className = 'p-2 hover:bg-slate-50 cursor-pointer text-sm text-slate-700 border-b border-gray-50 last:border-0';
-
-                    let icon = res.icon || '📍';
-                    if (!res.icon) {
-                        if (res.type === 'airport_code') icon = '✈️';
-                        if (res.type === 'hotel') icon = '🏨';
-                        if (res.type === 'station') icon = '🚆';
-                    }
-
-                    // Build location string
-                    let locParts = [res.city, res.country].filter(Boolean);
-                    let locStr = locParts.join(', ');
-
-                    // Format code display
-                    let codeDisplay = '';
-                    if (res.code && res.type === 'airport_code') {
-                        codeDisplay = `<span class="inline-flex items-center px-2 py-0.5 rounded bg-brand-surface text-brand-primary text-xs font-bold ml-2">${res.code}</span>`;
-                    }
-
-                    // Stars for hotels
-                    let starsDisplay = '';
-                    if (res.stars && res.stars > 0) {
-                        starsDisplay = `<span class="text-yellow-500 ml-1">${'★'.repeat(res.stars)}</span>`;
-                    }
-
-                    item.innerHTML = `
-                        <div class="flex items-start gap-3">
-                            <span class="text-lg flex-shrink-0 mt-0.5">${icon}</span>
-                            <div class="flex-1 min-w-0">
-                                <div class="flex items-center flex-wrap">
-                                    <span class="font-semibold text-slate-800">${res.name}</span>
-                                    ${codeDisplay}
-                                    ${starsDisplay}
-                                </div>
-                                ${locStr ? `<div class="text-xs text-slate-400 mt-0.5">${locStr}</div>` : ''}
-                            </div>
-                        </div>
-                    `;
-
-                    item.onclick = () => {
-                        input.value = res.name;
-                        input.dataset.code = res.code;
-                        input.dataset.id = res.id;
-                        input.dataset.selType = res.type;
-                        input.dataset.rawType = res.rawType;
-                        if (res.country) {
-                            input.dataset.country = res.country; // Save country for dependent fields
-                        }
-                        const filterId = getPlaceIdFromAncestors(res.ancestors);
-                        if (filterId) {
-                            input.dataset.placeIdFilter = filterId;
-                        } else {
-                            delete input.dataset.placeIdFilter;
-                        }
-                        container.classList.add('hidden');
-                    };
-                    container.appendChild(item);
-                });
+                const sections = groupResults(results, type, query);
+                renderGroupedResults(container, sections, input);
             }
         }, 400);
     });
