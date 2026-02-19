@@ -2,12 +2,21 @@ window.APP_CURRENCY = 'USD'; // Default Currency
 window.APP_LANGUAGE = 'en-US'; // Default Language
 
 // Global definition to ensure it works regardless of load order or other script failures
+let _dealModalCloseTimer = null;
+let _dealModalScrollY = 0;
+
 window.openDealModal = function (city, code) {
     console.log("Opening Deal Modal (Exclusive) for:", city, code);
     const dealModal = document.getElementById('deal-modal');
     if (!dealModal) {
         console.error("Deal modal element not found!");
         return;
+    }
+
+    // Cancel any pending close animation to prevent race condition
+    if (_dealModalCloseTimer) {
+        clearTimeout(_dealModalCloseTimer);
+        _dealModalCloseTimer = null;
     }
 
     const modalDestName = document.getElementById('deal-modal-dest-name');
@@ -35,39 +44,60 @@ window.openDealModal = function (city, code) {
         }
     }
 
+    // Lock body scroll — use position:fixed trick for reliable iOS scroll lock
+    _dealModalScrollY = window.scrollY;
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${_dealModalScrollY}px`;
+    document.body.style.left = '0';
+    document.body.style.right = '0';
+    document.body.style.overflow = 'hidden';
+
     // Force visible
     dealModal.style.display = 'block';
     dealModal.classList.remove('hidden');
 
-    // Small delay to allow display:block to apply before opacity transition
-    setTimeout(() => {
-        if (modalBackdrop) modalBackdrop.classList.remove('opacity-0');
-        if (modalContent) modalContent.classList.remove('opacity-0', 'scale-95');
-    }, 10);
+    // Use double-rAF to guarantee the browser has painted display:block
+    // before starting opacity/scale transitions (10ms setTimeout is unreliable on mobile)
+    requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+            if (modalBackdrop) modalBackdrop.classList.remove('opacity-0');
+            if (modalContent) modalContent.classList.remove('opacity-0', 'scale-95');
+        });
+    });
 };
 
 // Close logic
+window.closeDealModal = function () {
+    const dealModal = document.getElementById('deal-modal');
+    const modalBackdrop = document.getElementById('deal-modal-backdrop');
+    const modalContent = document.getElementById('deal-modal-content');
+
+    if (modalBackdrop) modalBackdrop.classList.add('opacity-0');
+    if (modalContent) modalContent.classList.add('opacity-0', 'scale-95');
+
+    // Unlock body scroll and restore position
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.left = '';
+    document.body.style.right = '';
+    document.body.style.overflow = '';
+    window.scrollTo(0, _dealModalScrollY);
+
+    if (dealModal) {
+        _dealModalCloseTimer = setTimeout(() => {
+            dealModal.classList.add('hidden');
+            dealModal.style.display = ''; // Reset inline style
+            _dealModalCloseTimer = null;
+        }, 300);
+    }
+};
+
 document.addEventListener('DOMContentLoaded', () => {
-    const closeModal = () => {
-        const dealModal = document.getElementById('deal-modal');
-        const modalBackdrop = document.getElementById('deal-modal-backdrop');
-        const modalContent = document.getElementById('deal-modal-content');
-
-        if (modalBackdrop) modalBackdrop.classList.add('opacity-0');
-        if (modalContent) modalContent.classList.add('opacity-0', 'scale-95');
-        if (dealModal) {
-            setTimeout(() => {
-                dealModal.classList.add('hidden');
-                dealModal.style.display = ''; // Reset inline style
-            }, 300);
-        }
-    };
-
     const closeBtn = document.getElementById('deal-close-btn');
     const modalBackdrop = document.getElementById('deal-modal-backdrop');
 
-    if (closeBtn) closeBtn.onclick = closeModal;
-    if (modalBackdrop) modalBackdrop.onclick = closeModal;
+    if (closeBtn) closeBtn.onclick = closeDealModal;
+    if (modalBackdrop) modalBackdrop.onclick = closeDealModal;
 
     // Initialize Lucide Icons
     lucide.createIcons();
@@ -497,7 +527,7 @@ function getDefaultDates() {
 }
 
 async function fetchLocations(query, type, countryCode, placeId) {
-    const url = new URL(`${API_BASE_URL}/places`, window.location.origin);
+    const url = new URL(`${API_BASE_URL}/places`);
     url.searchParams.append("search_text", query);
     url.searchParams.append("language_code", "en-US");
     // Dynamic types based on input data-type
@@ -608,7 +638,67 @@ function groupResults(results, fieldType, query) {
     return [{ label: null, items: results.map(r => ({ ...r, indent: 0 })) }];
 }
 
-function groupAirportResults(results) {
+// Airport passenger traffic rank — top ~200 airports worldwide by annual passengers.
+// Used to sort airports within multi-airport cities by importance (lower rank = busier).
+// Source: ACI World / publicly available airport traffic statistics.
+const AIRPORT_TRAFFIC_RANK = {
+    // Rank 1-20: Global mega-hubs
+    ATL: 1, DXB: 2, DFW: 3, LHR: 4, HND: 5,
+    DEN: 6, IST: 7, LAX: 8, ORD: 9, CDG: 10,
+    DEL: 11, JFK: 12, AMS: 13, SIN: 14, CAN: 15,
+    FRA: 16, ICN: 17, PVG: 18, SEA: 19, PEK: 20,
+    // Rank 21-50: Major international hubs
+    BKK: 21, SFO: 22, MUC: 23, MAD: 24, BCN: 25,
+    MEX: 26, KUL: 27, BOM: 28, DOH: 29, SYD: 30,
+    EWR: 31, CGK: 32, YYZ: 33, JED: 34, LAS: 35,
+    CLT: 36, MIA: 37, MCO: 38, SAW: 39, FCO: 40,
+    PHX: 41, IAH: 42, SZX: 43, CTU: 44, TPE: 45,
+    LGW: 46, BLR: 47, MSP: 48, DTW: 49, NRT: 50,
+    // Rank 51-100: Major national/regional airports
+    MNL: 51, HKG: 52, BOS: 53, FLL: 54, SHA: 55,
+    MEL: 56, DME: 57, SVO: 58, OSL: 59, VIE: 60,
+    ZRH: 61, CPH: 62, DUS: 63, MAN: 64, DUB: 65,
+    BRU: 66, HEL: 67, LIS: 68, ARN: 69, ATH: 70,
+    PMI: 71, AGP: 72, ORY: 73, ALC: 74, EDI: 75,
+    GLA: 76, HAM: 77, STN: 78, WAW: 79, PRG: 80,
+    BUD: 81, OTP: 82, BGY: 83, CIA: 84, TXL: 85,
+    BER: 86, SXF: 87, LTN: 88, LCY: 89, BHX: 90,
+    NCL: 91, BFS: 92, LBA: 93, EMA: 94, STR: 95,
+    CGN: 96, TLS: 97, NCE: 98, LYS: 99, MRS: 100,
+    // Rank 101-150: Secondary hubs & busy regionals
+    GIG: 101, GRU: 102, EZE: 103, BOG: 104, SCL: 105,
+    LIM: 106, PTY: 107, SJO: 108, CUN: 109, SJU: 110,
+    AUH: 111, SHJ: 112, DWC: 113, RUH: 114, DMM: 115,
+    BAH: 116, MCT: 117, AMM: 118, CAI: 119, CMN: 120,
+    JNB: 121, CPT: 122, NBO: 123, ADD: 124, LOS: 125,
+    ACC: 126, DAR: 127, MRU: 128, HYD: 129, MAA: 130,
+    CCU: 131, COK: 132, GOI: 133, AMD: 134, PNQ: 135,
+    DMK: 136, HKT: 137, CNX: 138, SGN: 139, HAN: 140,
+    CXR: 141, DAD: 142, REP: 143, PNH: 144, RGN: 145,
+    MLE: 146, CMB: 147, KTM: 148, ISB: 149, KHI: 150,
+    // Rank 151-200: Tertiary airports & multi-city fills
+    AKL: 151, CHC: 152, WLG: 153, BNE: 154, PER: 155,
+    ADL: 156, OOL: 157, CNS: 158, CBR: 159, HBA: 160,
+    NAN: 161, PPT: 162, SUV: 163, KIX: 164, NGO: 165,
+    FUK: 166, CTS: 167, ITM: 168, OKA: 169, GMP: 170,
+    PUS: 171, CJU: 172, MFM: 173, TSA: 174, RMQ: 175,
+    KHH: 176, PKX: 177, XIY: 178, CKG: 179, KMG: 180,
+    SEN: 181, BQH: 182, ABZ: 183, INV: 184, SOU: 185,
+    EXT: 186, CWL: 187, JER: 188, GCI: 189, IOM: 190,
+    MXP: 191, VCE: 192, NAP: 193, PSA: 194, BLQ: 195,
+    TRN: 196, CTA: 197, PMO: 198, BRI: 199, OLB: 200
+};
+
+/**
+ * Score an airport's relevance for sorting within a multi-airport city group.
+ * Lower score = more relevant. Uses passenger traffic rank as primary signal,
+ * with alphabetical code as fallback for unranked airports.
+ */
+function getAirportTrafficScore(code) {
+    return AIRPORT_TRAFFIC_RANK[code] ?? 9999;
+}
+
+function groupAirportResults(results, query) {
     const airports = results.filter(r => r.rawType === 'airport');
     const other = results.filter(r => r.rawType !== 'airport');
 
@@ -644,17 +734,11 @@ function groupAirportResults(results) {
                 icon: '✈️'
             };
 
-            // Sort: major airports (LHR, LGW, JFK, CDG, ORY etc) first, then rest alphabetically
-            const majorAirports = ['LHR', 'LGW', 'JFK', 'EWR', 'CDG', 'ORY', 'DXB', 'DWC', 'SIN', 'NRT', 'HND', 'LAX', 'SFO', 'ORD', 'BKK', 'DMK', 'FCO', 'CIA', 'AMS', 'FRA', 'MUC', 'SYD', 'MEL', 'HKG'];
+            // Sort by passenger traffic rank (busiest first), then alphabetically by code for unranked
             const sortedAirports = group.sort((a, b) => {
-                const aMajor = majorAirports.indexOf(a.code);
-                const bMajor = majorAirports.indexOf(b.code);
-                // Both major: sort by major list order
-                if (aMajor !== -1 && bMajor !== -1) return aMajor - bMajor;
-                // One major, one not: major first
-                if (aMajor !== -1) return -1;
-                if (bMajor !== -1) return 1;
-                // Neither major: alphabetical by code
+                const aRank = getAirportTrafficScore(a.code);
+                const bRank = getAirportTrafficScore(b.code);
+                if (aRank !== bRank) return aRank - bRank;
                 return (a.code || '').localeCompare(b.code || '');
             });
             // Shorten names for grouped airports: strip the city name prefix since they're already grouped
@@ -676,6 +760,12 @@ function groupAirportResults(results) {
             });
         }
     }
+
+    // Sort city groups so busiest airports surface first (e.g. Sydney AU before Sydney CA)
+    sections.sort((a, b) => {
+        const bestRank = (section) => Math.min(...section.items.map(i => getAirportTrafficScore(i.code)));
+        return bestRank(a) - bestRank(b);
+    });
 
     // Append any non-airport results at the end
     if (other.length > 0) {
@@ -782,7 +872,7 @@ function groupTourResults(results, query) {
 
     // Airports with city-grouping (reuse airport grouping logic)
     if (airports.length > 0) {
-        const airportSections = groupAirportResults(airports);
+        const airportSections = groupAirportResults(airports, query);
         const allAirportItems = [];
         for (const sec of airportSections) {
             if (sec.label === 'Other Locations') continue;

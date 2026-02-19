@@ -823,10 +823,12 @@ button,
     }
 }
 
-/* 6. Traveler popovers: clamp width so they never overflow on narrow viewports */
+/* 6. Traveler popovers: clamp width & height so they never overflow on narrow viewports */
 @media (max-width: 639px) {
     .traveler-popover {
         width: min(20rem, calc(100vw - 2rem)) !important;
+        max-height: 60vh !important;
+        overflow-y: auto !important;
     }
 
     /* Right-anchored popovers (flights / tours pax) — keep within viewport */
@@ -876,9 +878,11 @@ button,
 #pkg-rooms-container,
 #modal-rooms-container {
     -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
 }
 
 /* 12. Prevent layout shift when modal opens (body scroll lock already handled by JS) */
 #deal-modal {
     -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
 }
