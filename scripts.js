@@ -3,7 +3,6 @@ window.APP_LANGUAGE = 'en-US'; // Default Language
 
 // Global definition to ensure it works regardless of load order or other script failures
 let _dealModalCloseTimer = null;
-let _dealModalScrollY = 0;
 
 window.openDealModal = function (city, code) {
     console.log("Opening Deal Modal (Exclusive) for:", city, code);
@@ -44,13 +43,10 @@ window.openDealModal = function (city, code) {
         }
     }
 
-    // Lock body scroll — use position:fixed trick for reliable iOS scroll lock
-    _dealModalScrollY = window.scrollY;
-    document.body.style.position = 'fixed';
-    document.body.style.top = `-${_dealModalScrollY}px`;
-    document.body.style.left = '0';
-    document.body.style.right = '0';
-    document.body.style.overflow = 'hidden';
+    // Lock body scroll — overflow:hidden on both html & body prevents
+    // background scroll on all browsers including iOS Safari, without
+    // the visual jump caused by position:fixed
+    document.documentElement.classList.add('modal-open');
 
     // Force visible
     dealModal.style.display = 'block';
@@ -75,13 +71,8 @@ window.closeDealModal = function () {
     if (modalBackdrop) modalBackdrop.classList.add('opacity-0');
     if (modalContent) modalContent.classList.add('opacity-0', 'scale-95');
 
-    // Unlock body scroll and restore position
-    document.body.style.position = '';
-    document.body.style.top = '';
-    document.body.style.left = '';
-    document.body.style.right = '';
-    document.body.style.overflow = '';
-    window.scrollTo(0, _dealModalScrollY);
+    // Unlock body scroll
+    document.documentElement.classList.remove('modal-open');
 
     if (dealModal) {
         _dealModalCloseTimer = setTimeout(() => {
@@ -266,7 +257,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Search Tab Switching ---
     const tabs = document.querySelectorAll('.search-tab');
-    const forms = document.querySelectorAll('.search-form');
+    // Scope to #search-panel only — do NOT select the modal's .search-form
+    const forms = document.querySelectorAll('#search-panel .search-form');
 
     tabs.forEach(tab => {
         tab.addEventListener('click', () => {

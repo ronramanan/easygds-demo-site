@@ -881,7 +881,13 @@ button,
     overscroll-behavior: contain;
 }
 
-/* 12. Prevent layout shift when modal opens (body scroll lock already handled by JS) */
+/* 12. Body scroll lock when modal is open — no position:fixed, no visual jump */
+html.modal-open,
+html.modal-open body {
+    overflow: hidden !important;
+    height: 100% !important;
+}
+
 #deal-modal {
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
