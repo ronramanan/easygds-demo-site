@@ -1645,14 +1645,15 @@ function setupAutocomplete(input) {
             container.innerHTML = '<div class="p-3 text-sm text-gray-400">Loading...</div>';
             container.classList.remove('hidden');
 
-            // Dependent Logic for Transfer Dropoff
+            // Dependent Logic for Transfer hotel field (works in both directions)
             let countryFilter = null;
             let placeIdFilter = null;
-            if (input.id === 'tr-dropoff') {
-                const pickupInput = document.getElementById('tr-pickup');
-                if (pickupInput) {
-                    if (pickupInput.dataset.country) countryFilter = pickupInput.dataset.country;
-                    if (pickupInput.dataset.placeIdFilter) placeIdFilter = pickupInput.dataset.placeIdFilter;
+            if ((input.id === 'tr-dropoff' || input.id === 'tr-pickup') && type === 'hotel') {
+                const otherId = input.id === 'tr-pickup' ? 'tr-dropoff' : 'tr-pickup';
+                const otherInput = document.getElementById(otherId);
+                if (otherInput) {
+                    if (otherInput.dataset.country) countryFilter = otherInput.dataset.country;
+                    if (otherInput.dataset.placeIdFilter) placeIdFilter = otherInput.dataset.placeIdFilter;
                 }
             }
 
@@ -1692,6 +1693,35 @@ function setupAutocomplete(input) {
                                 results.push(r);
                             }
                         }
+                    }
+                } else {
+                    results = await fetchLocations(query, type, countryFilter, placeIdFilter);
+                }
+            } else if (type === 'hotel' && (input.id === 'tr-dropoff' || input.id === 'tr-pickup')) {
+                // ─── City-name supplementary search for transfer hotels ─────────
+                // Brand-only queries (e.g. "Hilton") return nothing because the API
+                // needs location context. Append the airport's city name as a
+                // parallel supplementary search to surface relevant hotels.
+                const otherId = input.id === 'tr-pickup' ? 'tr-dropoff' : 'tr-pickup';
+                const otherInput = document.getElementById(otherId);
+                const otherValue = otherInput ? otherInput.value : '';
+                const cityName = otherValue ? extractCityName(otherValue) : '';
+
+                if (cityName && !query.toLowerCase().includes(cityName.toLowerCase())) {
+                    const [primaryResults, supplementaryResults] = await Promise.all([
+                        fetchLocations(query, type, countryFilter, placeIdFilter),
+                        fetchLocations(query + ' ' + cityName, type, countryFilter, null)
+                            .catch(() => [])
+                    ]);
+
+                    // Merge and deduplicate by id (primary results take precedence)
+                    const seenIds = new Set();
+                    results = [];
+                    for (const r of primaryResults) {
+                        if (!seenIds.has(r.id)) { seenIds.add(r.id); results.push(r); }
+                    }
+                    for (const r of supplementaryResults) {
+                        if (!seenIds.has(r.id)) { seenIds.add(r.id); results.push(r); }
                     }
                 } else {
                     results = await fetchLocations(query, type, countryFilter, placeIdFilter);
@@ -2380,7 +2410,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (v2) i1.dataset[k] = v2; else delete i1.dataset[k];
                 if (v1) i2.dataset[k] = v1; else delete i2.dataset[k];
             };
-            swapD('code'); swapD('id'); swapD('selType');
+            swapD('code'); swapD('id'); swapD('selType'); swapD('country'); swapD('placeIdFilter'); swapD('rawType');
         };
     }
 
