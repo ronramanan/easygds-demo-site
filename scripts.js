@@ -2017,8 +2017,10 @@ document.addEventListener('DOMContentLoaded', () => {
             paxState.chdAges.forEach(age => travelers.push({ type: 'child', age: age, room: 1 }));
             for (let i = 0; i < paxState.inf; i++) travelers.push({ type: 'infant', age: 1, room: 1 });
 
-            const isRoundTrip = document.querySelector('input[name="ft_type"]:checked')?.value === 'round' || true;
+            const ftTypeEl = document.querySelector('input[name="ft_type"]:checked');
+            const isRoundTrip = ftTypeEl ? ftTypeEl.value === 'round' : true;
             const cabin = document.getElementById('fl-cabin-val')?.textContent || 'Economy';
+            const departureDate = dates[0] || def.startStr;
 
             const expectation = {
                 is_multi_city: false,
@@ -2027,10 +2029,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 des_code: getCode('fl-dest', 'BKK'),
                 des_type: 'airport_code',
                 fl_cabin_class: cabin,
-                fl_departure_date: dates[0] || def.startStr,
-                fl_round_trip: isRoundTrip
+                fl_departure_date: departureDate,
+                fl_round_trip: isRoundTrip,
+                fl_return_date: isRoundTrip ? (dates[1] || def.endStr) : departureDate
             };
-            if (isRoundTrip) expectation.fl_return_date = dates[1] || def.endStr;
 
             go({
                 process: 'flight',
