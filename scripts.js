@@ -607,6 +607,56 @@ async function fetchLocations(query, type, countryCode, placeId) {
     }
 }
 
+// ─── Supplementary Property Name Search ─────────────────────────────────────
+// The /api/places endpoint matches search_text against location names, so
+// queries like "hilton london" return destinations but zero hotel properties.
+// The /api/properties endpoint searches property names directly and handles
+// brand + city queries correctly (e.g. "hilton london" → 17 Hilton London hotels).
+
+async function fetchProperties(query, countryCode) {
+    const url = new URL(`${API_BASE_URL}/properties`);
+    url.searchParams.append("search_text", query);
+    url.searchParams.append("language_code", "en-US");
+    url.searchParams.append("per_page", "10");
+    url.searchParams.append("page", "1");
+
+    try {
+        const res = await fetch(url);
+        if (!res.ok) throw new Error("Properties API Failed");
+        const data = await res.json();
+        const raw = data.result || [];
+
+        let results = raw.map(p => {
+            // Extract human-readable city from street_address
+            // e.g. "225 Edgware Road, London, England, W2 1JU, GB" → "London"
+            const addrParts = (p.street_address || '').split(', ');
+            const cityFromAddr = addrParts.length >= 3 ? addrParts[1] : '';
+
+            return {
+                name: p.name,
+                code: p.expedia_id || p.id,
+                type: 'hotel',
+                id: p.id,
+                city: cityFromAddr || p.location?.city_code || '',
+                country: p.location?.country_code || '',
+                ancestors: p.places || [],
+                stars: p.star || 0,
+                icon: '🏨'
+            };
+        });
+
+        // Client-side country filter (same as fetchLocations)
+        if (countryCode) {
+            results = results.filter(r => r.country === countryCode);
+        }
+
+        return results;
+    } catch (e) {
+        console.warn("Properties API Error:", e);
+        return [];
+    }
+}
+
 function getPlaceIdFromAncestors(ancestors) {
     if (!ancestors || !Array.isArray(ancestors)) return null;
     const findId = (t) => ancestors.find(a => a.type === t)?.id;
@@ -1661,6 +1711,15 @@ function setupAutocomplete(input) {
             let results;
             const eligibleForInjection = (type === 'any' || type === 'tour_region');
 
+            // ─── Supplementary property-name search ──────────────────────────
+            // The /api/places endpoint can't search hotel property names well
+            // (e.g. "hilton london" → 0 properties). Fire a parallel call to
+            // /api/properties which searches by property name directly.
+            const needsPropertySearch = (type === 'any' || type === 'hotel');
+            const propertyPromise = needsPropertySearch
+                ? fetchProperties(query, countryFilter).catch(() => [])
+                : Promise.resolve([]);
+
             if (eligibleForInjection) {
                 const popularMatches = findPopularPrefixMatches(query);
 
@@ -1672,8 +1731,9 @@ function setupAutocomplete(input) {
                             .catch(() => []) // Graceful fallback: ignore failed supplementary calls
                     );
 
-                    const [primaryResults, ...supplementaryBatches] = await Promise.all([
+                    const [primaryResults, propertyResults, ...supplementaryBatches] = await Promise.all([
                         primaryPromise,
+                        propertyPromise,
                         ...supplementaryPromises
                     ]);
 
@@ -1681,6 +1741,12 @@ function setupAutocomplete(input) {
                     const seenIds = new Set();
                     results = [];
                     for (const r of primaryResults) {
+                        if (!seenIds.has(r.id)) {
+                            seenIds.add(r.id);
+                            results.push(r);
+                        }
+                    }
+                    for (const r of propertyResults) {
                         if (!seenIds.has(r.id)) {
                             seenIds.add(r.id);
                             results.push(r);
@@ -1695,7 +1761,20 @@ function setupAutocomplete(input) {
                         }
                     }
                 } else {
-                    results = await fetchLocations(query, type, countryFilter, placeIdFilter);
+                    const [placesResults, propertyResults] = await Promise.all([
+                        fetchLocations(query, type, countryFilter, placeIdFilter),
+                        propertyPromise
+                    ]);
+
+                    // Merge: places first, then property-name results
+                    const seenIds = new Set();
+                    results = [];
+                    for (const r of placesResults) {
+                        if (!seenIds.has(r.id)) { seenIds.add(r.id); results.push(r); }
+                    }
+                    for (const r of propertyResults) {
+                        if (!seenIds.has(r.id)) { seenIds.add(r.id); results.push(r); }
+                    }
                 }
             } else if (type === 'hotel' && (input.id === 'tr-dropoff' || input.id === 'tr-pickup')) {
                 // ─── City-name supplementary search for transfer hotels ─────────
@@ -1708,10 +1787,11 @@ function setupAutocomplete(input) {
                 const cityName = otherValue ? extractCityName(otherValue) : '';
 
                 if (cityName && !query.toLowerCase().includes(cityName.toLowerCase())) {
-                    const [primaryResults, supplementaryResults] = await Promise.all([
+                    const [primaryResults, supplementaryResults, propertyResults] = await Promise.all([
                         fetchLocations(query, type, countryFilter, placeIdFilter),
                         fetchLocations(query + ' ' + cityName, type, countryFilter, null)
-                            .catch(() => [])
+                            .catch(() => []),
+                        propertyPromise
                     ]);
 
                     // Merge and deduplicate by id (primary results take precedence)
@@ -1723,8 +1803,23 @@ function setupAutocomplete(input) {
                     for (const r of supplementaryResults) {
                         if (!seenIds.has(r.id)) { seenIds.add(r.id); results.push(r); }
                     }
+                    for (const r of propertyResults) {
+                        if (!seenIds.has(r.id)) { seenIds.add(r.id); results.push(r); }
+                    }
                 } else {
-                    results = await fetchLocations(query, type, countryFilter, placeIdFilter);
+                    const [placesResults, propertyResults] = await Promise.all([
+                        fetchLocations(query, type, countryFilter, placeIdFilter),
+                        propertyPromise
+                    ]);
+
+                    const seenIds = new Set();
+                    results = [];
+                    for (const r of placesResults) {
+                        if (!seenIds.has(r.id)) { seenIds.add(r.id); results.push(r); }
+                    }
+                    for (const r of propertyResults) {
+                        if (!seenIds.has(r.id)) { seenIds.add(r.id); results.push(r); }
+                    }
                 }
             } else {
                 results = await fetchLocations(query, type, countryFilter, placeIdFilter);
