@@ -639,7 +639,8 @@ label:hover .pkg-checkbox-label {
     border-bottom: 0;
 }
 
-.ac-item:hover {
+.ac-item:hover,
+.ac-item-active {
     background-color: #F5F8FF;
 }
 
@@ -661,7 +662,8 @@ label:hover .pkg-checkbox-label {
     font-size: 0.72rem;
 }
 
-.ac-item-indented:hover {
+.ac-item-indented:hover,
+.ac-item-active.ac-item-indented {
     background-color: #EEF2FF;
 }
 
@@ -672,7 +674,8 @@ label:hover .pkg-checkbox-label {
     padding-left: calc(0.75rem - 3px);
 }
 
-.ac-item-city:hover {
+.ac-item-city:hover,
+.ac-item-active.ac-item-city {
     background-color: #EEF2FF;
 }
 

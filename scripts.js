@@ -1679,12 +1679,80 @@ function setupAutocomplete(input) {
     let debounceTimer;
     let requestGeneration = 0; // Stale-request guard: discard results from superseded keystrokes
 
+    // ─── Keyboard navigation & selection tracking ───────────────────────
+    let highlightIndex = -1;
+    let mouseSelecting = false;
+
+    function getItems() {
+        return container.querySelectorAll('.ac-item');
+    }
+
+    function setHighlight(newIndex) {
+        const items = getItems();
+        if (highlightIndex >= 0 && items[highlightIndex]) {
+            items[highlightIndex].classList.remove('ac-item-active');
+        }
+        highlightIndex = newIndex;
+        if (highlightIndex >= 0 && items[highlightIndex]) {
+            items[highlightIndex].classList.add('ac-item-active');
+            items[highlightIndex].scrollIntoView({ block: 'nearest' });
+        }
+    }
+
+    function commitSelection(index) {
+        const items = getItems();
+        if (items.length === 0) return false;
+        const targetIndex = (index >= 0 && index < items.length) ? index : 0;
+        items[targetIndex].click();
+        highlightIndex = -1;
+        return true;
+    }
+
+    // Arrow keys, Enter, Tab, Escape
+    input.addEventListener('keydown', (e) => {
+        if (container.classList.contains('hidden')) return;
+        const items = getItems();
+        if (items.length === 0) return;
+
+        if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            setHighlight(highlightIndex < items.length - 1 ? highlightIndex + 1 : 0);
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            setHighlight(highlightIndex > 0 ? highlightIndex - 1 : items.length - 1);
+        } else if (e.key === 'Enter') {
+            e.preventDefault();
+            commitSelection(highlightIndex);
+        } else if (e.key === 'Tab') {
+            // Commit selection but allow Tab to move focus naturally
+            commitSelection(highlightIndex);
+        } else if (e.key === 'Escape') {
+            container.classList.add('hidden');
+            highlightIndex = -1;
+        }
+    });
+
+    // Track mouse hover to update highlight (supports "scroll and tab" workflow)
+    container.addEventListener('mouseover', (e) => {
+        const item = e.target.closest('.ac-item');
+        if (!item) return;
+        const items = getItems();
+        const idx = Array.from(items).indexOf(item);
+        if (idx >= 0) setHighlight(idx);
+    });
+
+    // Flag to prevent blur handler from double-committing when clicking an item
+    container.addEventListener('mousedown', () => {
+        mouseSelecting = true;
+    });
+
     input.addEventListener('input', () => {
         const query = input.value;
         const type = input.dataset.type || 'any'; // Dynamic type check
 
         if (query.length < 3) {
             container.classList.add('hidden');
+            highlightIndex = -1;
             return;
         }
 
@@ -1715,9 +1783,22 @@ function setupAutocomplete(input) {
             // The /api/places endpoint can't search hotel property names well
             // (e.g. "hilton london" → 0 properties). Fire a parallel call to
             // /api/properties which searches by property name directly.
+            // For transfer hotel fields, append the airport's city name so that
+            // brand-only queries like "hilton" become "hilton London" and match
+            // the correct branded properties in that city.
+            let propertySearchQuery = query;
+            if (type === 'hotel' && (input.id === 'tr-dropoff' || input.id === 'tr-pickup')) {
+                const propOtherId = input.id === 'tr-pickup' ? 'tr-dropoff' : 'tr-pickup';
+                const propOtherInput = document.getElementById(propOtherId);
+                const propOtherValue = propOtherInput ? propOtherInput.value : '';
+                const propCityName = propOtherValue ? extractCityName(propOtherValue) : '';
+                if (propCityName && !query.toLowerCase().includes(propCityName.toLowerCase())) {
+                    propertySearchQuery = query + ' ' + propCityName;
+                }
+            }
             const needsPropertySearch = (type === 'any' || type === 'hotel');
             const propertyPromise = needsPropertySearch
-                ? fetchProperties(query, countryFilter).catch(() => [])
+                ? fetchProperties(propertySearchQuery, null).catch(() => [])
                 : Promise.resolve([]);
 
             if (eligibleForInjection) {
@@ -1829,6 +1910,7 @@ function setupAutocomplete(input) {
             if (thisGeneration !== requestGeneration) return;
 
             container.innerHTML = '';
+            highlightIndex = -1;
             if (results.length === 0) {
                 container.innerHTML = '<div class="p-3 text-sm text-gray-400">No results found</div>';
             } else {
@@ -1845,9 +1927,19 @@ function setupAutocomplete(input) {
         }
     });
 
-    // Close on blur with delay to allow click selection
+    // Close on blur — commit highlighted selection when leaving the field
     input.addEventListener('blur', () => {
-        setTimeout(() => container.classList.add('hidden'), 200);
+        setTimeout(() => {
+            if (!mouseSelecting && !container.classList.contains('hidden')) {
+                // If user had highlighted an item (keyboard or hover), commit it
+                if (highlightIndex >= 0) {
+                    commitSelection(highlightIndex);
+                }
+            }
+            mouseSelecting = false;
+            container.classList.add('hidden');
+            highlightIndex = -1;
+        }, 200);
     });
 }
 
