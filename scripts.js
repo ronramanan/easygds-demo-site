@@ -1501,8 +1501,9 @@ function groupTourResults(results, query) {
 }
 
 function groupTransferHotelResults(results) {
-    // Transfer dropoff: all hotels, sort by star rating desc
-    const sorted = [...results].sort((a, b) => (b.stars || 0) - (a.stars || 0) || (a.name || '').localeCompare(b.name || ''));
+    // Transfer dropoff: hotels only — filter out airports/destinations that may leak in
+    const hotels = results.filter(r => r.type === 'hotel');
+    const sorted = [...hotels].sort((a, b) => (b.stars || 0) - (a.stars || 0) || (a.name || '').localeCompare(b.name || ''));
     if (sorted.length === 0) {
         return [{ label: null, items: [] }];
     }
@@ -1687,7 +1688,8 @@ function setupAutocomplete(input) {
         return container.querySelectorAll('.ac-item');
     }
 
-    function setHighlight(newIndex) {
+    function setHighlight(newIndex, scroll) {
+        if (newIndex === highlightIndex) return;
         const items = getItems();
         if (highlightIndex >= 0 && items[highlightIndex]) {
             items[highlightIndex].classList.remove('ac-item-active');
@@ -1695,7 +1697,7 @@ function setupAutocomplete(input) {
         highlightIndex = newIndex;
         if (highlightIndex >= 0 && items[highlightIndex]) {
             items[highlightIndex].classList.add('ac-item-active');
-            items[highlightIndex].scrollIntoView({ block: 'nearest' });
+            if (scroll) items[highlightIndex].scrollIntoView({ block: 'nearest' });
         }
     }
 
@@ -1716,10 +1718,10 @@ function setupAutocomplete(input) {
 
         if (e.key === 'ArrowDown') {
             e.preventDefault();
-            setHighlight(highlightIndex < items.length - 1 ? highlightIndex + 1 : 0);
+            setHighlight(highlightIndex < items.length - 1 ? highlightIndex + 1 : 0, true);
         } else if (e.key === 'ArrowUp') {
             e.preventDefault();
-            setHighlight(highlightIndex > 0 ? highlightIndex - 1 : items.length - 1);
+            setHighlight(highlightIndex > 0 ? highlightIndex - 1 : items.length - 1, true);
         } else if (e.key === 'Enter') {
             e.preventDefault();
             commitSelection(highlightIndex);
@@ -1741,8 +1743,11 @@ function setupAutocomplete(input) {
         if (idx >= 0) setHighlight(idx);
     });
 
-    // Flag to prevent blur handler from double-committing when clicking an item
-    container.addEventListener('mousedown', () => {
+    // Prevent input from losing focus when clicking inside the dropdown.
+    // This is the standard pattern for custom dropdowns — it keeps the input
+    // focused so blur doesn't race with the click event.
+    container.addEventListener('mousedown', (e) => {
+        e.preventDefault();
         mouseSelecting = true;
     });
 
@@ -1783,23 +1788,40 @@ function setupAutocomplete(input) {
             // The /api/places endpoint can't search hotel property names well
             // (e.g. "hilton london" → 0 properties). Fire a parallel call to
             // /api/properties which searches by property name directly.
-            // For transfer hotel fields, append the airport's city name so that
-            // brand-only queries like "hilton" become "hilton London" and match
-            // the correct branded properties in that city.
-            let propertySearchQuery = query;
-            if (type === 'hotel' && (input.id === 'tr-dropoff' || input.id === 'tr-pickup')) {
+            // For transfer hotel fields we fire TWO property searches:
+            //   1. Raw query (handles full-name searches like "hilton petaling jaya")
+            //   2. Query + airport city name (handles brand-only like "hilton" → "hilton Kuala Lumpur")
+            // This avoids the city name breaking full-name matches.
+            const needsPropertySearch = (type === 'any' || type === 'hotel');
+            let propertyPromise;
+            if (!needsPropertySearch) {
+                propertyPromise = Promise.resolve([]);
+            } else if (type === 'hotel' && (input.id === 'tr-dropoff' || input.id === 'tr-pickup')) {
                 const propOtherId = input.id === 'tr-pickup' ? 'tr-dropoff' : 'tr-pickup';
                 const propOtherInput = document.getElementById(propOtherId);
                 const propOtherValue = propOtherInput ? propOtherInput.value : '';
                 const propCityName = propOtherValue ? extractCityName(propOtherValue) : '';
+
                 if (propCityName && !query.toLowerCase().includes(propCityName.toLowerCase())) {
-                    propertySearchQuery = query + ' ' + propCityName;
+                    // Fire both raw + city-appended searches in parallel, merge & dedupe
+                    // Raw search uses country filter to avoid irrelevant foreign properties
+                    // (e.g. "hilton" returning Hilton Head US when airport is KUL)
+                    propertyPromise = Promise.all([
+                        fetchProperties(query, countryFilter).catch(() => []),
+                        fetchProperties(query + ' ' + propCityName, null).catch(() => [])
+                    ]).then(([rawResults, cityResults]) => {
+                        const seen = new Set();
+                        const merged = [];
+                        for (const r of cityResults) { if (!seen.has(r.id)) { seen.add(r.id); merged.push(r); } }
+                        for (const r of rawResults) { if (!seen.has(r.id)) { seen.add(r.id); merged.push(r); } }
+                        return merged;
+                    });
+                } else {
+                    propertyPromise = fetchProperties(query, null).catch(() => []);
                 }
+            } else {
+                propertyPromise = fetchProperties(query, null).catch(() => []);
             }
-            const needsPropertySearch = (type === 'any' || type === 'hotel');
-            const propertyPromise = needsPropertySearch
-                ? fetchProperties(propertySearchQuery, null).catch(() => [])
-                : Promise.resolve([]);
 
             if (eligibleForInjection) {
                 const popularMatches = findPopularPrefixMatches(query);
