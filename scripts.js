@@ -33,7 +33,7 @@ window.openDealModal = function (city, code) {
     const modalDates = document.getElementById('modal-dates');
     if (modalDates && window.flatpickr) {
         if (!modalDates._flatpickr) {
-            flatpickr(modalDates, { mode: "range", dateFormat: "Y-m-d", minDate: "today", showMonths: window.innerWidth >= 640 ? 2 : 1 });
+            flatpickr(modalDates, { mode: "range", dateFormat: "Y-m-d", minDate: "today", showMonths: window.innerWidth >= 768 ? 2 : 1 });
         }
         const fp = modalDates._flatpickr;
         if (fp) {
@@ -2154,7 +2154,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ================= FLIGHT LOGIC =================
-    flatpickr('#fl-dates', { mode: "range", dateFormat: "Y-m-d", minDate: "today", showMonths: window.innerWidth >= 640 ? 2 : 1 });
+    flatpickr('#fl-dates', { mode: "range", dateFormat: "Y-m-d", minDate: "today", showMonths: window.innerWidth >= 768 ? 2 : 1 });
 
     // Trip Type
     document.querySelectorAll('input[name="ft_type"]').forEach(radio => {
@@ -2318,8 +2318,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ================= PACKAGE LOGIC =================
-    flatpickr('#pkg-dates', { mode: "range", dateFormat: "Y-m-d", minDate: "today", showMonths: window.innerWidth >= 640 ? 2 : 1 });
-    flatpickr('#pkg-hotel-dates', { mode: "range", dateFormat: "Y-m-d", minDate: "today", showMonths: window.innerWidth >= 640 ? 2 : 1 });
+    flatpickr('#pkg-dates', { mode: "range", dateFormat: "Y-m-d", minDate: "today", showMonths: window.innerWidth >= 768 ? 2 : 1 });
+    flatpickr('#pkg-hotel-dates', { mode: "range", dateFormat: "Y-m-d", minDate: "today", showMonths: window.innerWidth >= 768 ? 2 : 1 });
 
     const pkgCheck = document.getElementById('pkg-partial-hotel');
     const pkgHotelCont = document.getElementById('pkg-partial-dates-container');
@@ -2490,7 +2490,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // ================= HOTEL LOGIC =================
-    flatpickr('#ht-dates', { mode: "range", dateFormat: "Y-m-d", minDate: "today", showMonths: window.innerWidth >= 640 ? 2 : 1 });
+    flatpickr('#ht-dates', { mode: "range", dateFormat: "Y-m-d", minDate: "today", showMonths: window.innerWidth >= 768 ? 2 : 1 });
 
     // Hotel Traveler state reuse similar structure but separate instance
     const htTravelerState = [{ id: 1, adults: 2, children: [], infants: 0 }];
@@ -2646,7 +2646,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // ================= TRANSFER LOGIC =================
-    flatpickr('#tr-date', { dateFormat: "Y-m-d", minDate: "today", showMonths: window.innerWidth >= 640 ? 2 : 1 });
+    flatpickr('#tr-date', { dateFormat: "Y-m-d", minDate: "today", showMonths: window.innerWidth >= 768 ? 2 : 1 });
 
     // Time Populator
     const trTimeOpts = document.getElementById('tr-time-opts');
@@ -2751,7 +2751,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // ================= TOUR LOGIC =================
-    flatpickr('#tour-dates', { mode: "range", dateFormat: "Y-m-d", minDate: "today", showMonths: window.innerWidth >= 640 ? 2 : 1 });
+    flatpickr('#tour-dates', { mode: "range", dateFormat: "Y-m-d", minDate: "today", showMonths: window.innerWidth >= 768 ? 2 : 1 });
 
     // Tour Traveler State
     const tourPax = (function () {
@@ -2978,7 +2978,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // --- Flatpickr ---
-        const modalFp = flatpickr('#modal-dates', { mode: "range", dateFormat: "Y-m-d", minDate: "today", showMonths: window.innerWidth >= 640 ? 2 : 1 });
+        const modalFp = flatpickr('#modal-dates', { mode: "range", dateFormat: "Y-m-d", minDate: "today", showMonths: window.innerWidth >= 768 ? 2 : 1 });
 
         // --- Open/Close Logic ---
         // --- Open/Close Logic handled in HTML now to ensure reliability ---
