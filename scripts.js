@@ -33,7 +33,7 @@ window.openDealModal = function (city, code) {
     const modalDates = document.getElementById('modal-dates');
     if (modalDates && window.flatpickr) {
         if (!modalDates._flatpickr) {
-            flatpickr(modalDates, { mode: "range", dateFormat: "Y-m-d", minDate: "today" });
+            flatpickr(modalDates, { mode: "range", dateFormat: "Y-m-d", minDate: "today", showMonths: window.innerWidth >= 640 ? 2 : 1 });
         }
         const fp = modalDates._flatpickr;
         if (fp) {
@@ -511,9 +511,9 @@ function formatDate(date) {
 
 function getDefaultDates() {
     const start = new Date();
-    start.setDate(start.getDate() + 14); // 2 weeks out
+    start.setDate(start.getDate() + 6); // 6 days out
     const end = new Date();
-    end.setDate(end.getDate() + 17); // 3 days trip
+    end.setDate(end.getDate() + 9); // 3-day trip
     const fmt = (d) => d.toISOString().split('T')[0];
     return { startStr: fmt(start), endStr: fmt(end) };
 }
@@ -1653,10 +1653,75 @@ function renderGroupedResults(container, sections, input) {
                     delete input.dataset.placeIdFilter;
                 }
                 container.classList.add('hidden');
+                showAutocompleteChip(input, res.name, res.code, res.type);
             };
             container.appendChild(item);
         });
     });
+}
+
+// ─── Autocomplete Chip Helpers ─────────────────────────────────────────
+function showAutocompleteChip(input, name, code, type) {
+    const wrapper = input.closest('.flex.flex-col') || input.parentElement;
+    // Remove any existing chip DOM only (preserve dataset — it was just set by caller)
+    const oldChip = wrapper.querySelector('.ac-chip');
+    if (oldChip) oldChip.remove();
+
+    const chip = document.createElement('div');
+    chip.className = 'ac-chip';
+
+    const textSpan = document.createElement('span');
+    textSpan.className = 'ac-chip-text';
+    textSpan.textContent = name;
+    chip.appendChild(textSpan);
+
+    // Show code badge for airports
+    if (code && type === 'airport_code') {
+        const codeBadge = document.createElement('span');
+        codeBadge.className = 'ac-chip-code';
+        codeBadge.textContent = code;
+        chip.appendChild(codeBadge);
+    }
+
+    const clearBtn = document.createElement('button');
+    clearBtn.className = 'ac-chip-clear';
+    clearBtn.innerHTML = '×';
+    clearBtn.type = 'button';
+    clearBtn.tabIndex = -1;
+    clearBtn.setAttribute('aria-label', 'Clear selection');
+    clearBtn.onclick = (e) => {
+        e.stopPropagation();
+        clearAutocompleteChip(input);
+        input.focus();
+    };
+    chip.appendChild(clearBtn);
+
+    // Only the X button clears — clicking the chip text does nothing
+    chip.onclick = (e) => {
+        e.stopPropagation();
+    };
+
+    // Hide the input, show the chip
+    input.style.display = 'none';
+    wrapper.appendChild(chip);
+    input.dataset._hasChip = '1';
+}
+
+function clearAutocompleteChip(input) {
+    const wrapper = input.closest('.flex.flex-col') || input.parentElement;
+    const existingChip = wrapper.querySelector('.ac-chip');
+    if (existingChip) {
+        existingChip.remove();
+    }
+    input.style.display = '';
+    input.value = '';
+    delete input.dataset.code;
+    delete input.dataset.id;
+    delete input.dataset.selType;
+    delete input.dataset.rawType;
+    delete input.dataset.country;
+    delete input.dataset.placeIdFilter;
+    delete input.dataset._hasChip;
 }
 
 function setupAutocomplete(input) {
@@ -2089,7 +2154,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ================= FLIGHT LOGIC =================
-    flatpickr('#fl-dates', { mode: "range", dateFormat: "Y-m-d", minDate: "today" });
+    flatpickr('#fl-dates', { mode: "range", dateFormat: "Y-m-d", minDate: "today", showMonths: window.innerWidth >= 640 ? 2 : 1 });
 
     // Trip Type
     document.querySelectorAll('input[name="ft_type"]').forEach(radio => {
@@ -2253,8 +2318,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ================= PACKAGE LOGIC =================
-    flatpickr('#pkg-dates', { mode: "range", dateFormat: "Y-m-d", minDate: "today" });
-    flatpickr('#pkg-hotel-dates', { mode: "range", dateFormat: "Y-m-d", minDate: "today" });
+    flatpickr('#pkg-dates', { mode: "range", dateFormat: "Y-m-d", minDate: "today", showMonths: window.innerWidth >= 640 ? 2 : 1 });
+    flatpickr('#pkg-hotel-dates', { mode: "range", dateFormat: "Y-m-d", minDate: "today", showMonths: window.innerWidth >= 640 ? 2 : 1 });
 
     const pkgCheck = document.getElementById('pkg-partial-hotel');
     const pkgHotelCont = document.getElementById('pkg-partial-dates-container');
@@ -2425,7 +2490,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // ================= HOTEL LOGIC =================
-    flatpickr('#ht-dates', { mode: "range", dateFormat: "Y-m-d", minDate: "today" });
+    flatpickr('#ht-dates', { mode: "range", dateFormat: "Y-m-d", minDate: "today", showMonths: window.innerWidth >= 640 ? 2 : 1 });
 
     // Hotel Traveler state reuse similar structure but separate instance
     const htTravelerState = [{ id: 1, adults: 2, children: [], infants: 0 }];
@@ -2581,7 +2646,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // ================= TRANSFER LOGIC =================
-    flatpickr('#tr-date', { dateFormat: "Y-m-d", minDate: "today" });
+    flatpickr('#tr-date', { dateFormat: "Y-m-d", minDate: "today", showMonths: window.innerWidth >= 640 ? 2 : 1 });
 
     // Time Populator
     const trTimeOpts = document.getElementById('tr-time-opts');
@@ -2622,6 +2687,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (v1) i2.dataset[k] = v1; else delete i2.dataset[k];
             };
             swapD('code'); swapD('id'); swapD('selType'); swapD('country'); swapD('placeIdFilter'); swapD('rawType');
+
+            // Swap chips — rebuild from swapped data
+            const has1 = i1.dataset._hasChip === '1';
+            const has2 = i2.dataset._hasChip === '1';
+            // Clear both chips first
+            const w1 = i1.closest('.flex.flex-col') || i1.parentElement;
+            const w2 = i2.closest('.flex.flex-col') || i2.parentElement;
+            const c1 = w1.querySelector('.ac-chip'); if (c1) c1.remove();
+            const c2 = w2.querySelector('.ac-chip'); if (c2) c2.remove();
+            i1.style.display = ''; i2.style.display = '';
+            delete i1.dataset._hasChip; delete i2.dataset._hasChip;
+            // Recreate chips from swapped values
+            if (has2 && i1.value) showAutocompleteChip(i1, i1.value, i1.dataset.code, i1.dataset.selType);
+            if (has1 && i2.value) showAutocompleteChip(i2, i2.value, i2.dataset.code, i2.dataset.selType);
         };
     }
 
@@ -2672,7 +2751,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // ================= TOUR LOGIC =================
-    flatpickr('#tour-dates', { mode: "range", dateFormat: "Y-m-d", minDate: "today" });
+    flatpickr('#tour-dates', { mode: "range", dateFormat: "Y-m-d", minDate: "today", showMonths: window.innerWidth >= 640 ? 2 : 1 });
 
     // Tour Traveler State
     const tourPax = (function () {
@@ -2899,7 +2978,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // --- Flatpickr ---
-        const modalFp = flatpickr('#modal-dates', { mode: "range", dateFormat: "Y-m-d", minDate: "today" });
+        const modalFp = flatpickr('#modal-dates', { mode: "range", dateFormat: "Y-m-d", minDate: "today", showMonths: window.innerWidth >= 640 ? 2 : 1 });
 
         // --- Open/Close Logic ---
         // --- Open/Close Logic handled in HTML now to ensure reliability ---

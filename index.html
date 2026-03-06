@@ -298,9 +298,8 @@
 
                     <!-- Packages Form -->
                     <div class="search-form block" id="packages-form">
-                        <!-- Main Inputs Grid -->
-                        <div
-                            class="search-form-grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 xl:grid-cols-[1fr_1fr_1fr_1fr_1fr] mb-3">
+                        <!-- Row 1: Origin & Destination -->
+                        <div class="search-form-grid grid-cols-1 md:grid-cols-2 mb-2">
                             <!-- Origin -->
                             <div class="search-input-box" data-field="origin">
                                 <i data-lucide="plane-takeoff" class="input-icon"></i>
@@ -319,6 +318,9 @@
                                         placeholder="City or Airport" class="search-input auto-input">
                                 </div>
                             </div>
+                        </div>
+                        <!-- Row 2: Dates, Travellers, Cabin, Search -->
+                        <div class="search-form-grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 mb-2">
                             <!-- Dates -->
                             <div class="search-input-box" data-field="dates">
                                 <i data-lucide="calendar-days" class="input-icon"></i>
@@ -377,43 +379,39 @@
                                         First</div>
                                 </div>
                             </div>
-                        </div>
-
-                        <!-- Bottom Row: Checkbox + Hotel Dates on left, Button on right -->
-                        <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
-                            <!-- Left side: Checkbox and Hotel Dates -->
-                            <div class="flex flex-col gap-3">
-                                <!-- Checkbox -->
-                                <label class="inline-flex items-center gap-3 cursor-pointer group select-none">
-                                    <div class="relative flex items-center">
-                                        <input type="checkbox" id="pkg-partial-hotel"
-                                            class="custom-checkbox peer border-gray-300 hover:border-brand-primary">
-                                        <i data-lucide="check"
-                                            class="check-icon absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 text-white opacity-0 pointer-events-none transition-opacity duration-200"></i>
-                                    </div>
-                                    <span class="text-sm font-medium transition-colors pkg-checkbox-label">
-                                        I only need a hotel for part of my trip
-                                    </span>
-                                </label>
-
-                                <!-- Hotel Dates (shown when checkbox is checked) -->
-                                <div id="pkg-partial-dates-container" class="hidden transition-all duration-300">
-                                    <div class="search-input-box max-w-xs" data-field="hotel-dates">
-                                        <i data-lucide="calendar" class="input-icon"></i>
-                                        <div class="ml-3 w-full min-w-0 flex flex-col justify-center h-full">
-                                            <label class="search-label">Hotel Dates</label>
-                                            <input type="text" id="pkg-hotel-dates" placeholder="Check-in - Check-out"
-                                                class="search-input">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Right side: Search Button -->
+                            <!-- Search Button -->
                             <button id="pkg-search-btn" class="search-btn-primary flex-shrink-0">
                                 <span>Search Packages</span>
                                 <i data-lucide="briefcase"></i>
                             </button>
+                        </div>
+
+                        <!-- Bottom Row: Checkbox + Hotel Dates -->
+                        <div class="flex flex-col gap-3">
+                            <!-- Checkbox -->
+                            <label class="inline-flex items-center gap-3 cursor-pointer group select-none">
+                                <div class="relative flex items-center">
+                                    <input type="checkbox" id="pkg-partial-hotel"
+                                        class="custom-checkbox peer border-gray-300 hover:border-brand-primary">
+                                    <i data-lucide="check"
+                                        class="check-icon absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 text-white opacity-0 pointer-events-none transition-opacity duration-200"></i>
+                                </div>
+                                <span class="text-sm font-medium transition-colors pkg-checkbox-label">
+                                    I only need a hotel for part of my trip
+                                </span>
+                            </label>
+
+                            <!-- Hotel Dates (shown when checkbox is checked) -->
+                            <div id="pkg-partial-dates-container" class="hidden transition-all duration-300">
+                                <div class="search-input-box max-w-xs" data-field="hotel-dates">
+                                    <i data-lucide="calendar" class="input-icon"></i>
+                                    <div class="ml-3 w-full min-w-0 flex flex-col justify-center h-full">
+                                        <label class="search-label">Hotel Dates</label>
+                                        <input type="text" id="pkg-hotel-dates" placeholder="Check-in - Check-out"
+                                            class="search-input">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
