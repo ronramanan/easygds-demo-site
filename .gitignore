@@ -1,0 +1,21 @@
+# Logs
+*.log
+git_log_output.txt
+index_diff.txt
+branches_info.txt
+
+# Windows systems files
+nul
+[Nn][Uu][Ll]
+
+# Node / temp
+node_modules/
+.agent/
+.claude/
+.playwright/
+.playwright-mcp/
+.wrangler/
+
+# Large data files
+scripts/cities15000.*
+scripts/sitelinks-cache.json
