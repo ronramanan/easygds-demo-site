@@ -733,8 +733,8 @@ const AIRPORT_TRAFFIC_RANK = {
     KHH: 176, PKX: 177, XIY: 178, CKG: 179, KMG: 180,
     SEN: 181, BQH: 182, ABZ: 183, INV: 184, SOU: 185,
     EXT: 186, CWL: 187, JER: 188, GCI: 189, IOM: 190,
-    MXP: 191, VCE: 192, NAP: 193, PSA: 194, BLQ: 195,
-    TRN: 196, CTA: 197, PMO: 198, BRI: 199, OLB: 200
+    HHN: 191, MXP: 192, VCE: 193, NAP: 194, PSA: 195,
+    BLQ: 196, TRN: 197, CTA: 198, PMO: 199, BRI: 200, OLB: 201
 };
 
 // Destination popularity rank — top ~2,000 destinations worldwide.
