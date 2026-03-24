@@ -1,0 +1,68 @@
+commit 8b10cd483c486077015201bcf0488e6ccfe5ce98
+Author: pohlipit23 <pohli@live.com>
+Date:   Fri Feb 6 16:26:08 2026 +0800
+
+    style: Adjust logo image height from h-16 to h-12 in header and footer.
+
+commit 32eead7eb6dd938efa326cac19dc3e7b1c2f2bc0
+Author: pohlipit23 <pohli@live.com>
+Date:   Fri Jan 23 11:45:08 2026 +0800
+
+    fixed CORS issues
+
+commit 31b703a5a94bd307146990af6a25dbb58f7c6bf5
+Author: pohlipit23 <pohli@live.com>
+Date:   Fri Jan 23 08:27:20 2026 +0800
+
+    chore: Update API_BASE_URL from localhost to the demo server endpoint.
+
+commit a014540d0dd7797590a8a906cb1a01b198ff1d9f
+Author: pohlipit23 <pohli@live.com>
+Date:   Thu Jan 22 20:56:55 2026 +0800
+
+    Create Flyadeal Holidays version with separated assets
+
+commit 7916e16f5811c2616738a49b9eda900d3ca52ecd
+Author: pohlipit23 <pohli@live.com>
+Date:   Thu Jan 22 14:44:54 2026 +0800
+
+    fix: Update API_BASE_URL to use the new demo.apps domain.
+
+commit 680ef0faed966bd768e0e776e30717b4138d47f9
+Author: pohlipit23 <pohli@live.com>
+Date:   Thu Jan 22 13:53:10 2026 +0800
+
+    feat: Update API base URL to demo endpoint and localize logo asset.
+
+commit 0991529cc98eb34308385636d10d8d93e895b7d1
+Author: pohlipit23 <pohli@live.com>
+Date:   Thu Jan 22 13:32:54 2026 +0800
+
+    feat: Implement initial website design, add numerous image assets, and refactor front-end logic into dedicated CSS and JS files, removing old README and integrated script.
+
+commit f11571511307c872760ab80944b92cafc0e15718
+Merge: 4938760 874badc
+Author: pohlipit23 <63586939+pohlipit23@users.noreply.github.com>
+Date:   Tue Jan 20 20:51:15 2026 +0800
+
+    Merge pull request #2 from pohlipit23/patch-1
+    
+    Update copyright year from 2025 to 2026
+
+commit 874badc0bf6b2386ec9e781595557f78a2f4096e
+Author: pohlipit23 <63586939+pohlipit23@users.noreply.github.com>
+Date:   Tue Jan 20 20:44:25 2026 +0800
+
+    Update copyright year from 2025 to 2026
+
+commit 4938760466af31cc5a0229ef1026bdeef5341c72
+Author: ronramanan <ronramanan@gmail.com>
+Date:   Tue Jan 20 09:01:36 2026 +0000
+
+    Change API base URL to production endpoint
+
+commit df7790dcf74c81f712561ce7a4e77834017a111d
+Author: EasyGDS Bot <bot@easygds.com>
+Date:   Tue Jan 20 10:44:44 2026 +0800
+
+    Initial commit of EasyGDS Homepage Offers

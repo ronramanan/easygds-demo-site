@@ -1,0 +1,2 @@
+origin	https://github.com/ronramanan/easygds-demo-site (fetch)
+origin	https://github.com/ronramanan/easygds-demo-site (push)

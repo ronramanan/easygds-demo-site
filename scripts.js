@@ -600,6 +600,12 @@ async function fetchLocations(query, type, countryCode, placeId) {
             results = results.filter(r => r.country === countryCode);
         }
 
+        // Filter non-commercial airports (e.g. QEF-Frankfurt Egelsbach) from
+        // airport-only queries. Only keep airports in the traffic rank table.
+        if (type === 'airport_code') {
+            results = results.filter(r => AIRPORT_TRAFFIC_RANK[r.code] !== undefined);
+        }
+
         return results;
     } catch (e) {
         console.warn("API Error:", e);
@@ -1368,11 +1374,44 @@ function groupAirportResults(results, query) {
     return sections;
 }
 
+// ─── Client-side Destination Relevance Filter ──────────────────────────────
+// The /api/places endpoint matches search_text against the full location
+// hierarchy — city, state, country. A query like "new york" returns places
+// such as Sydney (in New South Wales) or Auckland (in New Zealand) because
+// "new" appears in a parent region name. This filter keeps only places whose
+// *own* name (city / short name) meaningfully matches the query.
+function filterRelevantDestinations(destinations, query) {
+    const q = query.toLowerCase();
+    return destinations.filter(d => {
+        const cityLower = (d.city || '').toLowerCase();
+        const nameLower = (d.name || '').toLowerCase();
+        // 1. Place name starts with the query ("new york" → "New York City")
+        if (cityLower.startsWith(q)) return true;
+        // 2. Query starts with the place name ("new york city" → "New York")
+        if (q.startsWith(cityLower) && cityLower.length >= 2) return true;
+        // 3. Long name starts with the query (catches formatted names)
+        if (nameLower.startsWith(q)) return true;
+        // 4. For countries / regions: check if the raw type is 'country' and
+        //    the country or region name contains the query
+        if (d.rawType === 'country' && cityLower.includes(q)) return true;
+        return false;
+    });
+}
+
 function groupHotelDestResults(results, query) {
     // Separate destinations (places) from hotels (properties)
-    const destinations = results.filter(r => r.type === 'place_id');
+    let destinations = results.filter(r => r.type === 'place_id');
     const hotels = results.filter(r => r.type === 'hotel');
     const airports = results.filter(r => r.type === 'airport_code');
+
+    // ─── Client-side relevance filter ────────────────────────────────────
+    // The /api/places endpoint matches search_text against *any* part of
+    // the location hierarchy (city, state, country). This means "new york"
+    // returns Sydney (New South Wales), Auckland (New Zealand), etc.
+    // Filter to keep only places whose own name actually matches the query.
+    if (query && query.length >= 2) {
+        destinations = filterRelevantDestinations(destinations, query);
+    }
 
     const sections = [];
 
@@ -1441,9 +1480,14 @@ function groupHotelDestResults(results, query) {
 
 function groupTourResults(results, query) {
     // Tours: separate destinations (countries, regions, cities) from any other types
-    const destinations = results.filter(r => r.type === 'place_id');
+    let destinations = results.filter(r => r.type === 'place_id');
     const airports = results.filter(r => r.type === 'airport_code');
     const other = results.filter(r => r.type !== 'place_id' && r.type !== 'airport_code');
+
+    // Client-side relevance filter (same as hotel destinations)
+    if (query && query.length >= 2) {
+        destinations = filterRelevantDestinations(destinations, query);
+    }
 
     const sections = [];
 
@@ -2035,6 +2079,16 @@ function getCode(id, def) {
     return (el && el.dataset.code) ? el.dataset.code : def;
 }
 
+/** Return the correct place type for a flight/package field.
+ *  "All Airports" entries (rawType=multi_city_vicinity) use city_code;
+ *  individual airports use airport_code. */
+function getPlaceType(id, def = 'airport_code') {
+    const el = document.getElementById(id);
+    if (!el) return def;
+    if (el.dataset.rawType === 'multi_city_vicinity') return 'city_code';
+    return el.dataset.selType || def;
+}
+
 function validateInputs(ids) {
     let isValid = true;
     ids.forEach(id => {
@@ -2299,9 +2353,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const expectation = {
                 is_multi_city: false,
                 start_place_code: getCode('fl-origin', 'SIN'),
-                start_place_type: 'airport_code',
+                start_place_type: getPlaceType('fl-origin'),
                 des_code: getCode('fl-dest', 'BKK'),
-                des_type: 'airport_code',
+                des_type: getPlaceType('fl-dest'),
                 fl_cabin_class: cabin,
                 fl_departure_date: departureDate,
                 fl_round_trip: isRoundTrip,
@@ -2474,11 +2528,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 fl_return_date: dates[1] || def.endStr,
                 fl_round_trip: true,
                 start_place_code: originCode,
-                start_place_type: 'airport_code',
+                start_place_type: getPlaceType('pkg-origin'),
                 des_code: destCode,
-                des_type: 'airport_code',
+                des_type: getPlaceType('pkg-dest'),
                 ht_des_code: destCode,
-                ht_des_type: 'airport_code',
+                ht_des_type: getPlaceType('pkg-dest'),
                 ht_checkin_date: dates[0] || def.startStr,
                 ht_checkout_date: dates[1] || def.endStr,
                 is_separate: isSep,
@@ -2621,7 +2675,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     ht_des_code: code,
                     ht_checkin_date: dates[0] || def.startStr,
                     ht_checkout_date: dates[1] || def.endStr,
-                    ht_des_type: 'airport_code',
+                    ht_des_type: getPlaceType('ht-dest'),
                     is_separate: false
                 }),
                 travelers: JSON.stringify(travelersApi)
@@ -3017,14 +3071,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     fl_return_date: dates[1] || def.endStr,
                     fl_round_trip: true,
                     start_place_code: originCode,
-                    start_place_type: 'airport_code',
+                    start_place_type: getPlaceType('modal-origin'),
                     des_code: destCode,
-                    des_type: 'airport_code',
+                    des_type: getPlaceType('modal-dest'),
                     ht_des_code: destCode,
-                    ht_des_type: 'airport_code',
+                    ht_des_type: getPlaceType('modal-dest'),
                     ht_checkin_date: dates[0] || def.startStr,
                     ht_checkout_date: dates[1] || def.endStr,
-                    ht_des_type: 'airport_code',
                     is_separate: false,
                     stars: null
                 }),
