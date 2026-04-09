@@ -492,7 +492,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ================= CONFIGURATION =================
-const API_BASE_URL = 'https://demo.apps.easygds.com/api';
+const API_BASE_URL = '/api';
 const SESSION_ID = 'demo_session_dynamic_homepage_' + Math.floor(Math.random() * 10000);
 
 // Product IDs
@@ -519,7 +519,7 @@ function getDefaultDates() {
 }
 
 async function fetchLocations(query, type, countryCode, placeId) {
-    const url = new URL(`${API_BASE_URL}/places`);
+    const url = new URL(`${API_BASE_URL}/places`, window.location.origin);
     url.searchParams.append("search_text", query);
     url.searchParams.append("language_code", "en-US");
     // Dynamic types based on input data-type
@@ -565,6 +565,7 @@ async function fetchLocations(query, type, countryCode, placeId) {
                 city: item.location?.city_code || item.city,
                 country: item.country,
                 ancestors: item.ancestors || [],
+                duffelId: item.duffel_id || null,
                 icon: '✈️'
             }));
         } else {
@@ -579,6 +580,7 @@ async function fetchLocations(query, type, countryCode, placeId) {
                 cityCode: p.location?.city_code || null,
                 country: p.location?.country_code,
                 ancestors: p.ancestors || [],
+                duffelId: p.duffel_id || null,
                 icon: p.type === 'airport' ? '✈️' : '📍'
             }));
             const props = (data.properties || []).map(p => ({
@@ -601,9 +603,9 @@ async function fetchLocations(query, type, countryCode, placeId) {
         }
 
         // Filter non-commercial airports (e.g. QEF-Frankfurt Egelsbach) from
-        // airport-only queries. Only keep airports in the traffic rank table.
+        // airport-only queries. Only keep airports bookable via Duffel.
         if (type === 'airport_code') {
-            results = results.filter(r => AIRPORT_TRAFFIC_RANK[r.code] !== undefined);
+            results = results.filter(r => r.duffelId);
         }
 
         return results;
@@ -620,7 +622,7 @@ async function fetchLocations(query, type, countryCode, placeId) {
 // brand + city queries correctly (e.g. "hilton london" → 17 Hilton London hotels).
 
 async function fetchProperties(query, countryCode) {
-    const url = new URL(`${API_BASE_URL}/properties`);
+    const url = new URL(`${API_BASE_URL}/properties`, window.location.origin);
     url.searchParams.append("search_text", query);
     url.searchParams.append("language_code", "en-US");
     url.searchParams.append("per_page", "10");
@@ -731,10 +733,10 @@ const AIRPORT_TRAFFIC_RANK = {
     FUK: 166, CTS: 167, ITM: 168, OKA: 169, GMP: 170,
     PUS: 171, CJU: 172, MFM: 173, TSA: 174, RMQ: 175,
     KHH: 176, PKX: 177, XIY: 178, CKG: 179, KMG: 180,
-    SEN: 181, BQH: 182, ABZ: 183, INV: 184, SOU: 185,
-    EXT: 186, CWL: 187, JER: 188, GCI: 189, IOM: 190,
-    HHN: 191, MXP: 192, VCE: 193, NAP: 194, PSA: 195,
-    BLQ: 196, TRN: 197, CTA: 198, PMO: 199, BRI: 200, OLB: 201
+    BEG: 181, SEN: 182, BQH: 183, ABZ: 184, INV: 185, SOU: 186,
+    EXT: 187, CWL: 188, JER: 189, GCI: 190, IOM: 191,
+    HHN: 192, MXP: 193, VCE: 194, NAP: 195, PSA: 196,
+    BLQ: 197, TRN: 198, CTA: 199, PMO: 200, BRI: 201, OLB: 202
 };
 
 // Destination popularity rank — top ~2,000 destinations worldwide.
