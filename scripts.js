@@ -1,4 +1,4 @@
-window.APP_CURRENCY = 'USD'; // Default Currency
+window.APP_CURRENCY = (document.cookie.match(/(?:^|; )egds_currency=([^;]*)/) || [])[1] || 'USD';
 window.APP_LANGUAGE = 'en-US'; // Default Language
 
 // Global definition to ensure it works regardless of load order or other script failures
@@ -301,6 +301,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function setCurrency(code) {
         window.APP_CURRENCY = code;
+        document.cookie = 'egds_currency=' + code + '; path=/; max-age=31536000; SameSite=Lax';
         // Update Displays
         const dDesk = document.getElementById('currency-display-desktop');
         const dMob = document.getElementById('currency-display-mobile');
@@ -379,6 +380,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Restore saved currency on load
+    if (window.APP_CURRENCY && window.APP_CURRENCY !== 'USD') {
+        setCurrency(window.APP_CURRENCY);
+    }
 
     // --- Language Dropdown Logic ---
     const appLanguages = [
@@ -517,6 +522,36 @@ function getDefaultDates() {
     const fmt = (d) => d.toISOString().split('T')[0];
     return { startStr: fmt(start), endStr: fmt(end) };
 }
+
+// ================= RECENT SEARCHES (Cookie Manager) =================
+const RecentSearches = {
+    COOKIE: 'egds_recent_searches',
+    MAX: 5,
+    _read() {
+        const m = document.cookie.match(new RegExp('(?:^|; )' + this.COOKIE + '=([^;]*)'));
+        if (!m) return [];
+        try { return JSON.parse(decodeURIComponent(m[1])); } catch { return []; }
+    },
+    _write(arr) {
+        const v = encodeURIComponent(JSON.stringify(arr));
+        document.cookie = this.COOKIE + '=' + v + '; path=/; max-age=2592000; SameSite=Lax';
+    },
+    getAll() { return this._read(); },
+    add(entry) {
+        let arr = this._read();
+        // Dedupe by tab + origin + dest + dates
+        arr = arr.filter(e => !(e.tab === entry.tab && e.o === entry.o && e.d === entry.d && e.dd === entry.dd && e.rd === entry.rd));
+        arr.unshift(entry);
+        if (arr.length > this.MAX) arr = arr.slice(0, this.MAX);
+        this._write(arr);
+    },
+    remove(index) {
+        const arr = this._read();
+        arr.splice(index, 1);
+        this._write(arr);
+    },
+    clearAll() { this._write([]); }
+};
 
 async function fetchLocations(query, type, countryCode, placeId) {
     const url = new URL(`${API_BASE_URL}/places`);
@@ -2245,7 +2280,7 @@ document.addEventListener('DOMContentLoaded', () => {
             chdAgesGrid: document.getElementById('chd-ages-grid')
         };
 
-        if (!els.trigger) return { getState: () => state };
+        if (!els.trigger) return { getState: () => state, setState: (s) => { Object.assign(state, s); if (typeof render === 'function') render(); } };
 
         els.trigger.addEventListener('click', (e) => {
             e.preventDefault(); e.stopPropagation();
@@ -2330,7 +2365,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
         render();
-        return { getState: () => state };
+        return { getState: () => state, setState: (s) => { Object.assign(state, s); if (typeof render === 'function') render(); } };
     })();
 
     const flSearchBtn = document.getElementById('flight-search-btn');
@@ -2363,6 +2398,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 fl_round_trip: isRoundTrip,
                 fl_return_date: isRoundTrip ? (dates[1] || def.endStr) : departureDate
             };
+
+            saveFlightSearch();
 
             go({
                 process: 'flight',
@@ -2518,6 +2555,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const cabinVal = document.getElementById('pkg-cabin-val').textContent;
         // isSep already declared above
 
+        savePackageSearch();
+
         go({
             process: 'bundle',
             package_id: PACKAGE_CONFIG_ID,
@@ -2634,6 +2673,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Validation using new highlight function
         if (!validateInputs(['ht-dest', 'ht-dates', 'traveler-summary'])) return;
+
+        saveHotelSearch();
 
         const dates = datesInput.value.split(' to ');
         const def = getDefaultDates();
@@ -2769,6 +2810,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('btn-search-transfer').onclick = () => {
         if (!validateInputs(['tr-pickup', 'tr-dropoff', 'tr-date'])) return;
 
+        saveTransferSearch();
+
         const date = document.getElementById('tr-date').value || getDefaultDates().startStr;
         const time = document.getElementById('tr-time-val').textContent;
         const topInput = document.getElementById('tr-pickup');
@@ -2827,7 +2870,7 @@ document.addEventListener('DOMContentLoaded', () => {
             agesGrid: document.getElementById('tour-chd-ages-grid')
         };
 
-        if (!els.trigger) return { getState: () => state };
+        if (!els.trigger) return { getState: () => state, setState: (s) => { Object.assign(state, s); if (typeof render === 'function') render(); } };
 
         els.trigger.addEventListener('click', (e) => {
             e.preventDefault(); e.stopPropagation();
@@ -2900,11 +2943,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
         render();
-        return { getState: () => state };
+        return { getState: () => state, setState: (s) => { Object.assign(state, s); if (typeof render === 'function') render(); } };
     })();
 
     document.getElementById('tour-search-btn').onclick = () => {
         if (!validateInputs(['tour-dest', 'tour-dates', 'tour-pax-display'])) return;
+
+        saveTourSearch();
 
         const dates = document.getElementById('tour-dates').value.split(' to ');
         const destInput = document.getElementById('tour-dest');
@@ -2935,6 +2980,383 @@ document.addEventListener('DOMContentLoaded', () => {
             travelers: JSON.stringify(travelers)
         });
     };
+    // ================= RECENT SEARCHES STRIP =================
+    const RECENT_MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const RECENT_ICONS = {
+        flights: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>',
+        packages: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>',
+        hotels: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/></svg>',
+        tours: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/><line x1="9" x2="9" y1="3" y2="18"/><line x1="15" x2="15" y1="6" y2="21"/></svg>',
+        transfers: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg>'
+    };
+
+    function fmtShortDate(iso) {
+        if (!iso) return '';
+        const p = iso.split('-');
+        return parseInt(p[2]) + ' ' + RECENT_MONTHS[parseInt(p[1]) - 1];
+    }
+
+    function isDateFuture(iso) {
+        if (!iso) return false;
+        const d = new Date(iso + 'T00:00:00');
+        const today = new Date(); today.setHours(0, 0, 0, 0);
+        return d >= today;
+    }
+
+    // Create the strip DOM element
+    const recentStrip = document.createElement('div');
+    recentStrip.id = 'recent-searches-strip';
+    recentStrip.className = 'recent-searches hidden';
+    recentStrip.innerHTML = '<div class="recent-searches-header">' +
+        '<span class="recent-searches-label">Recent Searches</span>' +
+        '<button class="recent-searches-clear" type="button">Clear</button>' +
+        '</div><div class="recent-searches-scroll"></div>';
+
+    recentStrip.querySelector('.recent-searches-clear').onclick = () => {
+        RecentSearches.clearAll();
+        renderRecentSearches();
+    };
+
+    // Attach strip to the inputs container (outside individual forms, always visible)
+    const searchInputsContainer = document.getElementById('search-inputs-container');
+    if (searchInputsContainer) searchInputsContainer.appendChild(recentStrip);
+
+    function shortName(name) {
+        if (!name) return '';
+        return name.split(',')[0].trim();
+    }
+
+    function buildChipHTML(s) {
+        const icon = RECENT_ICONS[s.tab] || '';
+        let route = '';
+        let details = '';
+
+        if (s.tab === 'flights' || s.tab === 'packages') {
+            const arrow = (s.tt === 'round' || s.tab === 'packages') ? '\u21C6' : '\u2192';
+            route = '<span class="recent-chip-route">' + (s.o || '') + ' <span class="recent-chip-arrow">' + arrow + '</span> ' + (s.d || '') + '</span>';
+        } else if (s.tab === 'hotels' || s.tab === 'tours') {
+            route = '<span class="recent-chip-route">' + shortName(s.dn || s.d) + '</span>';
+        } else if (s.tab === 'transfers') {
+            const arrow = '\u2192';
+            route = '<span class="recent-chip-route">' + (s.o || shortName(s.on)) + ' <span class="recent-chip-arrow">' + arrow + '</span> ' + (s.d || shortName(s.dn)) + '</span>';
+        }
+
+        // Dates
+        let dateStr = '';
+        if (s.tab === 'transfers') {
+            if (s.dd) dateStr = fmtShortDate(s.dd) + (s.time ? ', ' + s.time : '');
+        } else if (s.dd) {
+            dateStr = fmtShortDate(s.dd);
+            if (s.rd) dateStr += ' - ' + fmtShortDate(s.rd);
+        }
+
+        // Pax summary
+        let paxStr = '';
+        const total = (s.a || 0) + (s.c || 0) + (s.i || 0);
+        if (s.rooms) {
+            const roomPax = s.rooms.reduce((a, r) => a + r.adults + (r.children ? r.children.length : 0) + (r.infants || 0), 0);
+            paxStr = roomPax + ' Pax';
+        } else if (total > 0) {
+            paxStr = total + ' Pax';
+        }
+
+        const parts = [dateStr, paxStr].filter(Boolean);
+        if (parts.length) {
+            details = '<span class="recent-chip-details">' +
+                parts.map((p, i) => (i > 0 ? '<span class="recent-chip-sep">\u00B7</span>' : '') + '<span>' + p + '</span>').join('') +
+                '</span>';
+        }
+
+        return '<span class="recent-chip-icon">' + icon + '</span>' + route + details;
+    }
+
+    function renderRecentSearches() {
+        const searches = RecentSearches.getAll();
+        const scroll = recentStrip.querySelector('.recent-searches-scroll');
+        scroll.innerHTML = '';
+
+        if (!searches.length) {
+            recentStrip.classList.add('hidden');
+            return;
+        }
+        recentStrip.classList.remove('hidden');
+
+        searches.forEach((s, idx) => {
+            const chip = document.createElement('div');
+            chip.className = 'recent-chip';
+            chip.innerHTML = buildChipHTML(s) +
+                '<button class="recent-chip-remove" type="button" title="Remove">\u00D7</button>';
+
+            chip.addEventListener('click', (e) => {
+                if (e.target.closest('.recent-chip-remove')) return;
+                restoreSearch(s);
+            });
+
+            chip.querySelector('.recent-chip-remove').addEventListener('click', (e) => {
+                e.stopPropagation();
+                RecentSearches.remove(idx);
+                renderRecentSearches();
+            });
+
+            scroll.appendChild(chip);
+        });
+    }
+
+    // ─── Save helpers (called from each search handler) ───
+    function saveFlightSearch() {
+        const originEl = document.getElementById('fl-origin');
+        const destEl = document.getElementById('fl-dest');
+        const datesVal = document.getElementById('fl-dates').value;
+        const datesParts = datesVal.split(' to ');
+        const ftTypeEl = document.querySelector('input[name="ft_type"]:checked');
+        const isRound = ftTypeEl ? ftTypeEl.value === 'round' : true;
+        const pax = flightPax.getState();
+        RecentSearches.add({
+            tab: 'flights',
+            o: originEl.dataset.code || '', on: (originEl.value || '').substring(0, 30),
+            ot: originEl.dataset.selType || 'airport_code', or: originEl.dataset.rawType || '',
+            d: destEl.dataset.code || '', dn: (destEl.value || '').substring(0, 30),
+            dt: destEl.dataset.selType || 'airport_code', dr: destEl.dataset.rawType || '',
+            dd: datesParts[0] || '', rd: isRound ? (datesParts[1] || '') : null,
+            tt: isRound ? 'round' : 'oneway',
+            a: pax.adt, c: pax.chd, i: pax.inf, ca: [...pax.chdAges],
+            cb: document.getElementById('fl-cabin-val')?.textContent || 'Economy',
+            ts: Date.now()
+        });
+    }
+
+    function savePackageSearch() {
+        const originEl = document.getElementById('pkg-origin');
+        const destEl = document.getElementById('pkg-dest');
+        const dates = document.getElementById('pkg-dates').value.split(' to ');
+        const isSep = document.getElementById('pkg-partial-hotel')?.checked || false;
+        const hotelDates = isSep ? document.getElementById('pkg-hotel-dates').value.split(' to ') : [];
+        const rooms = pkgTravelerState.map(r => ({ adults: r.adults, children: [...r.children], infants: r.infants }));
+        RecentSearches.add({
+            tab: 'packages',
+            o: originEl.dataset.code || '', on: (originEl.value || '').substring(0, 30),
+            ot: originEl.dataset.selType || 'airport_code', or: originEl.dataset.rawType || '',
+            d: destEl.dataset.code || '', dn: (destEl.value || '').substring(0, 30),
+            dt: destEl.dataset.selType || 'airport_code', dr: destEl.dataset.rawType || '',
+            dd: dates[0] || '', rd: dates[1] || '',
+            rooms: rooms,
+            cb: document.getElementById('pkg-cabin-val')?.textContent || 'Economy',
+            sep: isSep,
+            hd: hotelDates[0] || null, hr: hotelDates[1] || null,
+            ts: Date.now()
+        });
+    }
+
+    function saveHotelSearch() {
+        const destEl = document.getElementById('ht-dest');
+        const dates = document.getElementById('ht-dates').value.split(' to ');
+        const rooms = htTravelerState.map(r => ({ adults: r.adults, children: [...r.children] }));
+        RecentSearches.add({
+            tab: 'hotels',
+            d: destEl.dataset.code || '', dn: (destEl.value || '').substring(0, 30),
+            dt: destEl.dataset.selType || 'place_id', dr: destEl.dataset.rawType || '',
+            di: destEl.dataset.id || '',
+            dd: dates[0] || '', rd: dates[1] || '',
+            rooms: rooms,
+            ts: Date.now()
+        });
+    }
+
+    function saveTourSearch() {
+        const destEl = document.getElementById('tour-dest');
+        const dates = document.getElementById('tour-dates').value.split(' to ');
+        const pax = tourPax.getState();
+        RecentSearches.add({
+            tab: 'tours',
+            d: destEl.dataset.code || destEl.dataset.id || '', dn: (destEl.value || '').substring(0, 30),
+            dt: destEl.dataset.selType || 'place_id', dr: destEl.dataset.rawType || '',
+            di: destEl.dataset.id || '',
+            dd: dates[0] || '', rd: dates[1] || '',
+            a: pax.adt, c: pax.chd, i: pax.inf, ca: [...pax.chdAges],
+            ts: Date.now()
+        });
+    }
+
+    function saveTransferSearch() {
+        const pickupEl = document.getElementById('tr-pickup');
+        const dropoffEl = document.getElementById('tr-dropoff');
+        const date = document.getElementById('tr-date').value;
+        const time = document.getElementById('tr-time-val')?.textContent || '12:00';
+        const isFromAirport = pickupEl.dataset.type === 'airport_code';
+        RecentSearches.add({
+            tab: 'transfers',
+            o: pickupEl.dataset.code || '', on: (pickupEl.value || '').substring(0, 30),
+            ot: pickupEl.dataset.selType || pickupEl.dataset.type || '', or: pickupEl.dataset.rawType || '',
+            d: dropoffEl.dataset.code || '', dn: (dropoffEl.value || '').substring(0, 30),
+            dt: dropoffEl.dataset.selType || dropoffEl.dataset.type || '', dr: dropoffEl.dataset.rawType || '',
+            dd: date, time: time,
+            swap: !isFromAirport,
+            ts: Date.now()
+        });
+    }
+
+    // ─── Restore helpers ───
+    async function restoreAutocomplete(inputId, name, code, selType, rawType, extraData) {
+        const el = document.getElementById(inputId);
+        if (!el) return;
+        clearAutocompleteChip(el);
+
+        // Fetch from API using the stored code to get full autocomplete data
+        const inputType = (extraData && extraData.type) || el.dataset.type || 'airport_code';
+        try {
+            const results = await fetchLocations(code, inputType);
+            // Find exact match by code
+            const match = results.find(r => r.code === code) || results.find(r => r.id === code) || results[0];
+            if (match) {
+                el.value = match.name;
+                el.dataset.code = match.code;
+                el.dataset.id = match.id || match.code;
+                el.dataset.selType = match.type;
+                el.dataset.rawType = match.rawType || '';
+                if (match.country) el.dataset.country = match.country;
+                const filterId = getPlaceIdFromAncestors(match.ancestors);
+                if (filterId) el.dataset.placeIdFilter = filterId;
+                else delete el.dataset.placeIdFilter;
+                if (extraData && extraData.type) el.dataset.type = extraData.type;
+                showAutocompleteChip(el, match.name, match.code, match.type);
+                return;
+            }
+        } catch (err) {
+            // Fallback to static restore if API fails
+        }
+
+        // Static fallback
+        el.value = name || '';
+        if (code) el.dataset.code = code;
+        if (selType) el.dataset.selType = selType;
+        if (rawType) el.dataset.rawType = rawType;
+        if (extraData) {
+            if (extraData.id) el.dataset.id = extraData.id;
+            if (extraData.type) el.dataset.type = extraData.type;
+        }
+        if (name && code) {
+            showAutocompleteChip(el, name, code, selType);
+        }
+    }
+
+    function restoreDates(inputId, dep, ret, mode) {
+        const el = document.getElementById(inputId);
+        if (!el) return;
+        const fp = el._flatpickr;
+        if (!fp) return;
+        if (mode === 'single') {
+            if (dep && isDateFuture(dep)) {
+                fp.setDate([dep], true);
+            } else {
+                fp.clear();
+            }
+        } else {
+            if (dep && isDateFuture(dep) && ret && isDateFuture(ret)) {
+                fp.setDate([dep, ret], true);
+            } else {
+                fp.clear();
+            }
+        }
+    }
+
+    function restoreSearch(entry) {
+        // Switch to the correct tab
+        const tabBtn = document.querySelector('.search-tab[data-target="' + entry.tab + '"]');
+        if (tabBtn) tabBtn.click();
+
+        // Small delay to let tab switch complete
+        setTimeout(async () => {
+            switch (entry.tab) {
+                case 'flights': await restoreFlights(entry); break;
+                case 'packages': await restorePackages(entry); break;
+                case 'hotels': await restoreHotels(entry); break;
+                case 'tours': await restoreTours(entry); break;
+                case 'transfers': await restoreTransfers(entry); break;
+            }
+            // Scroll widget into view on mobile
+            const panel = document.getElementById('search-panel');
+            if (panel && window.innerWidth < 768) {
+                panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }, 50);
+    }
+
+    async function restoreFlights(e) {
+        // Trip type first (triggers Flatpickr mode switch)
+        const radioVal = e.tt === 'oneway' ? 'oneway' : 'round';
+        const radio = document.querySelector('input[name="ft_type"][value="' + radioVal + '"]');
+        if (radio) { radio.checked = true; radio.dispatchEvent(new Event('change', { bubbles: true })); }
+
+        await Promise.all([
+            restoreAutocomplete('fl-origin', e.on, e.o, e.ot, e.or),
+            restoreAutocomplete('fl-dest', e.dn, e.d, e.dt, e.dr)
+        ]);
+        restoreDates('fl-dates', e.dd, e.rd, e.tt === 'oneway' ? 'single' : 'range');
+
+        flightPax.setState({ adt: e.a || 1, chd: e.c || 0, inf: e.i || 0, chdAges: e.ca ? [...e.ca] : [] });
+
+        const cabinEl = document.getElementById('fl-cabin-val');
+        if (cabinEl) cabinEl.textContent = e.cb || 'Economy';
+    }
+
+    async function restorePackages(e) {
+        await Promise.all([
+            restoreAutocomplete('pkg-origin', e.on, e.o, e.ot, e.or),
+            restoreAutocomplete('pkg-dest', e.dn, e.d, e.dt, e.dr)
+        ]);
+        restoreDates('pkg-dates', e.dd, e.rd, 'range');
+
+        if (e.rooms && e.rooms.length) {
+            pkgTravelerState.length = 0;
+            e.rooms.forEach(r => pkgTravelerState.push({ id: Date.now() + Math.random(), adults: r.adults, children: [...(r.children || [])], infants: r.infants || 0 }));
+            pkgManager.render();
+        }
+
+        const cabinEl = document.getElementById('pkg-cabin-val');
+        if (cabinEl) cabinEl.textContent = e.cb || 'Economy';
+
+        const sepCheck = document.getElementById('pkg-partial-hotel');
+        if (sepCheck) {
+            sepCheck.checked = !!e.sep;
+            sepCheck.dispatchEvent(new Event('change', { bubbles: true }));
+            if (e.sep && e.hd) {
+                restoreDates('pkg-hotel-dates', e.hd, e.hr, 'range');
+            }
+        }
+    }
+
+    async function restoreHotels(e) {
+        await restoreAutocomplete('ht-dest', e.dn, e.d, e.dt, e.dr, { id: e.di });
+        restoreDates('ht-dates', e.dd, e.rd, 'range');
+
+        if (e.rooms && e.rooms.length) {
+            htTravelerState.length = 0;
+            e.rooms.forEach(r => htTravelerState.push({ id: Date.now() + Math.random(), adults: r.adults, children: [...(r.children || [])], infants: 0 }));
+            htManager.render();
+        }
+    }
+
+    async function restoreTours(e) {
+        await restoreAutocomplete('tour-dest', e.dn, e.d, e.dt, e.dr, { id: e.di });
+        restoreDates('tour-dates', e.dd, e.rd, 'range');
+        tourPax.setState({ adt: e.a || 1, chd: e.c || 0, inf: e.i || 0, chdAges: e.ca ? [...e.ca] : [] });
+    }
+
+    async function restoreTransfers(e) {
+        // Restore pickup and dropoff in parallel — respecting swap direction
+        await Promise.all([
+            restoreAutocomplete('tr-pickup', e.on, e.o, e.ot, e.or, { type: e.swap ? 'hotel' : 'airport_code' }),
+            restoreAutocomplete('tr-dropoff', e.dn, e.d, e.dt, e.dr, { type: e.swap ? 'airport_code' : 'hotel' })
+        ]);
+        restoreDates('tr-date', e.dd, null, 'single');
+
+        const timeEl = document.getElementById('tr-time-val');
+        if (timeEl && e.time) timeEl.textContent = e.time;
+    }
+
+    // Initialize strip
+    renderRecentSearches();
+
     // ================= DEAL MODAL LOGIC =================
     const modal = document.getElementById('deal-modal');
     const modalContent = document.getElementById('deal-modal-content');
