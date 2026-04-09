@@ -492,7 +492,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ================= CONFIGURATION =================
-const API_BASE_URL = '/api';
+const API_BASE_URL = 'https://demo.apps.easygds.com/api';
 const SESSION_ID = 'demo_session_dynamic_homepage_' + Math.floor(Math.random() * 10000);
 
 // Product IDs
@@ -519,7 +519,7 @@ function getDefaultDates() {
 }
 
 async function fetchLocations(query, type, countryCode, placeId) {
-    const url = new URL(`${API_BASE_URL}/places`, window.location.origin);
+    const url = new URL(`${API_BASE_URL}/places`);
     url.searchParams.append("search_text", query);
     url.searchParams.append("language_code", "en-US");
     // Dynamic types based on input data-type
@@ -622,7 +622,7 @@ async function fetchLocations(query, type, countryCode, placeId) {
 // brand + city queries correctly (e.g. "hilton london" → 17 Hilton London hotels).
 
 async function fetchProperties(query, countryCode) {
-    const url = new URL(`${API_BASE_URL}/properties`, window.location.origin);
+    const url = new URL(`${API_BASE_URL}/properties`);
     url.searchParams.append("search_text", query);
     url.searchParams.append("language_code", "en-US");
     url.searchParams.append("per_page", "10");
