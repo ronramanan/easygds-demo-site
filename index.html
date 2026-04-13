@@ -1027,7 +1027,7 @@
         </div>
     </section>
 
-    <!-- ================= NEWSLETTER ================= -->
+    <!-- ================= NEWSLETTER (MailFlow) ================= -->
     <section class="py-16 relative overflow-hidden bg-white border-y border-brand-gold/20">
         <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.03]">
         </div>
@@ -1037,47 +1037,262 @@
                 hidden
                 gem alerts, and tips delivered to your inbox.</p>
 
-            <form class="max-w-2xl mx-auto">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                    <!-- Email Input -->
-                    <div class="relative group">
-                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                            <i data-lucide="mail"
-                                class="h-5 w-5 text-gray-400 group-focus-within:text-brand-primary transition-colors"></i>
-                        </div>
-                        <input type="email" placeholder="Your email address"
-                            class="w-full pl-11 pr-4 py-4 rounded-xl bg-brand-surface border-2 border-transparent focus:border-brand-primary/20 outline-none text-brand-text font-medium placeholder:text-gray-400 transition-all shadow-sm group-hover:bg-gray-50">
-                    </div>
+            <!-- MailFlow Subscription Form -->
+            <div id="mailflow-form-def11449-d207-4903-a655-539e3c00c914" class="flex justify-center"></div>
+            <script>
+            (function() {
+              var containerId = 'mailflow-form-def11449-d207-4903-a655-539e3c00c914';
+              var container = document.getElementById(containerId);
+              if (!container) return;
 
-                    <!-- City Dropdown -->
-                    <div class="relative group">
-                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                            <i data-lucide="plane-takeoff"
-                                class="h-5 w-5 text-gray-400 group-focus-within:text-brand-primary transition-colors"></i>
-                        </div>
-                        <select
-                            class="w-full pl-11 pr-10 py-4 rounded-xl bg-brand-surface border-2 border-transparent focus:border-brand-primary/20 outline-none text-brand-text font-medium appearance-none cursor-pointer transition-all shadow-sm group-hover:bg-gray-50">
-                            <option value="" disabled selected>Preferred City (Optional)</option>
-                            <option value="LHR">London (LHR)</option>
-                            <option value="JFK">New York (JFK)</option>
-                            <option value="DXB">Dubai (DXB)</option>
-                            <option value="CDG">Paris (CDG)</option>
-                            <option value="SIN">Singapore (SIN)</option>
-                            <option value="HKG">Hong Kong (HKG)</option>
-                            <option value="SYD">Sydney (SYD)</option>
-                            <option value="other">Other</option>
-                        </select>
-                        <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
-                            <i data-lucide="chevron-down" class="h-4 w-4 text-gray-400"></i>
-                        </div>
-                    </div>
-                </div>
+              var listId = 'def11449-d207-4903-a655-539e3c00c914';
+              var supabaseUrl = 'https://usmdpdufsfeqvbipfuor.supabase.co';
 
-                <button type="button"
-                    class="w-full md:w-auto md:min-w-[200px] bg-brand-primary text-white font-bold px-8 py-4 rounded-xl hover:bg-brand-secondary transition-all shadow-elegant hover:shadow-elegant-lg transform hover:-translate-y-0.5">
-                    Subscribe
-                </button>
-            </form>
+              // Behavioral tracking
+              var storageKey = 'mf_visitor_' + listId;
+              var visitor = null;
+
+              function detectBrowser() {
+                var ua = navigator.userAgent;
+                var browser = 'Unknown', os = 'Unknown', deviceType = 'desktop';
+                if (ua.includes('Chrome') && !ua.includes('Edge')) browser = 'Chrome';
+                else if (ua.includes('Firefox')) browser = 'Firefox';
+                else if (ua.includes('Safari') && !ua.includes('Chrome')) browser = 'Safari';
+                else if (ua.includes('Edge')) browser = 'Edge';
+                else if (ua.includes('MSIE') || ua.includes('Trident')) browser = 'IE';
+                if (ua.includes('Windows')) os = 'Windows';
+                else if (ua.includes('Mac')) os = 'macOS';
+                else if (ua.includes('Linux') && !ua.includes('Android')) os = 'Linux';
+                else if (ua.includes('Android')) os = 'Android';
+                else if (ua.includes('iPhone') || ua.includes('iPad')) os = 'iOS';
+                if (/Mobi|Android|iPhone/i.test(ua)) deviceType = 'mobile';
+                else if (/Tablet|iPad/i.test(ua)) deviceType = 'tablet';
+                return { browser: browser, os: os, device_type: deviceType, user_agent: ua };
+              }
+
+              function getVisitorData() {
+                try { return JSON.parse(localStorage.getItem(storageKey) || 'null'); }
+                catch (e) { return null; }
+              }
+
+              function saveVisitorData(data) {
+                try { localStorage.setItem(storageKey, JSON.stringify(data)); }
+                catch (e) {}
+              }
+
+              visitor = getVisitorData();
+              if (!visitor) {
+                visitor = {
+                  firstVisit: new Date().toISOString(),
+                  referrer: document.referrer || null,
+                  pages: [],
+                  browser: detectBrowser()
+                };
+              }
+
+              visitor.pages.push({
+                url: window.location.href,
+                path: window.location.pathname,
+                title: document.title,
+                visited_at: new Date().toISOString(),
+                referrer: document.referrer || null
+              });
+
+              if (visitor.pages.length > 50) {
+                visitor.pages = visitor.pages.slice(-50);
+              }
+              saveVisitorData(visitor);
+
+              // Post-subscription tracking
+              var subscriberId = localStorage.getItem('mf_subscriber_' + listId);
+              if (subscriberId) {
+                fetch(supabaseUrl + '/functions/v1/track-page-view', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    subscriberId: subscriberId,
+                    listId: listId,
+                    page_url: window.location.href,
+                    page_path: window.location.pathname,
+                    page_title: document.title,
+                    referrer: document.referrer || null
+                  })
+                }).catch(function() {});
+              }
+
+              // Styled to match site design
+              var styles = document.createElement('style');
+              styles.textContent = '\
+                #' + containerId + ' { position: relative; }\
+                #' + containerId + ' form {\
+                  display: flex; flex-direction: column; gap: 12px;\
+                  max-width: 700px; width: 100%;\
+                  font-family: system-ui, -apple-system, sans-serif;\
+                }\
+                @media (min-width: 768px) {\
+                  #' + containerId + ' form {\
+                    flex-direction: row; align-items: center; gap: 10px;\
+                    max-width: 800px;\
+                  }\
+                  #' + containerId + ' input { flex: 1; min-width: 0; }\
+                  #' + containerId + ' button { flex-shrink: 0; white-space: nowrap; }\
+                }\
+                #' + containerId + ' input {\
+                  padding: 14px 16px;\
+                  border: 2px solid transparent;\
+                  border-radius: 12px;\
+                  font-size: 15px;\
+                  width: 100%;\
+                  box-sizing: border-box;\
+                  background: #f8fafc;\
+                  color: #1e293b;\
+                  font-weight: 500;\
+                  transition: all 0.2s;\
+                  box-shadow: 0 1px 2px rgba(0,0,0,0.05);\
+                }\
+                #' + containerId + ' input::placeholder { color: #9ca3af; }\
+                #' + containerId + ' input:hover { background: #f1f5f9; }\
+                #' + containerId + ' input:focus {\
+                  outline: none;\
+                  border-color: rgba(30, 58, 138, 0.2);\
+                  box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.08);\
+                }\
+                #' + containerId + ' button {\
+                  padding: 14px 32px;\
+                  background: #1e3a8a;\
+                  color: white;\
+                  border: none;\
+                  border-radius: 12px;\
+                  font-size: 15px;\
+                  font-weight: 700;\
+                  cursor: pointer;\
+                  transition: all 0.2s;\
+                  box-shadow: 0 4px 14px rgba(30, 58, 138, 0.25);\
+                }\
+                #' + containerId + ' button:hover {\
+                  background: #1e40af;\
+                  transform: translateY(-1px);\
+                  box-shadow: 0 6px 20px rgba(30, 58, 138, 0.3);\
+                }\
+                #' + containerId + ' button:disabled {\
+                  background: #9ca3af;\
+                  cursor: not-allowed;\
+                  transform: none;\
+                  box-shadow: none;\
+                }\
+                #' + containerId + ' .mf-overlay {\
+                  position: absolute;\
+                  inset: -40px -20px;\
+                  display: flex;\
+                  flex-direction: column;\
+                  align-items: center;\
+                  justify-content: center;\
+                  background: rgba(255,255,255,0.92);\
+                  backdrop-filter: blur(6px);\
+                  border-radius: 16px;\
+                  z-index: 10;\
+                  animation: mfFadeIn 0.4s ease;\
+                }\
+                @keyframes mfFadeIn {\
+                  from { opacity: 0; transform: scale(0.95); }\
+                  to { opacity: 1; transform: scale(1); }\
+                }\
+                #' + containerId + ' .mf-overlay .mf-check {\
+                  width: 56px; height: 56px;\
+                  background: #dcfce7;\
+                  border-radius: 50%;\
+                  display: flex; align-items: center; justify-content: center;\
+                  margin-bottom: 16px;\
+                  box-shadow: 0 4px 14px rgba(22, 101, 52, 0.15);\
+                }\
+                #' + containerId + ' .mf-overlay .mf-check svg {\
+                  width: 28px; height: 28px; stroke: #166534; fill: none;\
+                  stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;\
+                }\
+                #' + containerId + ' .mf-overlay h3 {\
+                  font-size: 20px; font-weight: 700; color: #1e3a8a; margin: 0 0 6px;\
+                }\
+                #' + containerId + ' .mf-overlay p {\
+                  font-size: 15px; color: #475569; margin: 0;\
+                }\
+                #' + containerId + ' .mf-message {\
+                  padding: 12px;\
+                  border-radius: 8px;\
+                  font-size: 14px;\
+                  margin-top: 8px;\
+                  text-align: center;\
+                }\
+                #' + containerId + ' .mf-message.error {\
+                  background: #fee2e2;\
+                  color: #991b1b;\
+                }\
+              ';
+              document.head.appendChild(styles);
+
+              container.innerHTML = '\
+                <form id="mf-subscribe-form-def11449-d207-4903-a655-539e3c00c914">\
+                  <input type="text" name="first_name" placeholder="First Name" required>\
+                  <input type="text" name="last_name" placeholder="Last Name" required>\
+                  <input type="email" name="email" placeholder="Email Address" required>\
+                  <button type="submit">Subscribe</button>\
+                </form>\
+                <div id="mf-message-def11449-d207-4903-a655-539e3c00c914"></div>\
+              ';
+
+              document.getElementById('mf-subscribe-form-def11449-d207-4903-a655-539e3c00c914').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                var form = e.target;
+                var btn = form.querySelector('button');
+                var msgEl = document.getElementById('mf-message-def11449-d207-4903-a655-539e3c00c914');
+
+                btn.disabled = true;
+                btn.textContent = 'Subscribing...';
+                msgEl.className = 'mf-message';
+                msgEl.textContent = '';
+
+                try {
+                  var payload = {
+                    listId: listId,
+                    email: form.email.value,
+                    first_name: form.first_name.value,
+                    last_name: form.last_name.value,
+                    referrer: visitor ? visitor.referrer : document.referrer,
+                    browser_info: visitor ? visitor.browser : detectBrowser(),
+                    page_visits: visitor ? visitor.pages : []
+                  };
+
+                  var res = await fetch(supabaseUrl + '/functions/v1/subscribe', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                  });
+                  var data = await res.json();
+
+                  if (data.success) {
+                    form.reset();
+                    if (data.subscriberId) {
+                      localStorage.setItem('mf_subscriber_' + listId, data.subscriberId);
+                      localStorage.removeItem(storageKey);
+                    }
+                    // Show confirmation overlay
+                    var overlay = document.createElement('div');
+                    overlay.className = 'mf-overlay';
+                    overlay.innerHTML = '<div class="mf-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div><h3>You\'re In!</h3><p>Welcome aboard. Look out for exclusive deals in your inbox.</p>';
+                    container.appendChild(overlay);
+                  } else {
+                    msgEl.className = 'mf-message error';
+                    msgEl.textContent = data.error || 'Something went wrong. Please try again.';
+                  }
+                } catch (err) {
+                  msgEl.className = 'mf-message error';
+                  msgEl.textContent = 'Network error. Please try again.';
+                }
+
+                btn.disabled = false;
+                btn.textContent = 'Subscribe';
+              });
+            })();
+            </script>
         </div>
     </section>
 
