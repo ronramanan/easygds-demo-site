@@ -1,0 +1,207 @@
+diff --git a/index.html b/index.html
+index 29987d0..98b042f 100644
+--- a/index.html
++++ b/index.html
+@@ -4,7 +4,7 @@
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+-    <title>Flyadeal Holidays | Curated Travel Experiences</title>
++    <title>SalamAir Holidays | Curated Travel Experiences</title>
+     <!-- Tailwind CSS CDN -->
+     <script src="https://cdn.tailwindcss.com"></script>
+     <!-- Google Fonts: Raleway -->
+@@ -28,9 +28,9 @@
+                 extend: {
+                     colors: {
+                         brand: {
+-                            primary: '#522D6D',     // Flyadeal Purple (Official)
+-                            secondary: '#3A1D4D',   // Darker Purple
+-                            accent: '#CBDB04',      // Flyadeal Lime (Official)
++                            primary: '#0C85A3',     // SalamAir Cyan
++                            secondary: '#07566A',   // Darker Cyan
++                            accent: '#B1C832',      // SalamAir Lime
+                             text: '#1A1A1A',        // Main Text
+                             muted: '#555555',       // Muted Text
+                             surface: '#F5F8FF',     // Light Background
+@@ -69,16 +69,15 @@
+         <div class="container mx-auto px-6 lg:px-12 flex justify-between items-center h-full">
+             <!-- Logo -->
+             <a href="#" class="flex items-center gap-3 group">
+-                <img src="img/flyadeal_holidays_logo_transparent.png" onerror="this.src='img/flyadeal_logo.png'"
+-                    alt="Flyadeal Holidays"
+-                    class="h-12 w-auto transition-all duration-300 group-hover:scale-105 drop-shadow-md brightness-0 invert">
++                <img src="img/salamair_logo.png" alt="SalamAir Holidays"
++                    class="h-[72px] w-auto transition-all duration-300 group-hover:scale-105 drop-shadow-md brightness-0 invert">
+             </a>
+ 
+             <!-- Desktop Navigation -->
+             <div class="hidden lg:flex items-center gap-8 text-sm font-semibold text-white/95">
+                 <div
+                     class="flex items-center gap-1.5 cursor-pointer hover:text-white transition-all duration-300 hover:gap-2">
+-                    <span>SAR</span>
++                    <span>OMR</span>
+                     <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                 </div>
+                 <div
+@@ -107,7 +106,7 @@
+         <div class="flex items-center justify-between border-b pb-4 border-gray-100">
+             <span class="text-xl font-semibold text-brand-text">Currency</span>
+             <div class="flex items-center gap-1.5 text-brand-primary font-bold">
+-                <span>SAR</span>
++                <span>OMR</span>
+                 <i data-lucide="chevron-down" class="w-5 h-5"></i>
+             </div>
+         </div>
+@@ -134,10 +133,10 @@
+         <!-- Slides Container -->
+         <div class="absolute inset-0 z-0">
+ 
+-            <!-- Slide 1: Jeddah -->
++            <!-- Slide 1: Cairo -->
+             <div class="hero-slide active absolute inset-0">
+-                <!-- Background - Verified Jeddah Corniche/Beach -->
+-                <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('img/jeddah.jpg');">
++                <!-- Background - Cairo Pyramids -->
++                <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('img/cairo_hero.jpg');">
+                 </div>
+                 <!-- Gradient -->
+                 <div
+@@ -148,8 +147,8 @@
+                     class="relative z-10 container mx-auto px-6 lg:px-12 h-full flex flex-col justify-center items-center pb-40 lg:pb-52 pt-24 text-center">
+                     <h1
+                         class="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 drop-shadow-lg leading-tight animate-fade-in-up">
+-                        Jeddah <br>
+-                        <span class="text-brand-surface italic text-3xl md:text-5xl">from SAR 499</span>
++                        Cairo <br>
++                        <span class="text-brand-surface italic text-3xl md:text-5xl">from OMR 50</span>
+                     </h1>
+                     <div
+                         class="animate-fade-in-up delay-[200ms] flex items-center justify-center gap-6 text-white/95 bg-white/10 backdrop-blur-md px-8 py-4 rounded-full border border-white/20 shadow-lg">
+@@ -166,11 +165,10 @@
+                 </div>
+             </div>
+ 
+-            <!-- Slide 2: Sharm El Sheikh -->
++            <!-- Slide 2: Bangkok -->
+             <div class="hero-slide absolute inset-0">
+-                <!-- Background - Sharm El Sheikh Beach -->
+-                <div class="absolute inset-0 bg-cover bg-center"
+-                    style="background-image: url('img/sharm_el_sheikh.jpg');">
++                <!-- Background - Bangkok -->
++                <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('images/bangkok.png');">
+                 </div>
+                 <!-- Gradient -->
+                 <div
+@@ -181,8 +179,8 @@
+                     class="relative z-10 container mx-auto px-6 lg:px-12 h-full flex flex-col justify-center items-center pb-40 lg:pb-52 pt-24 text-center">
+                     <h1
+                         class="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 drop-shadow-lg leading-tight">
+-                        Sharm El Sheikh <br>
+-                        <span class="text-brand-surface italic text-3xl md:text-5xl">from SAR 1,299</span>
++                        Bangkok <br>
++                        <span class="text-brand-surface italic text-3xl md:text-5xl">from OMR 130</span>
+                     </h1>
+                     <div
+                         class="flex items-center justify-center gap-6 text-white/95 bg-white/10 backdrop-blur-md px-8 py-4 rounded-full border border-white/20 shadow-lg">
+@@ -214,7 +212,7 @@
+                     <h1
+                         class="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 drop-shadow-lg leading-tight">
+                         Abha <br>
+-                        <span class="text-brand-surface italic text-3xl md:text-5xl">from SAR 399</span>
++                        <span class="text-brand-surface italic text-3xl md:text-5xl">from OMR 40</span>
+                     </h1>
+                     <div
+                         class="flex items-center justify-center gap-6 text-white/95 bg-white/10 backdrop-blur-md px-8 py-4 rounded-full border border-white/20 shadow-lg">
+@@ -731,8 +729,8 @@
+                                 class="w-3 h-3"></i> KAEC, Saudi Arabia</p>
+                         <div class="flex justify-between items-center pt-4 border-t border-gray-100">
+                             <div>
+-                                <span class="text-xs text-gray-400 line-through">SAR 1,200</span>
+-                                <div class="text-xl font-bold text-brand-primary">SAR 850 <span
++                                <span class="text-xs text-gray-400 line-through">OMR 120</span>
++                                <div class="text-xl font-bold text-brand-primary">OMR 85 <span
+                                         class="text-xs text-brand-muted font-normal">/ night</span></div>
+                             </div>
+                             <button onclick="openExclusiveDeal('KAEC', 'JED')"
+@@ -764,8 +762,8 @@
+                                 class="w-3 h-3"></i> Al Ula, Saudi Arabia</p>
+                         <div class="flex justify-between items-center pt-4 border-t border-gray-100">
+                             <div>
+-                                <span class="text-xs text-gray-400 line-through">SAR 1,500</span>
+-                                <div class="text-xl font-bold text-brand-primary">SAR 1,100 <span
++                                <span class="text-xs text-gray-400 line-through">OMR 150</span>
++                                <div class="text-xl font-bold text-brand-primary">OMR 110 <span
+                                         class="text-xs text-brand-muted font-normal">/ night</span></div>
+                             </div>
+                             <button onclick="openExclusiveDeal('Al Ula', 'ULH')"
+@@ -797,8 +795,8 @@
+                                 class="w-3 h-3"></i> Jeddah, Saudi Arabia</p>
+                         <div class="flex justify-between items-center pt-4 border-t border-gray-100">
+                             <div>
+-                                <span class="text-xs text-gray-400 line-through">SAR 950</span>
+-                                <div class="text-xl font-bold text-brand-primary">SAR 807 <span
++                                <span class="text-xs text-gray-400 line-through">OMR 95</span>
++                                <div class="text-xl font-bold text-brand-primary">OMR 81 <span
+                                         class="text-xs text-brand-muted font-normal">/ night</span></div>
+                             </div>
+                             <button onclick="openExclusiveDeal('Jeddah', 'JED')"
+@@ -814,7 +812,7 @@
+     <!-- ================= FEATURES / WHY US ================= -->
+     <section class="py-16 bg-brand-surface">
+         <div class="container mx-auto px-6 lg:px-12 text-center">
+-            <h2 class="font-display text-3xl font-bold text-brand-primary mb-12">Flyadeal Holidays Exclusive Benefits
++            <h2 class="font-display text-3xl font-bold text-brand-primary mb-12">SalamAir Holidays Exclusive Benefits
+             </h2>
+ 
+             <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
+@@ -848,7 +846,7 @@
+                         <i data-lucide="gift" class="w-8 h-8"></i>
+                     </div>
+                     <h3 class="font-bold text-lg mb-2">Exclusive Value-Add</h3>
+-                    <p class="text-sm text-brand-muted leading-relaxed">Special perks only for Flyadeal members.</p>
++                    <p class="text-sm text-brand-muted leading-relaxed">Special perks only for SalamAir members.</p>
+                 </div>
+             </div>
+         </div>
+@@ -913,10 +911,10 @@
+     <footer class="bg-brand-primary text-white pt-16 pb-8">
+         <div class="container mx-auto px-6 lg:px-12 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 mb-12">
+             <div class="col-span-2">
+-                <img src="img/flyadeal_holidays_logo_transparent.png" onerror="this.src='img/flyadeal_logo.png'"
+-                    alt="Flyadeal Holidays" class="h-12 mb-6 drop-shadow-md">
++                <img src="img/salamair_logo.png" onerror="this.src='img/salamair_logo.png'" alt="SalamAir Holidays"
++                    class="h-12 mb-6 drop-shadow-md">
+                 <p class="text-white/90 text-sm leading-relaxed max-w-xs mb-6">
+-                    Everyday low fares. Enjoy holiday packages, hotels, and experiences with Flyadeal.
++                    Everyday low fares. Enjoy holiday packages, hotels, and experiences with SalamAir.
+                 </p>
+                 <div class="flex gap-4">
+                     <a href="#"
+@@ -957,7 +955,7 @@
+ 
+         <div
+             class="container mx-auto px-6 lg:px-12 pt-8 border-t border-white/20 flex flex-col md:flex-row justify-between items-center text-sm text-white/60">
+-            <p>&copy; 2026 Flyadeal Holidays. All rights reserved.</p>
++            <p>&copy; 2026 SalamAir Holidays. All rights reserved.</p>
+             <div class="flex gap-6 mt-4 md:mt-0">
+                 <span>Privacy</span>
+                 <span>Terms</span>
+@@ -1104,17 +1102,7 @@
+         </div>
+     </div>
+ 
+-    <!-- Reema AI Assistant Widget -->
+-    <div class="fixed bottom-6 right-6 z-[100] flex items-end gap-3 pointer-events-none">
+ 
+-        <!-- Avatar Icon -->
+-        <div
+-            class="relative w-16 h-16 rounded-full bg-brand-surface border-4 border-white shadow-elegant-xl overflow-hidden pointer-events-auto cursor-pointer hover:scale-110 transition-transform duration-300 group">
+-            <img src="https://www.flyadeal.com/assets/icons/Chatbot-update-icon.png" alt="Flyadeal AI"
+-                class="w-full h-full object-cover">
+-            <div class="absolute inset-0 bg-brand-primary/10 group-hover:bg-transparent transition-colors"></div>
+-        </div>
+-    </div>
+ 
+     <!-- ================= JAVASCRIPT ================= -->
+     <script src="scripts.js" defer></script>

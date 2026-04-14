@@ -1,3 +1,19 @@
+/* ============================================================
+   FLYADEAL HOLIDAYS — BRAND COLOR OVERRIDES
+   Override Tailwind's compiled brand palette for the Flyadeal theme
+   ============================================================ */
+:root, :host {
+    --color-brand-primary: #522D6D;     /* Flyadeal Purple */
+    --color-brand-secondary: #3A1D4D;   /* Darker Purple */
+    --color-brand-accent: #CBDB04;      /* Flyadeal Lime */
+}
+
+/* Prevent horizontal overflow on mobile (use clip, not hidden — hidden breaks position:sticky) */
+html, body {
+    max-width: 100vw;
+    overflow-x: clip;
+}
+
 /* Smooth scrollbar styling */
 ::-webkit-scrollbar {
     width: 8px;
@@ -9,12 +25,12 @@
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #642667;
+    background: #522D6D;
     border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #4A1C4C;
+    background: #3A1D4D;
 }
 
 .no-scrollbar::-webkit-scrollbar {
@@ -51,8 +67,8 @@
 }
 
 .input-container:focus-within {
-    box-shadow: 0 0 0 3px rgba(100, 38, 103, 0.12);
-    border-color: #642667 !important;
+    box-shadow: 0 0 0 3px rgba(82, 45, 109, 0.12);
+    border-color: #522D6D !important;
 }
 
 /* Standardized input styling */
@@ -91,7 +107,7 @@
 /* Unified input box base */
 .search-input-box {
     background-color: white;
-    height: 3.5rem;
+    height: 3rem;
     padding-left: 1rem;
     padding-right: 1rem;
     border-radius: 0.75rem;
@@ -108,8 +124,8 @@
 }
 
 .search-input-box:focus-within {
-    border-color: #203C94;
-    box-shadow: 0 0 0 3px rgba(100, 38, 103, 0.1);
+    border-color: #522D6D;
+    box-shadow: 0 0 0 3px rgba(82, 45, 109, 0.1);
 }
 
 .search-input-box .input-icon {
@@ -121,7 +137,7 @@
 }
 
 .search-input-box:focus-within .input-icon {
-    color: #642667;
+    color: #522D6D;
 }
 
 /* Search form grid standardization */
@@ -133,15 +149,15 @@
 
 /* Responsive search button */
 .search-btn-primary {
-    background-color: #642667;
+    background-color: #522D6D;
     color: white;
-    height: 3.5rem;
+    height: 3rem;
     padding-left: 2rem;
     padding-right: 2rem;
     border-radius: 0.75rem;
     font-weight: 700;
     font-size: 1rem;
-    box-shadow: 0 4px 20px -5px rgba(100, 38, 103, 0.15);
+    box-shadow: 0 4px 20px -5px rgba(82, 45, 109, 0.15);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     align-items: center;
@@ -155,8 +171,8 @@
 }
 
 .search-btn-primary:hover {
-    background-color: #4A1C4C;
-    box-shadow: 0 10px 30px -5px rgba(100, 38, 103, 0.2);
+    background-color: #3A1D4D;
+    box-shadow: 0 10px 30px -5px rgba(82, 45, 109, 0.2);
 }
 
 .search-btn-primary:active {
@@ -227,8 +243,8 @@
 }
 
 #search-panel.is-sticky .search-tab:not(.active):hover {
-    color: #642667;
-    background-color: rgba(100, 38, 103, 0.06);
+    color: #522D6D;
+    background-color: rgba(82, 45, 109, 0.06);
 }
 
 /* Button Enhancements */
@@ -262,7 +278,7 @@
     bottom: -12px;
     width: 60px;
     height: 4px;
-    background: #642667;
+    background: #522D6D;
     border-radius: 2px;
 }
 
@@ -273,7 +289,7 @@
     }
 
     .search-input-box {
-        height: 3.25rem;
+        height: 3rem;
         padding-left: 0.875rem;
         padding-right: 0.875rem;
     }
@@ -316,7 +332,7 @@
 
 /* Radio button styling for glass panels */
 .search-form input[type="radio"] {
-    accent-color: #642667;
+    accent-color: #522D6D;
 }
 
 #search-panel.is-sticky .search-form input[type="radio"]+span {
@@ -324,7 +340,7 @@
 }
 
 #search-panel.is-sticky .search-form label:hover input[type="radio"]+span {
-    color: #203C94;
+    color: #522D6D;
 }
 
 /* Custom checkbox styling */
@@ -340,16 +356,16 @@
 }
 
 .custom-checkbox:hover {
-    border-color: #642667;
+    border-color: #522D6D;
 }
 
 .custom-checkbox:checked {
-    background-color: #642667;
-    border-color: #642667;
+    background-color: #522D6D;
+    border-color: #522D6D;
 }
 
 .custom-checkbox:focus {
-    box-shadow: 0 0 0 3px rgba(100, 38, 103, 0.2);
+    box-shadow: 0 0 0 3px rgba(82, 45, 109, 0.2);
     outline: none;
 }
 
@@ -365,7 +381,7 @@
     width: 20rem;
     background-color: white;
     border-radius: 0.75rem;
-    box-shadow: 0 20px 40px -5px rgba(100, 38, 103, 0.25);
+    box-shadow: 0 20px 40px -5px rgba(82, 45, 109, 0.25);
     padding: 1.25rem;
     z-index: 60;
     border: 1px solid #F3F4F6;
@@ -401,8 +417,8 @@
 }
 
 .counter-btn:hover {
-    border-color: #642667;
-    color: #642667;
+    border-color: #522D6D;
+    color: #522D6D;
     background-color: #F5F8FF;
 }
 
@@ -467,14 +483,14 @@
 }
 
 #search-panel.is-sticky label:hover span {
-    color: #642667;
+    color: #522D6D;
 }
 
 /* Focus visible for accessibility */
 .search-input:focus-visible,
 .search-btn-primary:focus-visible,
 .search-tab:focus-visible {
-    outline: 2px solid #642667;
+    outline: 2px solid #522D6D;
     outline-offset: 2px;
 }
 
@@ -484,7 +500,7 @@
 }
 
 label:hover .pkg-checkbox-label {
-    color: #642667 !important;
+    color: #522D6D !important;
 }
 
 /* Sticky state - collapsed to tab bar only */
@@ -566,10 +582,10 @@ label:hover .pkg-checkbox-label {
     background: white !important;
     border: 1px solid #E5E7EB !important;
     border-radius: 0.75rem !important;
-    box-shadow: 0 20px 40px -5px rgba(100, 38, 103, 0.25) !important;
+    box-shadow: 0 20px 40px -5px rgba(82, 45, 109, 0.25) !important;
     max-height: 320px !important;
     overflow-y: auto !important;
-    z-index: 100 !important;
+    z-index: 9999 !important;
     scrollbar-width: thin;
     scrollbar-color: #CBD5E1 transparent;
 }
@@ -583,6 +599,7 @@ label:hover .pkg-checkbox-label {
     border-radius: 3px;
 }
 
+/* Legacy fallback for any remaining .p-2 items */
 .autocomplete-results .p-2 {
     padding: 0.75rem 1rem !important;
     transition: background-color 0.15s ease;
@@ -598,9 +615,186 @@ label:hover .pkg-checkbox-label {
     text-align: center;
 }
 
+/* ── Grouped Autocomplete Items ────────────────────────────────── */
+
+/* Section header (e.g., "Destinations", "Hotels", "Other Locations") */
+.ac-section-header {
+    padding: 0.3rem 0.75rem 0.2rem;
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #94A3B8;
+    background: #F8FAFC;
+    border-bottom: 1px solid #F1F5F9;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    user-select: none;
+}
+
+/* Divider between groups (when no label) */
+.ac-section-divider {
+    height: 1px;
+    background: #E2E8F0;
+    margin: 0;
+}
+
+/* Base autocomplete item */
+.ac-item {
+    padding: 0.35rem 0.75rem;
+    cursor: pointer;
+    font-size: 0.75rem;
+    color: #334155;
+    border-bottom: 1px solid rgba(241, 245, 249, 0.4);
+    transition: background-color 0.15s ease;
+    line-height: 1.35;
+}
+
+.ac-item:last-child {
+    border-bottom: 0;
+}
+
+.ac-item:hover,
+.ac-item-active {
+    background-color: #F5F8FF;
+}
+
+/* Items under a section header get slight indent */
+.ac-section-header + .ac-item,
+.ac-section-header + .ac-item ~ .ac-item {
+    padding-left: 1.25rem;
+}
+
+/* Reset indent for items after a new section header or divider */
+.ac-section-divider + .ac-item {
+    padding-left: 0.75rem;
+}
+
+/* Indented sub-items (individual airports under city group) */
+.ac-item-indented {
+    padding-left: 2.25rem;
+    background-color: rgba(248, 250, 254, 0.5);
+    font-size: 0.72rem;
+}
+
+.ac-item-indented:hover,
+.ac-item-active.ac-item-indented {
+    background-color: #EEF2FF;
+}
+
+/* City "All Airports" entry */
+.ac-item-city {
+    background-color: #F8FAFC;
+    border-left: 3px solid var(--color-brand-primary, #522D6D);
+    padding-left: calc(0.75rem - 3px);
+}
+
+.ac-item-city:hover,
+.ac-item-active.ac-item-city {
+    background-color: #EEF2FF;
+}
+
+/* Icon in result items */
+.ac-icon {
+    font-size: 0.85rem;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+    line-height: 1;
+}
+
+/* IATA code badge */
+.ac-code {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.0625rem 0.4rem;
+    border-radius: 0.25rem;
+    background: var(--color-brand-surface, #F5F8FF);
+    color: var(--color-brand-primary, #522D6D);
+    font-size: 0.675rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+}
+
+/* Star rating */
+.ac-stars {
+    color: #EAB308;
+    font-size: 0.7rem;
+    letter-spacing: -0.02em;
+}
+
+/* Location subtitle */
+.ac-location {
+    font-size: 0.65rem;
+    color: #94A3B8;
+    margin-top: 0.05rem;
+    line-height: 1.25;
+}
+
 /* Ensure input box has relative positioning for dropdown */
 .search-input-box {
     position: relative !important;
+}
+
+/* ── Autocomplete Selection Chip ── */
+.ac-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    width: fit-content;
+    background: #EEF2FF;
+    border: 1px solid #C7D2FE;
+    border-radius: 0.375rem;
+    padding: 0.125rem 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #1E3A8A;
+    line-height: 1.4;
+    max-width: 100%;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.ac-chip-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+}
+
+.ac-chip-code {
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: #4338CA;
+    background: #DDD6FE;
+    padding: 0 0.25rem;
+    border-radius: 0.2rem;
+    flex-shrink: 0;
+}
+
+.ac-chip-clear {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    background: transparent;
+    border: none;
+    color: #6366F1;
+    font-size: 0.85rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0;
+    flex-shrink: 0;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.ac-chip-clear:hover {
+    background: #C7D2FE;
+    color: #1E3A8A;
 }
 
 /* Mobile responsiveness for autocomplete */
@@ -610,6 +804,21 @@ label:hover .pkg-checkbox-label {
         max-width: calc(100vw - 2rem) !important;
         left: 50% !important;
         transform: translateX(-50%) !important;
+        max-height: 60vh !important;
+    }
+
+    .ac-item-indented {
+        padding-left: 1.75rem;
+    }
+
+    .ac-section-header {
+        font-size: 0.55rem;
+        padding: 0.25rem 0.625rem 0.15rem;
+    }
+
+    .ac-item {
+        padding: 0.3rem 0.625rem;
+        font-size: 0.7rem;
     }
 }
 
@@ -638,4 +847,365 @@ label:hover .pkg-checkbox-label {
 /* Ensure custom-options appear above content */
 .custom-options {
     z-index: 200 !important;
+}
+
+/* ============================================================
+   MOBILE TOUCH & UX POLISH
+   ============================================================ */
+
+/* 1. Remove the blue flash on tap (iOS/Android) */
+a,
+button,
+[role="button"],
+.cursor-pointer,
+input,
+select,
+label {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* 2. Eliminate the 300 ms tap delay on interactive controls */
+a,
+button,
+[role="button"],
+.search-tab,
+.search-btn-primary,
+.counter-btn,
+.carousel-dot,
+.currency-item,
+.currency-item-mobile,
+.lang-item,
+.lang-item-mobile {
+    touch-action: manipulation;
+}
+
+/* 3. Mobile-menu touch targets – min 48 px tall */
+#currency-trigger-mobile,
+#lang-trigger-mobile {
+    min-height: 48px;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+}
+
+/* 4. Transfers mobile swap button */
+#btn-swap-transfer-mobile {
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* 5. On very small screens (≤ 380 px) shrink tab padding so all 5 tabs fit */
+@media (max-width: 380px) {
+    .search-tab {
+        padding-left: 0.625rem;
+        padding-right: 0.625rem;
+    }
+}
+
+/* 6. Traveler popovers: clamp width & height so they never overflow on narrow viewports */
+@media (max-width: 639px) {
+    .traveler-popover {
+        width: min(20rem, calc(100vw - 2rem)) !important;
+        max-height: 60vh !important;
+        overflow-y: auto !important;
+    }
+
+    /* Right-anchored popovers (flights / tours pax) — keep within viewport */
+    #fl-pax-menu,
+    #tour-pax-menu {
+        right: 0;
+        left: auto !important;
+        max-width: calc(100vw - 2rem);
+    }
+}
+
+/* 7. Hero on mobile: tighter vertical padding so the CTA stays visible */
+@media (max-width: 639px) {
+    .hero-slide .relative.z-10 {
+        padding-bottom: 5rem;
+    }
+}
+
+/* 8. Deal cards on mobile: let image breathe a little more */
+@media (max-width: 639px) {
+    #exclusive-deals .relative.h-48 {
+        height: 11rem;
+    }
+}
+
+/* 9. Newsletter subscribe button – always full width on mobile */
+@media (max-width: 639px) {
+    #newsletter-form-btn,
+    form .bg-brand-primary[type="button"] {
+        width: 100%;
+    }
+}
+
+/* 10. Sticky search bar: when collapsed on mobile hide the remaining margin */
+@media (max-width: 639px) {
+    #search-panel.is-sticky.is-collapsed {
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+    }
+}
+
+/* 11. Smooth momentum scroll inside popovers & dropdowns on iOS */
+.traveler-popover,
+.autocomplete-results,
+.custom-options,
+#rooms-container,
+#pkg-rooms-container,
+#modal-rooms-container {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+}
+
+/* 12. Body scroll lock when modal is open — no position:fixed, no visual jump */
+html.modal-open,
+html.modal-open body {
+    overflow: hidden !important;
+    height: 100% !important;
+}
+
+#deal-modal {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+}
+
+/* ── Flatpickr Customizations ── */
+
+/* Remove today's date highlight circle */
+.flatpickr-day.today {
+    border-color: transparent;
+}
+.flatpickr-day.today:hover {
+    border-color: #e6e6e6;
+    background: #e6e6e6;
+}
+
+/* Disable month/year dropdown selectors — display as plain text */
+.flatpickr-current-month .flatpickr-monthDropdown-months {
+    appearance: none;
+    -webkit-appearance: none;
+    pointer-events: none;
+    background: transparent;
+    border: none;
+    padding-right: 0;
+}
+.flatpickr-current-month .flatpickr-monthDropdown-months::-ms-expand {
+    display: none;
+}
+.flatpickr-current-month .numInputWrapper {
+    pointer-events: none;
+}
+.flatpickr-current-month .numInputWrapper .arrowUp,
+.flatpickr-current-month .numInputWrapper .arrowDown {
+    display: none;
+}
+
+/* On mobile/small tablets, force single-month view for 2-month calendars */
+@media (max-width: 767px) {
+    .flatpickr-calendar {
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+    }
+    /* Force multiMonth calendar to single-month width */
+    .flatpickr-calendar.multiMonth {
+        width: 307px !important;
+    }
+    .flatpickr-calendar.multiMonth .flatpickr-months .flatpickr-month:nth-child(n+2) {
+        display: none !important;
+    }
+    .flatpickr-calendar.multiMonth .flatpickr-weekdaycontainer:nth-child(n+2) {
+        display: none !important;
+    }
+    .flatpickr-calendar.multiMonth .dayContainer:nth-child(n+2) {
+        display: none !important;
+    }
+    .flatpickr-calendar.multiMonth .flatpickr-innerContainer,
+    .flatpickr-calendar.multiMonth .flatpickr-rContainer,
+    .flatpickr-calendar.multiMonth .flatpickr-days,
+    .flatpickr-calendar.multiMonth .flatpickr-weekdays {
+        width: 307px !important;
+        overflow: hidden !important;
+    }
+}
+
+/* ─── Recent Searches Strip ─────────────────────────────────────────── */
+.recent-searches {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.recent-searches-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    padding: 0 0.25rem;
+}
+
+.recent-searches-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #475569;
+}
+
+.recent-searches-clear {
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: #64748B;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.125rem 0.375rem;
+    border-radius: 0.25rem;
+    transition: color 0.2s, background 0.2s;
+}
+
+.recent-searches-clear:hover {
+    color: #1E293B;
+    background: rgba(0, 0, 0, 0.06);
+}
+
+.recent-searches-scroll {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    padding-bottom: 0.25rem;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.recent-searches-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.recent-chip {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.375rem 0.5rem 0.375rem 0.625rem;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 9999px;
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #334155;
+    min-height: 2.25rem;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+.recent-chip:hover {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: rgba(0, 0, 0, 0.18);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.recent-chip-icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    color: #64748B;
+}
+
+.recent-chip-icon svg {
+    width: 14px;
+    height: 14px;
+}
+
+.recent-chip-route {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+
+.recent-chip-arrow {
+    opacity: 0.6;
+    font-size: 0.7rem;
+}
+
+.recent-chip-details {
+    display: flex;
+    align-items: center;
+    gap: 0.125rem;
+    opacity: 0.8;
+    font-size: 0.7rem;
+}
+
+.recent-chip-sep {
+    opacity: 0.4;
+    margin: 0 0.125rem;
+}
+
+.recent-chip-remove {
+    background: none;
+    border: none;
+    color: #94A3B8;
+    font-size: 0.95rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0 0.125rem;
+    margin-left: 0.125rem;
+    transition: color 0.2s;
+    flex-shrink: 0;
+}
+
+.recent-chip-remove:hover {
+    color: #475569;
+}
+
+/* ─── Sticky-mode overrides ─────────────────────────────────────────── */
+#search-panel.is-sticky .recent-searches {
+    border-top-color: #E2E8F0;
+}
+
+#search-panel.is-sticky .recent-searches-label {
+    color: #64748B;
+}
+
+#search-panel.is-sticky .recent-searches-clear {
+    color: #94A3B8;
+}
+
+#search-panel.is-sticky .recent-searches-clear:hover {
+    color: #475569;
+    background: #F1F5F9;
+}
+
+#search-panel.is-sticky .recent-chip {
+    background: #F1F5F9;
+    border-color: #E2E8F0;
+    color: #334155;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+#search-panel.is-sticky .recent-chip:hover {
+    background: #E2E8F0;
+    border-color: #CBD5E1;
+}
+
+#search-panel.is-sticky .recent-chip-remove {
+    color: #94A3B8;
+}
+
+#search-panel.is-sticky .recent-chip-remove:hover {
+    color: #475569;
+}
+
+/* ─── Collapsed-mode: hide strip ─────────────────────────────────────── */
+#search-panel.is-sticky.is-collapsed .recent-searches {
+    display: none;
 }

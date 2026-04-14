@@ -1,0 +1,6 @@
+  AirAstana                     e9428e6 [origin/AirAstana] feat: Implement initial Air Astana website with brand style guide, new pages, content, and assets.
+  feature/autocomplete-grouping 4c3f68f feat: Add autocomplete grouping with visual hierarchy across all search fields
+  feature/flyadeal-holidays     8b10cd4 [origin/feature/flyadeal-holidays] style: Adjust logo image height from h-16 to h-12 in header and footer.
+  main                          05f030f [origin/main] fixes
+* salamair                      fb381a5 Update website to SalamAir branding and prices
+  saudia                        7e4f2c1 [origin/saudia] updates

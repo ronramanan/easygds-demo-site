@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+@theme {
+    --font-sans: "Raleway", sans-serif;
+    --font-display: "Raleway", sans-serif;
+
+    --color-brand-primary: #203C94;
+    --color-brand-secondary: #1A3994;
+    --color-brand-accent: #4CAF50;
+    --color-brand-text: #1A1A1A;
+    --color-brand-muted: #555555;
+    --color-brand-surface: #F5F8FF;
+    --color-brand-white: #FFFFFF;
+    --color-brand-gold: #D4AF37;
+
+    --shadow-elegant: 0 4px 20px -5px rgba(32, 60, 148, 0.15);
+    --shadow-elegant-lg: 0 10px 30px -5px rgba(32, 60, 148, 0.2);
+    --shadow-elegant-xl: 0 20px 40px -5px rgba(32, 60, 148, 0.25);
+
+    --animate-fade-in-up: fadeInUp 0.8s ease-out forwards;
+
+    @keyframes fadeInUp {
+        0% {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+}
