@@ -126,6 +126,9 @@ html, body {
     display: flex;
     align-items: center;
     min-width: 0;
+    /* Anchor absolute-positioned autocomplete and guarantee it escapes
+       sibling stacking contexts on iOS Safari. */
+    isolation: isolate;
 }
 
 .search-input-box:hover {
@@ -536,6 +539,24 @@ label:hover .pkg-checkbox-label {
     position: sticky;
     top: 0;
     z-index: 50;
+}
+
+/* The wrapper sits above the hero but BELOW the page's later sections
+   in document paint order. When the autocomplete dropdown hangs below
+   the search panel, it must render above "Top Destinations" and
+   subsequent sections. Raise the wrapper's stacking context high enough
+   to dominate all post-hero content, while staying below the header (z:60).
+   On iOS Safari, backdrop-filter inside #search-panel creates a compositing
+   layer — force a clean stacking context on the wrapper itself. */
+#search-container-wrapper {
+    z-index: 55;
+    isolation: isolate;
+}
+
+/* Raise further while an autocomplete dropdown is visible inside it,
+   so the dropdown cleanly paints over everything below the fixed header. */
+#search-container-wrapper:has(.autocomplete-results:not(.hidden)) {
+    z-index: 59;
 }
 
 /* Collapsed sticky tab bar styling */
