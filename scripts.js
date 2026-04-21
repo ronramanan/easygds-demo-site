@@ -83,6 +83,26 @@ window.closeDealModal = function () {
     }
 };
 
+// iOS/Safari bfcache (back-forward cache) restoration.
+//
+// When a user submits a search, navigates to results, and hits back,
+// Safari restores the previous page from bfcache instead of re-running
+// page scripts. The DOM is snapshot-restored verbatim — meaning:
+//   (a) Recent-searches strip keeps its prior `.hidden` class even
+//       though the cookie now has entries (would require re-render).
+//   (b) Visible input values appear filled, but internal state
+//       (dataset.code, flatpickr instances, pax managers) is stale,
+//       causing "incomplete" red-ring validation errors on resubmit.
+//
+// A full reload on bfcache restore rebuilds a consistent state in one
+// shot — simpler and more reliable than surgically re-syncing each
+// widget's internal state with its DOM shell.
+window.addEventListener('pageshow', (event) => {
+    if (event.persisted || (performance.getEntriesByType('navigation')[0] || {}).type === 'back_forward') {
+        window.location.reload();
+    }
+});
+
 document.addEventListener('DOMContentLoaded', () => {
     const closeBtn = document.getElementById('deal-close-btn');
     const modalBackdrop = document.getElementById('deal-modal-backdrop');
@@ -212,7 +232,21 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         };
 
+        // Track whether iOS's focus auto-scroll caused the current scroll event.
+        // When a user taps into a search input, iOS scrolls the page up so the
+        // focused input is visible above the keyboard. Without this guard, that
+        // scroll trips the sticky threshold and collapses the form mid-tap.
+        const isFocusInsidePanel = () => {
+            const ae = document.activeElement;
+            return !!(ae && searchPanel.contains(ae) &&
+                (ae.tagName === 'INPUT' || ae.tagName === 'TEXTAREA' || ae.tagName === 'SELECT'));
+        };
+
         window.addEventListener('scroll', () => {
+            // Defer sticky transitions while the user is actively interacting
+            // with a form field. The state will reconcile on blur.
+            if (isFocusInsidePanel()) return;
+
             const triggerPoint = searchContainerWrapper.offsetTop - headerHeight;
 
             if (window.scrollY > triggerPoint) {
@@ -226,6 +260,23 @@ document.addEventListener('DOMContentLoaded', () => {
                     removeSticky();
                 }
             }
+        });
+
+        // On blur, reconcile sticky state against current scroll position.
+        document.addEventListener('focusout', (e) => {
+            if (!searchPanel.contains(e.target)) return;
+            // Microtask delay: let focus settle (e.g. moving between inputs).
+            setTimeout(() => {
+                if (isFocusInsidePanel()) return;
+                const triggerPoint = searchContainerWrapper.offsetTop - headerHeight;
+                if (window.scrollY > triggerPoint && !isSticky) {
+                    isSticky = true;
+                    applySticky();
+                } else if (window.scrollY <= triggerPoint && isSticky) {
+                    isSticky = false;
+                    removeSticky();
+                }
+            }, 50);
         });
 
         // Expand on tab click when sticky
