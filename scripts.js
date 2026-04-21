@@ -3299,12 +3299,28 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!el) return;
         clearAutocompleteChip(el);
 
-        // Fetch from API using the stored code to get full autocomplete data
+        const savedId = extraData && extraData.id;
+
+        // Strategy: for non-airport types, the stored "code" is a place_id
+        // (e.g. "ChIJ...") — using it as search_text yields junk matches
+        // (e.g. saved Kuala Lumpur restoring as Kula, Hawaii because the
+        // API interpreted "KUL" as a text query and returned the first
+        // result). Search by NAME instead, then strictly match on the
+        // saved id or code. Skip API entirely if the saved values are
+        // sufficient to rebuild state.
         const inputType = (extraData && extraData.type) || el.dataset.type || 'airport_code';
+        const isCodeBasedType = (inputType === 'airport_code' || inputType === 'hotel');
+        const searchQuery = isCodeBasedType ? (code || name || '') : (name || code || '');
+
         try {
-            const results = await fetchLocations(code, inputType);
-            // Find exact match by code
-            const match = results.find(r => r.code === code) || results.find(r => r.id === code) || results[0];
+            const results = await fetchLocations(searchQuery, inputType);
+            // Strict match: prefer saved id, then exact code, then exact name.
+            // Do NOT fall back to results[0] — that caused the wrong-city bug.
+            const match =
+                (savedId && results.find(r => (r.id === savedId) || (r.code === savedId))) ||
+                (code && results.find(r => r.code === code)) ||
+                (name && results.find(r => r.name === name));
+
             if (match) {
                 el.value = match.name;
                 el.dataset.code = match.code;
@@ -3320,10 +3336,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
         } catch (err) {
-            // Fallback to static restore if API fails
+            // Fall through to static restore.
         }
 
-        // Static fallback
+        // Static fallback — trust the stored values verbatim.
         el.value = name || '';
         if (code) el.dataset.code = code;
         if (selType) el.dataset.selType = selType;
