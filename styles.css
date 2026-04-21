@@ -126,9 +126,14 @@ html, body {
     display: flex;
     align-items: center;
     min-width: 0;
-    /* Anchor absolute-positioned autocomplete and guarantee it escapes
-       sibling stacking contexts on iOS Safari. */
-    isolation: isolate;
+}
+
+/* When an autocomplete dropdown is open, raise the hosting input box
+   above its siblings within the search panel so the dropdown paints
+   over adjacent input fields. Previously used isolation:isolate which
+   trapped the dropdown behind sibling input boxes on Android Chrome. */
+.search-input-box:has(.autocomplete-results:not(.hidden)) {
+    z-index: 50;
 }
 
 .search-input-box:hover {
