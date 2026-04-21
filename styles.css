@@ -539,11 +539,20 @@ label:hover .pkg-checkbox-label {
     margin-bottom: 1rem;
 }
 
-/* Ensure sticky wrapper works */
+/* Ensure sticky wrapper works — desktop only.
+   On mobile the sticky-pin fights with iOS focus auto-scroll, virtual
+   keyboard reflows, and popover-driven layout shifts, causing the
+   widget to collapse mid-interaction. Disable below lg (1024px). */
 #search-container-wrapper {
-    position: sticky;
+    position: static;
     top: 0;
     z-index: 50;
+}
+
+@media (min-width: 1024px) {
+    #search-container-wrapper {
+        position: sticky;
+    }
 }
 
 /* The wrapper sits above the hero but BELOW the page's later sections

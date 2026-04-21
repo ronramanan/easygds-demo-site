@@ -193,7 +193,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchInputsContainer = document.getElementById('search-inputs-container');
     const searchTabsContainer = document.getElementById('search-tabs-container');
 
-    if (header && searchContainerWrapper && searchPanel) {
+    // ─── Sticky/collapse is a DESKTOP-ONLY behavior ──────────────────────
+    // On mobile, the sticky-collapsed search bar fights with:
+    //   - iOS focus auto-scroll on input tap
+    //   - layout shifts from opening/closing popovers (rooms, travelers)
+    //   - restoring a recent-search chip (form content swaps height)
+    //   - the virtual keyboard showing/hiding
+    //
+    // Every one of those can trip the sticky threshold unexpectedly and
+    // collapse the widget mid-interaction. No amount of focus/grace
+    // guarding fully covers all cases because the scroll itself is
+    // genuine — caused by the page reflowing, not by the user.
+    //
+    // Simplest durable fix: disable sticky/collapse below the lg
+    // breakpoint (1024px). Desktop keeps the full behavior.
+    const isDesktop = () => window.matchMedia('(min-width: 1024px)').matches;
+
+    if (header && searchContainerWrapper && searchPanel && isDesktop()) {
         const headerHeight = header.offsetHeight;
         let isSticky = false;
         let isExpanded = false;
