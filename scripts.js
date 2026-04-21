@@ -232,51 +232,82 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         };
 
-        // Track whether iOS's focus auto-scroll caused the current scroll event.
-        // When a user taps into a search input, iOS scrolls the page up so the
-        // focused input is visible above the keyboard. Without this guard, that
-        // scroll trips the sticky threshold and collapses the form mid-tap.
-        const isFocusInsidePanel = () => {
+        // ─── Widget-active lock ──────────────────────────────────────────
+        // The sticky/collapse transitions must FREEZE while the user is
+        // actively interacting with the widget, otherwise:
+        //   - iOS auto-scrolls on input focus → trips the sticky threshold
+        //     → collapses the form mid-tap.
+        //   - focusout fires when tapping an autocomplete result (the
+        //     result <div> isn't focusable) → collapses while the user
+        //     is selecting.
+        //
+        // "Active" = any of:
+        //   (a) focus is inside a panel input
+        //   (b) an autocomplete dropdown is visible
+        //   (c) a traveler-popover / custom-options dropdown is open
+        //   (d) within a 400ms grace window after any of the above ended
+        //       (tap → focus transfer → dropdown settles)
+        const hasVisibleChild = (selector) => {
+            const nodes = searchPanel.querySelectorAll(selector);
+            for (const n of nodes) {
+                if (!n.classList.contains('hidden') && n.offsetParent !== null) return true;
+            }
+            return false;
+        };
+
+        const isWidgetActive = () => {
             const ae = document.activeElement;
-            return !!(ae && searchPanel.contains(ae) &&
-                (ae.tagName === 'INPUT' || ae.tagName === 'TEXTAREA' || ae.tagName === 'SELECT'));
+            const focusInside = ae && searchPanel.contains(ae) &&
+                (ae.tagName === 'INPUT' || ae.tagName === 'TEXTAREA' || ae.tagName === 'SELECT');
+            if (focusInside) return true;
+            if (hasVisibleChild('.autocomplete-results')) return true;
+            if (hasVisibleChild('.traveler-popover')) return true;
+            if (hasVisibleChild('.custom-options')) return true;
+            return false;
+        };
+
+        let graceUntil = 0;
+        const markActivity = () => { graceUntil = Date.now() + 400; };
+
+        const inGrace = () => Date.now() < graceUntil;
+
+        const reconcileSticky = () => {
+            if (isWidgetActive() || inGrace()) return;
+            const triggerPoint = searchContainerWrapper.offsetTop - headerHeight;
+            if (window.scrollY > triggerPoint) {
+                if (!isSticky) { isSticky = true; applySticky(); }
+            } else {
+                if (isSticky) { isSticky = false; removeSticky(); }
+            }
         };
 
         window.addEventListener('scroll', () => {
-            // Defer sticky transitions while the user is actively interacting
-            // with a form field. The state will reconcile on blur.
-            if (isFocusInsidePanel()) return;
+            if (isWidgetActive()) { markActivity(); return; }
+            if (inGrace()) return;
+            reconcileSticky();
+        }, { passive: true });
 
-            const triggerPoint = searchContainerWrapper.offsetTop - headerHeight;
-
-            if (window.scrollY > triggerPoint) {
-                if (!isSticky) {
-                    isSticky = true;
-                    applySticky();
-                }
-            } else {
-                if (isSticky) {
-                    isSticky = false;
-                    removeSticky();
-                }
-            }
-        });
-
-        // On blur, reconcile sticky state against current scroll position.
+        // When focus leaves a panel input (including tapping on a
+        // non-focusable dropdown item), start grace and check later —
+        // never immediately collapse.
         document.addEventListener('focusout', (e) => {
             if (!searchPanel.contains(e.target)) return;
-            // Microtask delay: let focus settle (e.g. moving between inputs).
-            setTimeout(() => {
-                if (isFocusInsidePanel()) return;
-                const triggerPoint = searchContainerWrapper.offsetTop - headerHeight;
-                if (window.scrollY > triggerPoint && !isSticky) {
-                    isSticky = true;
-                    applySticky();
-                } else if (window.scrollY <= triggerPoint && isSticky) {
-                    isSticky = false;
-                    removeSticky();
-                }
-            }, 50);
+            markActivity();
+            setTimeout(reconcileSticky, 450);
+        });
+
+        // When the user focuses into a panel input, lock expanded state
+        // even if we're already sticky. Removing .is-collapsed lets the
+        // user see the inputs instead of the collapsed tab bar.
+        document.addEventListener('focusin', (e) => {
+            if (!searchPanel.contains(e.target)) return;
+            markActivity();
+            if (searchPanel.classList.contains('is-sticky')) {
+                isExpanded = true;
+                searchPanel.classList.remove('is-collapsed');
+                searchPanel.classList.remove('py-3');
+                searchPanel.classList.add('py-4');
+            }
         });
 
         // Expand on tab click when sticky
