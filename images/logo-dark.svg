@@ -1,0 +1,5 @@
+<svg viewBox="0 0 340 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M14 70 L48 14 L82 70" stroke="#ffffff" stroke-width="14" stroke-linejoin="miter" stroke-linecap="butt"/>
+  <path d="M48 14 L48 50" stroke="#ffffff" stroke-width="14" stroke-linecap="butt" opacity="0.15"/>
+  <text x="102" y="67" font-family="Sora,system-ui,sans-serif" font-weight="600" font-size="70" fill="#ffffff" letter-spacing="-2">altovo</text>
+</svg>

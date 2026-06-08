@@ -66,7 +66,7 @@ function fetchUrl(url, options = {}) {
         const proto = url.startsWith('https') ? https : http;
         const req = proto.get(url, {
             headers: {
-                'User-Agent': 'EasyGDS-DestinationRanker/1.0 (build script)',
+                'User-Agent': 'Altovo-DestinationRanker/1.0 (build script)',
                 'Accept': options.accept || '*/*',
                 ...(options.headers || {})
             }

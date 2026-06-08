@@ -4,14 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>easyGDS | Travel Commerce. Simplified.</title>
-    <link rel="icon" type="image/png" href="favicon.png">
+    <title>altovo | Travel Commerce. Simplified.</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="alternate icon" type="image/png" href="favicon.png">
     <!-- Tailwind CSS CDN -->
     <link href="tailwind-main.css" rel="stylesheet">
-    <!-- Google Fonts: Raleway -->
+    <!-- Google Fonts: Sora (primary) + JetBrains Mono (meta/mono) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700;800&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
         rel="stylesheet">
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -30,10 +31,14 @@
     <header class="absolute top-0 left-0 right-0 z-[60] h-16 flex items-center transition-all duration-300"
         id="main-header">
         <div class="container mx-auto px-6 lg:px-12 flex justify-between items-center h-full">
-            <!-- Logo -->
-            <a href="#" class="flex items-center gap-3 group">
-                <img src="easygds_logo_transparent.png" alt="easyGDS Logo"
-                    class="h-6 w-auto brightness-0 invert transition-all duration-300 group-hover:scale-105 drop-shadow-md">
+            <!-- Logo — original altovo lockup (logo-dark.svg, inlined so the Sora wordmark renders); large -->
+            <a href="#" class="group inline-flex items-center" aria-label="altovo home">
+                <svg viewBox="0 0 340 96" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+                    class="h-12 w-auto transition-transform duration-300 group-hover:scale-105 drop-shadow-md">
+                    <path d="M14 70 L48 14 L82 70" stroke="#ffffff" stroke-width="14" stroke-linejoin="miter" stroke-linecap="butt"/>
+                    <path d="M48 14 L48 50" stroke="#ffffff" stroke-width="14" stroke-linecap="butt" opacity="0.15"/>
+                    <text x="102" y="67" font-family="Sora,system-ui,sans-serif" font-weight="600" font-size="70" fill="#ffffff" letter-spacing="-2">altovo</text>
+                </svg>
             </a>
 
             <!-- Desktop Navigation -->
@@ -133,23 +138,23 @@
         <!-- Slides Container -->
         <div class="absolute inset-0 z-0">
 
-            <!-- Slide 1: Kuala Lumpur -->
+            <!-- Slide 1: New York -->
             <div class="hero-slide active absolute inset-0">
-                <!-- Background - Verified Petronas Towers -->
+                <!-- Background - New York Skyline -->
                 <div class="absolute inset-0 bg-cover bg-center"
-                    style="background-image: url('https://images.unsplash.com/photo-1596422846543-75c6fc197f07?q=80&w=2574&auto=format&fit=crop');">
+                    style="background-image: url('images/new_york.jpg');">
                 </div>
                 <!-- Gradient -->
                 <div
-                    class="absolute inset-0 bg-gradient-to-b from-brand-primary/60 via-brand-primary/20 to-brand-secondary/70 mixed-blend-multiply">
+                    class="absolute inset-0 bg-gradient-to-b from-brand-primary/70 via-brand-primary/20 to-brand-accent/60 mixed-blend-multiply">
                 </div>
                 <!-- Content -->
                 <div
                     class="relative z-10 container mx-auto px-6 lg:px-12 h-full flex flex-col justify-center items-center pb-24 lg:pb-32 pt-20 text-center">
                     <h1
                         class="font-display text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-4 drop-shadow-lg leading-tight animate-fade-in-up">
-                        Kuala Lumpur <br>
-                        <span class="text-brand-surface italic text-2xl md:text-4xl">from $599</span>
+                        New York <br>
+                        <span class="text-brand-surface italic text-2xl md:text-4xl">Experience the World Cup '26</span>
                     </h1>
                     <div
                         class="animate-fade-in-up delay-[200ms] flex items-center justify-center gap-6 text-white/95 bg-white/10 backdrop-blur-md px-8 py-4 rounded-full border border-white/20 shadow-lg">
@@ -162,27 +167,32 @@
                             <i data-lucide="hotel" class="w-6 h-6"></i>
                             <span class="font-bold text-lg">Hotel</span>
                         </div>
+                        <span class="text-2xl font-light opacity-50">+</span>
+                        <div class="flex items-center gap-3">
+                            <i data-lucide="ticket" class="w-6 h-6"></i>
+                            <span class="font-bold text-lg">Ticket</span>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Slide 2: Maldives -->
+            <!-- Slide 2: Kuala Lumpur -->
             <div class="hero-slide absolute inset-0">
-                <!-- Background - Verified Maldives (From Original File) -->
+                <!-- Background - Verified Petronas Towers -->
                 <div class="absolute inset-0 bg-cover bg-center"
-                    style="background-image: url('https://images.unsplash.com/photo-1506953823976-52e1fdc0149a?q=80&w=2575&auto=format&fit=crop');">
+                    style="background-image: url('https://images.unsplash.com/photo-1596422846543-75c6fc197f07?q=80&w=2574&auto=format&fit=crop');">
                 </div>
                 <!-- Gradient -->
                 <div
-                    class="absolute inset-0 bg-gradient-to-b from-brand-primary/60 via-brand-primary/20 to-brand-secondary/70 mixed-blend-multiply">
+                    class="absolute inset-0 bg-gradient-to-b from-brand-primary/70 via-brand-primary/20 to-brand-accent/60 mixed-blend-multiply">
                 </div>
                 <!-- Content -->
                 <div
                     class="relative z-10 container mx-auto px-6 lg:px-12 h-full flex flex-col justify-center items-center pb-24 lg:pb-32 pt-20 text-center">
                     <h1
                         class="font-display text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-4 drop-shadow-lg leading-tight">
-                        Maldives <br>
-                        <span class="text-brand-surface italic text-2xl md:text-4xl">from $1,299</span>
+                        Kuala Lumpur <br>
+                        <span class="text-brand-surface italic text-2xl md:text-4xl">from $599</span>
                     </h1>
                     <div
                         class="flex items-center justify-center gap-6 text-white/95 bg-white/10 backdrop-blur-md px-8 py-4 rounded-full border border-white/20 shadow-lg">
@@ -199,21 +209,21 @@
                 </div>
             </div>
 
-            <!-- Slide 3: Dubai -->
+            <!-- Slide 3: Sydney -->
             <div class="hero-slide absolute inset-0">
-                <!-- Background - Verified Dubai Night Skyline (Unsplash) -->
-                <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('images/dubai.jpg');">
+                <!-- Background - Sydney Harbour -->
+                <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('images/Sydney-harbour.jpg');">
                 </div>
                 <!-- Gradient -->
                 <div
-                    class="absolute inset-0 bg-gradient-to-b from-brand-primary/60 via-brand-primary/20 to-brand-secondary/70 mixed-blend-multiply">
+                    class="absolute inset-0 bg-gradient-to-b from-brand-primary/70 via-brand-primary/20 to-brand-accent/60 mixed-blend-multiply">
                 </div>
                 <!-- Content -->
                 <div
                     class="relative z-10 container mx-auto px-6 lg:px-12 h-full flex flex-col justify-center items-center pb-24 lg:pb-32 pt-20 text-center">
                     <h1
                         class="font-display text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-4 drop-shadow-lg leading-tight">
-                        Dubai <br>
+                        Sydney <br>
                         <span class="text-brand-surface italic text-2xl md:text-4xl">from $899</span>
                     </h1>
                     <div
@@ -983,7 +993,7 @@
     <!-- ================= FEATURES / WHY US ================= -->
     <section class="py-12 bg-brand-surface">
         <div class="container mx-auto px-6 lg:px-12 text-center">
-            <h2 class="font-display text-2xl font-bold text-brand-primary mb-8">Why Choose easyGDS?</h2>
+            <h2 class="font-display text-2xl font-bold text-brand-primary mb-8">Why Choose altovo?</h2>
 
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
                 <div class="flex flex-col items-center group">
@@ -1028,7 +1038,7 @@
     </section>
 
     <!-- ================= NEWSLETTER (MailFlow) ================= -->
-    <section class="py-16 relative overflow-hidden bg-white border-y border-brand-gold/20">
+    <section class="py-16 relative overflow-hidden bg-white border-y border-brand-accent/20">
         <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.03]">
         </div>
         <div class="container mx-auto px-6 lg:px-12 relative z-10 text-center">
@@ -1296,11 +1306,16 @@
         </div>
     </section>
 
-    <footer class="bg-brand-secondary text-white pt-16 pb-8">
+    <footer class="bg-brand-abyss text-white pt-16 pb-8">
         <div class="container mx-auto px-6 lg:px-12 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 mb-12">
             <div class="col-span-2">
-                <img src="easygds_logo_transparent.png" alt="easyGDS" loading="lazy"
-                    class="h-8 brightness-0 invert mb-6">
+                <a href="#" class="inline-flex items-center mb-6" aria-label="altovo home">
+                    <svg viewBox="0 0 340 96" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="h-7 w-auto">
+                        <path d="M14 70 L48 14 L82 70" stroke="#ffffff" stroke-width="14" stroke-linejoin="miter" stroke-linecap="butt"/>
+                        <path d="M48 14 L48 50" stroke="#ffffff" stroke-width="14" stroke-linecap="butt" opacity="0.15"/>
+                        <text x="102" y="67" font-family="Sora,system-ui,sans-serif" font-weight="600" font-size="70" fill="#ffffff" letter-spacing="-2">altovo</text>
+                    </svg>
+                </a>
                 <p class="text-blue-200 text-sm leading-relaxed max-w-xs mb-6">
                     Connecting you to the world's most incredible destinations with a seamless, premium booking
                     experience.
@@ -1326,7 +1341,7 @@
 
         <div
             class="container mx-auto px-6 lg:px-12 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center text-sm text-blue-300">
-            <p>&copy; 2026 easyGDS. All rights reserved.</p>
+            <p>&copy; 2026 altovo. All rights reserved.</p>
             <div class="flex gap-6 mt-4 md:mt-0">
                 <span>Privacy</span>
                 <span>Terms</span>

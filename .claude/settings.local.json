@@ -10,7 +10,8 @@
       "mcp__plugin_playwright_playwright__browser_navigate",
       "Bash(git add:*)",
       "Bash(git commit:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(npm start *)"
     ]
   },
   "outputStyle": "Structural Thinking"

@@ -1,21 +1,25 @@
 @import "tailwindcss";
 
 @theme {
-    --font-sans: "Raleway", sans-serif;
-    --font-display: "Raleway", sans-serif;
+    /* altovo brand — Sora (primary) + JetBrains Mono (meta/mono) */
+    --font-sans: "Sora", system-ui, sans-serif;
+    --font-display: "Sora", system-ui, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
-    --color-brand-primary: #203C94;
-    --color-brand-secondary: #1A3994;
-    --color-brand-accent: #4CAF50;
-    --color-brand-text: #1A1A1A;
+    /* altovo navy scale + paper — see brand sheet v1.0 */
+    --color-brand-primary: #0A1E3D;   /* Navy */
+    --color-brand-secondary: #1A3A6B; /* Marine — mid navy / hovers / footer */
+    --color-brand-accent: #3D6FBE;    /* Signal — accent / highlight */
+    --color-brand-text: #0E1116;      /* Ink */
     --color-brand-muted: #555555;
-    --color-brand-surface: #F5F8FF;
+    --color-brand-surface: #F5F3EE;   /* Paper */
     --color-brand-white: #FFFFFF;
-    --color-brand-gold: #D4AF37;
+    --color-brand-abyss: #06152B;     /* Abyss — darkest navy / reversed bg */
+    --color-brand-gold: #3D6FBE;      /* (legacy alias) — remapped to Signal; altovo has no gold */
 
-    --shadow-elegant: 0 4px 20px -5px rgba(32, 60, 148, 0.15);
-    --shadow-elegant-lg: 0 10px 30px -5px rgba(32, 60, 148, 0.2);
-    --shadow-elegant-xl: 0 20px 40px -5px rgba(32, 60, 148, 0.25);
+    --shadow-elegant: 0 4px 20px -5px rgba(10, 30, 61, 0.15);
+    --shadow-elegant-lg: 0 10px 30px -5px rgba(10, 30, 61, 0.2);
+    --shadow-elegant-xl: 0 20px 40px -5px rgba(10, 30, 61, 0.25);
 
     --animate-fade-in-up: fadeInUp 0.8s ease-out forwards;
 
